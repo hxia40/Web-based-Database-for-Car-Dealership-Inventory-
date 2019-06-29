@@ -227,3 +227,9 @@ VALUES ('sales2','salesperson_permission2');
 
 INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
 VALUES ('1111111', '2019-01-01 00:00:01',10000,'salesperson_permission2','G101');
+
+INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
+VALUES ('2222222', '2019-01-09 00:00:01',8000,'salesperson_permission1','K202');
+
+INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
+VALUES ('3333333', '2019-02-01 00:00:01',12000,'salesperson_permission2','G101');
