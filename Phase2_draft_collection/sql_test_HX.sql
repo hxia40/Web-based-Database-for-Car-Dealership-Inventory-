@@ -177,3 +177,33 @@ CREATE TABLE Sell (
   FOREIGN KEY (customer_id)
     REFERENCES Customer (customer_id)
 );
+
+
+INSERT INTO VehicleType(type_name)
+VALUES ('SUV');
+
+INSERT INTO VehicleType(type_name)
+VALUES ('Sedan');
+
+INSERT INTO VehicleType(type_name)
+VALUES ('Bus');
+
+
+INSERT INTO Manufacturer(manufacturer_name)
+VALUES ('JEEP CO.');
+
+INSERT INTO Manufacturer(manufacturer_name)
+VALUES ('Geely CO.');
+
+INSERT INTO Manufacturer(manufacturer_name)
+VALUES ('BYD CO.');
+
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (1111111, 150000, 'first car', 'Cherokee', 1999, 'SUV', 'JEEP CO.');
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (2222222, 180000, 'second car', 'BORUI GC-9', 2015, 'Sedan', 'Geely CO.');
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (3333333, 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.');
