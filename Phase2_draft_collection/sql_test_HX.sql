@@ -188,7 +188,6 @@ VALUES ('Sedan');
 INSERT INTO VehicleType(type_name)
 VALUES ('Bus');
 
-
 INSERT INTO Manufacturer(manufacturer_name)
 VALUES ('JEEP CO.');
 
@@ -207,3 +206,24 @@ VALUES (2222222, 180000, 'second car', 'BORUI GC-9', 2015, 'Sedan', 'Geely CO.')
 
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
 VALUES (3333333, 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.');
+
+INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
+VALUES ('G101', 1112222, 'zls@gmail.com', '333 Crap St.', 'Houston', 'TX', 77202);
+
+INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
+VALUES ('K202', 3334444, 'ldz@gmail.com', '8888 Goodman Rd.', 'Houston', 'TX', 77205);
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('sales1','123456','Tianming', 'Yun');
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('sales2','123456','Yifan', 'Guan');
+
+INSERT INTO Salesperson(username, salesperson_permission)
+VALUES ('sales1','salesperson_permission1');
+
+INSERT INTO Salesperson(username, salesperson_permission)
+VALUES ('sales2','salesperson_permission2');
+
+INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
+VALUES ('1111111', '2019-01-01 00:00:01',10000,'salesperson_permission2','G101');
