@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS DailyIncome
+
 create table DailyIncome(VendorId varchar(50), IncomeDay varchar(10), IncomeAmount int);
 
 insert into DailyIncome values ('SPIKE', 'FRI', 100);
