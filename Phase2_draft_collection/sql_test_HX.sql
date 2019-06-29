@@ -208,10 +208,16 @@ INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model
 VALUES (3333333, 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.');
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('G101', 1112222, 'zls@gmail.com', '333 Crap St.', 'Houston', 'TX', 77202);
+VALUES ('Rich101', 1112222, 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('K202', 3334444, 'ldz@gmail.com', '8888 Goodman Rd.', 'Houston', 'TX', 77205);
+VALUES ('Rich102', 3334444, 'lwc@gmail.com', '8888 Goodman Rd.', 'Houston', 'TX', 77205);
+
+INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
+VALUES ('Poor101', 5556666, 'ybl@gmail.com', '444 Crap St.', 'Houston', 'TX', 77208);
+
+INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
+VALUES ('Poor102', 7778888, 'gyb@gmail.com', '9999 Main St.', 'Houston', 'TX', 77209);
 
 INSERT INTO Users(username, password, login_first_name, login_last_name)
 VALUES ('sales1','123456','Tianming', 'Yun');
@@ -225,11 +231,34 @@ VALUES ('sales1','salesperson_permission1');
 INSERT INTO Salesperson(username, salesperson_permission)
 VALUES ('sales2','salesperson_permission2');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('1111111', '2019-01-01 00:00:01',10000,'salesperson_permission2','G101');
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('clerk1','123456','Xin', 'Cheng');
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('clerk2','123456','AA', 'Ai');
+
+INSERT INTO InventoryClerk(username, inventory_clerk_permission)
+VALUES ('clerk1','inventory_clerk_permission1');
+
+INSERT INTO InventoryClerk(username, inventory_clerk_permission)
+VALUES ('clerk2','inventory_clerk_permission2');
 
 INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('2222222', '2019-01-09 00:00:01',8000,'salesperson_permission1','K202');
+VALUES ('1111111', '2019-01-01 00:00:01',10000,'salesperson_permission2','Poor101');
 
 INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('3333333', '2019-02-01 00:00:01',12000,'salesperson_permission2','G101');
+VALUES ('2222222', '2019-01-09 00:00:01',8000,'salesperson_permission1','Poor102');
+
+INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
+VALUES ('3333333', '2019-02-01 00:00:01',12000,'salesperson_permission2','Poor101');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('1111111', '2018-01-01 00:00:01',5000,'Excellent',5000,'inventory_clerk_permission1','Rich101');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('2222222', '2018-01-09 00:00:01',4000,'Very Good',4000,'inventory_clerk_permission2','Rich101');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('3333333', '2018-02-01 00:00:01',6000,'Fair',6000,'inventory_clerk_permission1','Rich102');
+
+
