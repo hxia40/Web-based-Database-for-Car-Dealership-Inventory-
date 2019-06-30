@@ -31,10 +31,10 @@ ORDER BY Sale_year DESC;
 --//upon: user clicks a given $Sale_year from the yearly sale summary page	
 							     
 SELECT 
-	COUNT(Sell.vin) AS num_vehicle_sold,	
-	SUM(Sell.sale_price) AS total_sales,
 	MAX(Users.login_first_name) AS top_seller_first_name,
-	MAX(Users.login_last_name) AS top_seller_last_name	
+	MAX(Users.login_last_name) AS top_seller_last_name,
+	COUNT(Sell.vin) AS num_vehicle_sold,	
+	SUM(Sell.sale_price) AS total_sales
 FROM Sell
 JOIN Salesperson
 ON Sell.salesperson_permission = Salesperson.salesperson_permission
@@ -45,7 +45,7 @@ GROUP BY Salesperson.username
 ORDER BY 
 num_vehicle_sold DESC,
 total_sales DESC
-LIMIT 1;		     
+LIMIT 1;	     
 		      
 --Monthly Report, monthly sale summary page		      
 SELECT 
@@ -66,10 +66,10 @@ ORDER BY Sale_month DESC;
 --Monthly sale drill down report
 --//upon: user clicks a given $Sale_month from the monthly sale summary page
 SELECT 
-	COUNT(Sell.vin) AS num_vehicle_sold,	
-	SUM(Sell.sale_price) AS total_sales,
 	MAX(Users.login_first_name) AS top_seller_first_name,
-	MAX(Users.login_last_name) AS top_seller_last_name	
+	MAX(Users.login_last_name) AS top_seller_last_name,
+	COUNT(Sell.vin) AS num_vehicle_sold,	
+	SUM(Sell.sale_price) AS total_sales
 FROM Sell
 JOIN Salesperson
 ON Sell.salesperson_permission = Salesperson.salesperson_permission
@@ -80,4 +80,4 @@ GROUP BY Salesperson.username
 ORDER BY 
 num_vehicle_sold DESC,
 total_sales DESC
-LIMIT 1;	
+LIMIT 1;
