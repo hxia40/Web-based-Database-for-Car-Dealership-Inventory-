@@ -26,6 +26,26 @@ JOIN Repair
 ON Sell.vin = Repair.vin
 GROUP BY Sale_year
 ORDER BY Sale_year DESC; 
+							     
+--Year sale drill down report
+--//upon: user clicks a given $Sale_year from the yearly sale summary page	
+							     
+SELECT 
+	COUNT(Sell.vin) AS num_vehicle_sold,	
+	SUM(Sell.sale_price) AS total_sales,
+	MAX(Users.login_first_name) AS top_seller_first_name,
+	MAX(Users.login_last_name) AS top_seller_last_name	
+FROM Sell
+JOIN Salesperson
+ON Sell.salesperson_permission = Salesperson.salesperson_permission
+JOIN Users
+ON Salesperson.username = Users.username
+WHERE LEFT(Sell.sale_date::text, 4) = '$Sale_year'
+GROUP BY Salesperson.username
+ORDER BY 
+num_vehicle_sold DESC,
+total_sales DESC
+LIMIT 1;		     
 		      
 --Monthly Report, monthly sale summary page		      
 SELECT 
@@ -41,19 +61,23 @@ ON Sell.vin = Repair.vin
 GROUP BY Sale_month
 ORDER BY Sale_month DESC;
 							     
---Monthly Report , month sale drill down report
 
+							     
+--Monthly sale drill down report
+--//upon: user clicks a given $Sale_month from the monthly sale summary page
 SELECT 
-	Sell.vin,
-	Sell.salesperson_permission,
-	Sell.sale_price,
-	Sell.sale_date,
-	Salesperson.username,
-	Users.login_first_name,
-	Users.login_last_name
+	COUNT(Sell.vin) AS num_vehicle_sold,	
+	SUM(Sell.sale_price) AS total_sales,
+	MAX(Users.login_first_name) AS top_seller_first_name,
+	MAX(Users.login_last_name) AS top_seller_last_name	
 FROM Sell
 JOIN Salesperson
 ON Sell.salesperson_permission = Salesperson.salesperson_permission
 JOIN Users
 ON Salesperson.username = Users.username
-WHERE LEFT(Sell.sale_date::text, 4) = '2019';
+WHERE LEFT(Sell.sale_date::text, 7) = '$Sale_month'
+GROUP BY Salesperson.username
+ORDER BY 
+num_vehicle_sold DESC,
+total_sales DESC
+LIMIT 1;	
