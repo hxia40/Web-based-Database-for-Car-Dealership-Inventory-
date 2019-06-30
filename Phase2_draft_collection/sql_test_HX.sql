@@ -269,6 +269,15 @@ VALUES ('2222222', '2018-01-09 00:00:01',4000,'Very Good',4000,'inventory_clerk_
 INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
 VALUES ('3333333', '2018-02-01 00:00:01',6000,'Fair',6000,'inventory_clerk_permission1','Rich102');
 
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('4444444', '2018-02-02 00:00:01',9000,'Excellent',9000,'inventory_clerk_permission1','Rich102');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('5555555', '2018-02-09 00:00:01',11000,'Good',11000,'inventory_clerk_permission2','Rich101');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('6666666', '2018-02-11 00:00:01',13000,'Fair',13000,'inventory_clerk_permission1','Rich102');
+
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
 VALUES ('Wangermazi big repair CO.', '3187778888','222 Big St.', 'Houston', 'TX', 77210);
 
@@ -298,6 +307,8 @@ VALUES (6666666,  '2018-04-11 00:00:01', '2019-04-12 00:00:01', 'complete', 'rep
 
 INSERT INTO Recall(nhtsa_recall_compaign_number, recall_description, recall_manufacturer)
 VALUES ('99887766', 'Jipuche big recall', 'JEEP CO.');
+
+
 
 
 
