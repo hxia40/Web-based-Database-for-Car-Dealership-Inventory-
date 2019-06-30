@@ -89,6 +89,7 @@ CREATE TABLE Vehicle (
   model_year int NOT NULL,
   type_name varchar(50) NOT NULL,
   manufacturer_name varchar(50) NOT NULL,
+  sale_price decimal NOT NULL,
   PRIMARY KEY (vin),
   FOREIGN KEY (type_name)
     REFERENCES VehicleType (type_name),
@@ -167,7 +168,6 @@ CREATE TABLE Sell (
   customer_id varchar(50) NOT NULL,
   salesperson_permission varchar(50) NOT NULL,
   sale_date timestamp NOT NULL,
-  sale_price decimal NOT NULL,
   UNIQUE (vin, salesperson_permission, customer_id),
   PRIMARY KEY (vin),
   FOREIGN KEY (vin)
