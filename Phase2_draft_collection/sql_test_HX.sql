@@ -107,7 +107,7 @@ CREATE TABLE VehicleColor (
 CREATE TABLE Recall (
   recall_manufacturer varchar(50) NOT NULL,
   recall_description varchar(250) NULL,
-  NHTSA_recall_compaign_number varchar(50) NULL,
+  nhtsa_recall_compaign_number varchar(50) NULL,
   PRIMARY KEY (nhtsa_recall_compaign_number),
   FOREIGN KEY (recall_manufacturer)
     REFERENCES Manufacturer (manufacturer_name)
@@ -197,7 +197,6 @@ VALUES ('Geely CO.');
 INSERT INTO Manufacturer(manufacturer_name)
 VALUES ('BYD CO.');
 
-
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
 VALUES (1111111, 150000, 'first car', 'Cherokee', 1999, 'SUV', 'JEEP CO.');
 
@@ -206,6 +205,15 @@ VALUES (2222222, 180000, 'second car', 'BORUI GC-9', 2015, 'Sedan', 'Geely CO.')
 
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
 VALUES (3333333, 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.');
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (4444444, 210000, 'fourth car', 'Grand Cherokee', 2000, 'SUV', 'JEEP CO.');
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (5555555, 220000, 'fifth car', 'BORUI GC-10', 2016, 'Sedan', 'Geely CO.');
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
+VALUES (6666666, 230000, 'sixth car', 'BYD K10', 2019, 'Bus', 'BYD CO.');
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
 VALUES ('Rich101', 1112222, 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
@@ -260,5 +268,28 @@ VALUES ('2222222', '2018-01-09 00:00:01',4000,'Very Good',4000,'inventory_clerk_
 
 INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
 VALUES ('3333333', '2018-02-01 00:00:01',6000,'Fair',6000,'inventory_clerk_permission1','Rich102');
+
+INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
+VALUES ('Wangermazi big repair CO.', 7778888,'222 Big St.', 'Houston', 'TX', 77210);
+
+INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
+VALUES ('Zhangsanmazi big repair CO.', 9990000,'333 Big St.', 'Houston', 'TX', 77211);
+
+INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
+VALUES ('Lisimazi big repair CO.', 0001111,'444 Big St.', 'Houston', 'TX', 77212);
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (1111111,  '2018-03-09 00:00:01', '2018-03-10 00:00:01', 'complete', 'repair_description1', 500, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (2222222,  '2018-04-09 00:00:01', '2018-04-10 00:00:01', 'complete', 'repair_description2', 800, 'Wangermazi big repair CO.', 'inventory_clerk_permission1');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (3333333,  '2018-04-11 00:00:01', '2018-04-12 00:00:01', 'complete', 'repair_description3', 1000, 'Zhangsanmazi big repair CO.', 'inventory_clerk_permission1');
+
+INSERT INTO Recall(nhtsa_recall_compaign_number, recall_description, recall_manufacturer)
+VALUES ('99887766', 'Jipuche big recall', 'JEEP CO.');
+
+
 
 
