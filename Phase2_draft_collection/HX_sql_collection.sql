@@ -13,7 +13,8 @@ GROUP BY Repair.vendor_name
 ORDER BY Repair.vendor_name;
 
 
---Monthly Report, yearly sale summary page	
+--Monthly Report
+--Yearly sale summary page	
 SELECT 
 	COUNT(Sell.vin) AS Num_of_vehicle_sold,
 	SUM(Sell.sale_price) AS total_sale_income,
@@ -28,8 +29,7 @@ GROUP BY Sale_year
 ORDER BY Sale_year DESC; 
 							     
 --Year sale drill down report
---//upon: user clicks a given $Sale_year from the yearly sale summary page	
-							     
+--//upon: user clicks a given $Sale_year from the yearly sale summary page							     
 SELECT 
 	MAX(Users.login_first_name) AS top_seller_first_name,
 	MAX(Users.login_last_name) AS top_seller_last_name,
@@ -47,7 +47,7 @@ num_vehicle_sold DESC,
 total_sales DESC
 LIMIT 1;	     
 		      
---Monthly Report, monthly sale summary page		      
+--Monthly sale summary page		      
 SELECT 
 	COUNT(Sell.vin) AS Num_of_vehicle_sold,
 	SUM(Sell.sale_price) AS total_sale_income,
