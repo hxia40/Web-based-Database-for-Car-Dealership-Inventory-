@@ -252,7 +252,7 @@ INSERT INTO InventoryClerk(username, inventory_clerk_permission)
 VALUES ('clerk2','inventory_clerk_permission2');
 
 INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
-VALUES ('1111111', '2019-01-01 00:00:01','salesperson_permission2','Poor101');
+VALUES ('1111111', '2018-12-28 00:00:01','salesperson_permission2','Poor101');
 
 INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
 VALUES ('2222222', '2019-01-09 00:00:01','salesperson_permission1','Poor102');
@@ -331,6 +331,7 @@ VALUES ('5555555', 'Pink');
 
 INSERT INTO VehicleColor(vin, vehicle_color)
 VALUES ('6666666', 'Silver');
+
 
 
 
