@@ -40,7 +40,7 @@ CREATE TABLE Salesperson (
 
 CREATE TABLE Customer (
   customer_id varchar(50) NOT NULL,
-  phone_number int NOT NULL,
+  phone_number varchar(50) NOT NULL,
   email varchar(50) NULL,
   customer_street varchar(50) NOT NULL,
   customer_city varchar(50) NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE Recall (
 
 CREATE TABLE Vendor (
   vendor_name varchar(50) NOT NULL,
-  vendor_phone_number int NOT NULL,
+  vendor_phone_number varchar(50) NOT NULL,
   vendor_street varchar(50) NOT NULL,
   vendor_city varchar(50) NOT NULL,
   vendor_state varchar(50) NOT NULL,
@@ -216,16 +216,16 @@ INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model
 VALUES (6666666, 230000, 'sixth car', 'BYD K10', 2019, 'Bus', 'BYD CO.');
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('Rich101', 1112222, 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
+VALUES ('Rich101', '3181112222', 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('Rich102', 3334444, 'lwc@gmail.com', '8888 Goodman Rd.', 'Houston', 'TX', 77205);
+VALUES ('Rich102', '3183334444', 'lwc@gmail.com', '8888 Goodman Rd.', 'Houston', 'TX', 77205);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('Poor101', 5556666, 'ybl@gmail.com', '444 Crap St.', 'Houston', 'TX', 77208);
+VALUES ('Poor101', '3185556666', 'ybl@gmail.com', '444 Crap St.', 'Houston', 'TX', 77208);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
-VALUES ('Poor102', 7778888, 'gyb@gmail.com', '9999 Main St.', 'Houston', 'TX', 77209);
+VALUES ('Poor102', '3187778888', 'gyb@gmail.com', '9999 Main St.', 'Houston', 'TX', 77209);
 
 INSERT INTO Users(username, password, login_first_name, login_last_name)
 VALUES ('sales1','123456','Tianming', 'Yun');
@@ -270,13 +270,13 @@ INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_valu
 VALUES ('3333333', '2018-02-01 00:00:01',6000,'Fair',6000,'inventory_clerk_permission1','Rich102');
 
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
-VALUES ('Wangermazi big repair CO.', 7778888,'222 Big St.', 'Houston', 'TX', 77210);
+VALUES ('Wangermazi big repair CO.', '3187778888','222 Big St.', 'Houston', 'TX', 77210);
 
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
-VALUES ('Zhangsanmazi big repair CO.', 9990000,'333 Big St.', 'Houston', 'TX', 77211);
+VALUES ('Zhangsanmazi big repair CO.', '3189990000','333 Big St.', 'Houston', 'TX', 77211);
 
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
-VALUES ('Lisimazi big repair CO.', 0001111,'444 Big St.', 'Houston', 'TX', 77212);
+VALUES ('Lisimazi big repair CO.', '3180001111','444 Big St.', 'Houston', 'TX', 77212);
 
 INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
 VALUES (1111111,  '2018-03-09 00:00:01', '2018-03-10 00:00:01', 'complete', 'repair_description1', 500, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
@@ -289,6 +289,7 @@ VALUES (3333333,  '2018-04-11 00:00:01', '2018-04-12 00:00:01', 'complete', 'rep
 
 INSERT INTO Recall(nhtsa_recall_compaign_number, recall_description, recall_manufacturer)
 VALUES ('99887766', 'Jipuche big recall', 'JEEP CO.');
+
 
 
 
