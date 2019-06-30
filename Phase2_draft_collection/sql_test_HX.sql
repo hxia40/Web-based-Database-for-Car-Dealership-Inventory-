@@ -287,8 +287,18 @@ VALUES (2222222,  '2018-04-09 00:00:01', '2018-04-10 00:00:01', 'complete', 'rep
 INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
 VALUES (3333333,  '2018-04-11 00:00:01', '2018-04-12 00:00:01', 'complete', 'repair_description3', 1000, 'Zhangsanmazi big repair CO.', 'inventory_clerk_permission1');
 
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (4444444,  '2018-05-09 00:00:01', '2018-05-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (5555555,  '2018-06-09 00:00:01', '2018-06-21 00:00:01', 'complete', 'repair_description5', 1500, 'Wangermazi big repair CO.', 'inventory_clerk_permission1');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES (6666666,  '2018-04-11 00:00:01', '2019-04-12 00:00:01', 'complete', 'repair_description6', 2000, 'Zhangsanmazi big repair CO.', 'inventory_clerk_permission1');
+
 INSERT INTO Recall(nhtsa_recall_compaign_number, recall_description, recall_manufacturer)
 VALUES ('99887766', 'Jipuche big recall', 'JEEP CO.');
+
 
 
 
