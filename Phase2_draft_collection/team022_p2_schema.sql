@@ -40,7 +40,7 @@ CREATE TABLE Salesperson (
 
 CREATE TABLE Customer (
   customer_id varchar(50) NOT NULL,
-  phone_number int NOT NULL,
+  phone_number varchar(50) NOT NULL,
   email varchar(50) NULL,
   customer_street varchar(50) NOT NULL,
   customer_city varchar(50) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE Recall (
 
 CREATE TABLE Vendor (
   vendor_name varchar(50) NOT NULL,
-  vendor_phone_number int NOT NULL,
+  vendor_phone_number varchar(50) NOT NULL,
   vendor_street varchar(50) NOT NULL,
   vendor_city varchar(50) NOT NULL,
   vendor_state varchar(50) NOT NULL,
@@ -177,5 +177,3 @@ CREATE TABLE Sell (
   FOREIGN KEY (customer_id)
     REFERENCES Customer (customer_id)
 );
-
-
