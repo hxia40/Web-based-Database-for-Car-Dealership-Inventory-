@@ -89,6 +89,7 @@ CREATE TABLE Vehicle (
   model_year int NOT NULL,
   type_name varchar(50) NOT NULL,
   manufacturer_name varchar(50) NOT NULL,
+  sale_price decimal NOT NULL,
   PRIMARY KEY (vin),
   FOREIGN KEY (type_name)
     REFERENCES VehicleType (type_name),
@@ -107,7 +108,7 @@ CREATE TABLE VehicleColor (
 CREATE TABLE Recall (
   recall_manufacturer varchar(50) NOT NULL,
   recall_description varchar(250) NULL,
-  nhtsa_recall_compaign_number varchar(50) NULL,
+  NHTSA_recall_compaign_number varchar(50) NULL,
   PRIMARY KEY (nhtsa_recall_compaign_number),
   FOREIGN KEY (recall_manufacturer)
     REFERENCES Manufacturer (manufacturer_name)
@@ -167,7 +168,6 @@ CREATE TABLE Sell (
   customer_id varchar(50) NOT NULL,
   salesperson_permission varchar(50) NOT NULL,
   sale_date timestamp NOT NULL,
-  sale_price decimal NOT NULL,
   UNIQUE (vin, salesperson_permission, customer_id),
   PRIMARY KEY (vin),
   FOREIGN KEY (vin)
@@ -197,23 +197,23 @@ VALUES ('Geely CO.');
 INSERT INTO Manufacturer(manufacturer_name)
 VALUES ('BYD CO.');
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('1111111', 150000, 'first car', 'Cherokee', 1999, 'SUV', 'JEEP CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('1111111', 150000, 'first car', 'Cherokee', 1999, 'SUV', 'JEEP CO.', 10000);
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('2222222', 180000, 'second car', 'BORUI GC-9', 2015, 'Sedan', 'Geely CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('2222222', 180000, 'second car', 'BORUI GC-9', 2015, 'Sedan', 'Geely CO.', 8000);
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('3333333', 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('3333333', 200000, 'third car', 'BYD K9', 2018, 'Bus', 'BYD CO.', 12000);
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('4444444', 210000, 'fourth car', 'Grand Cherokee', 2000, 'SUV', 'JEEP CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('4444444', 210000, 'fourth car', 'Grand Cherokee', 2000, 'SUV', 'JEEP CO.', 18000);
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('5555555', 220000, 'fifth car', 'BORUI GC-10', 2016, 'Sedan', 'Geely CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('5555555', 220000, 'fifth car', 'BORUI GC-10', 2016, 'Sedan', 'Geely CO.', 22000);
 
-INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name)
-VALUES ('6666666', 230000, 'sixth car', 'BYD K10', 2019, 'Bus', 'BYD CO.');
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('6666666', 230000, 'sixth car', 'BYD K10', 2019, 'Bus', 'BYD CO.', 24000);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
 VALUES ('Rich101', '3181112222', 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
@@ -251,20 +251,20 @@ VALUES ('clerk1','inventory_clerk_permission1');
 INSERT INTO InventoryClerk(username, inventory_clerk_permission)
 VALUES ('clerk2','inventory_clerk_permission2');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('1111111', '2019-01-01 00:00:01',10000,'salesperson_permission2','Poor101');
+INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
+VALUES ('1111111', '2019-01-01 00:00:01','salesperson_permission2','Poor101');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('2222222', '2019-01-09 00:00:01',8000,'salesperson_permission1','Poor102');
+INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
+VALUES ('2222222', '2019-01-09 00:00:01','salesperson_permission1','Poor102');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('3333333', '2019-02-01 00:00:01',12000,'salesperson_permission2','Poor101');
+INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
+VALUES ('3333333', '2019-02-01 00:00:01','salesperson_permission2','Poor101');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('4444444', '2019-03-09 00:00:01',18000,'salesperson_permission1','Poor102');
+INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
+VALUES ('4444444', '2019-03-09 00:00:01','salesperson_permission1','Poor102');
 
-INSERT INTO Sell(vin, sale_date, sale_price, salesperson_permission, customer_id)
-VALUES ('5555555', '2019-04-01 00:00:01',22000,'salesperson_permission2','Poor101');
+INSERT INTO Sell(vin, sale_date, salesperson_permission, customer_id)
+VALUES ('5555555', '2019-04-01 00:00:01','salesperson_permission2','Poor101');
 
 INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
 VALUES ('1111111', '2018-01-01 00:00:01',5000,'Excellent',5000,'inventory_clerk_permission1','Rich101');
