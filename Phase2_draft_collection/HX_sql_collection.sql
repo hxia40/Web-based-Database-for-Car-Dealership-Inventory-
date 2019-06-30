@@ -1,4 +1,6 @@
 --View Price per Condition Report
+
+--View Repair Statistics Report
 SELECT 
 	Repair.vendor_name, 
 	COUNT(Repair.vendor_name) AS num_of_repairs, 
