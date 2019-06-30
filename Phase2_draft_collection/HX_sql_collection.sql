@@ -17,16 +17,19 @@ ORDER BY Repair.vendor_name;
 --Yearly sale summary page	
 SELECT 
 	COUNT(Sell.vin) AS Num_of_vehicle_sold,
-	SUM(Sell.sale_price) AS total_sale_income,
-	(SUM(Sell.sale_price)- SUM(Buy.purchase_price) - SUM(Repair.repair_cost)) AS net_income,
+	SUM(Vehicle.sale_price) AS total_sale_income,
+	(SUM(Vehicle.sale_price)- SUM(Buy.purchase_price) - SUM(Repair.repair_cost)) AS net_income,
 	LEFT(Sell.sale_date::text, 4) AS Sale_year
 FROM Sell
 JOIN Buy
 ON Sell.vin = Buy.vin
 JOIN Repair
 ON Sell.vin = Repair.vin
+JOIN Vehicle
+ON Sell.vin = Vehicle.vin
 GROUP BY Sale_year
 ORDER BY Sale_year DESC; 
+
 							     
 --Year sale drill down report
 --//upon: user clicks a given $Sale_year from the yearly sale summary page							     
