@@ -134,8 +134,7 @@ CREATE TABLE Repair (
   repair_cost decimal NOT NULL,
   nhtsa_recall_compaign_number varchar(50) NULL,
   inventory_clerk_permission varchar(50) NOT NULL,
-  PRIMARY KEY (vin),
-  UNIQUE (vin, start_date),
+  PRIMARY KEY (vin, start_date),
   FOREIGN KEY (vin)
     REFERENCES Vehicle (vin),
   FOREIGN KEY (vendor_name)
