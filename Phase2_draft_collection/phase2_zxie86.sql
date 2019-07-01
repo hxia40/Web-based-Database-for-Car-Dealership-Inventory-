@@ -1,126 +1,172 @@
+
+
+
 /*
 Add a new record into the repair table
 */
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+
 INSERT INTO `Repair`
 VALUES(
-'$enteredVIN', '$enteredRepair_Vendor_Name', '$enteredRepair_Vendor_Address', 
-'$enteredRepair_Vendor_Phone_Number', '$enteredRepair_Description',  '$enteredRepair_Start_Date', 
-'$enteredRepair_Cost', '$enteredNHTSA_Recall_Campagin_Number', '$enteredRepair_Status'
+'$enteredVin', '$enteredStart_date', '$enteredEnd_date',
+'$enteredRepair_status', '$enteredRepair_Description',  '$enteredVendor_name',
+'$enteredRepair_cost', '$enteredNHTSA_recall_campagin_Number', '$enteredInventory_clerk_permssion'
 );
 
 
+
 /*
-Dsisplay the repair table based on the entered VIN
+Display the repair table based on the entered VIN
 */
-SELECT VIN, Repair_Vendor_Name, Repair_Vendor_Address, Repair_Vendor_Phone_Number,
-Repair_Description, Repair_Start_Date, Repair_Cost, NHTSA_Recall_Campagin_Number 
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission
 FROM `Repair` WHERE Repair.VIN = '$enteredVIN'
+ORDER BY Repair_Start_Date DESC;
 
 
 /*
 Update the repair table based on the entered VIN
 */
+/*first select the columns in the Repair table*/
+SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission
+FROM `Repair` WHERE Repair.VIN = '$enteredVIN'
+
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 UPDATE `Repair`
-SET VIN = '$enteredVIN', 
-         Repair_Vendor_Name = '$enteredRepair_Vendor_Name', 
-         Repair_Vendor_Address = 'enteredRepair_Vendor_Address', 
-         Repair_Vendor_Phone_Number  = 'enteredRepair_Vendor_Phone_Number', 
-         Repair_Description  = 'enteredRepair_Description',  
-         Repair_Start_Date  = 'enteredRepair_Start_Date',
-         Repair_Cost  = 'enteredRepair_Cost', 
-         NHTSA_Recall_Campagin_Number  = 'enteredNHTSA_Recall_Campagin_Number', 
-         Repair_Status = 'enteredRepair_Status';
+SET vin = '$enteredVin',
+     	start_date = '$enteredStart_date',
+     	end_date = '$enteredEnd_date',
+     	repair_status  = '$enteredRepair_status',
+     	repair_description  = '$enteredRepair_Description', 
+     	vendor_name  =  '$enteredVendor_name',
+     	repair_cost  = '$enteredRepair_cost',
+     	nhtsa_recall_compaign_number  = '$enteredNHTSA_recall_campagin_Number',
+     	inventory_clerk_permission = '$enteredInventory_clerk_permssion';
+
 
 /*
 Delete a record from the repair table
 */
-DELETE FROM `Repair` WHERE Repair.VIN = '$enteredVIN' AND Repair.Start_Date = '$enteredStart_Date';
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 
+DELETE FROM `Repair` WHERE Repair.VIN = '$enteredVin' AND Repair.start_date = '$enteredStart_date';
+
+/*----------------------------------------------------------------------------------------------------*/
 
 
 /*
 Add a new record into the Vehicle table
 */
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 INSERT INTO `Vehicle`
 VALUES(
-'$enteredVIN', '$enteredVehicle_Type', '$enteredVehicle_Manufacturer', '$enteredModel_Name',
-'$enteredModel_Year',  '$enteredVehicle_Color', '$enteredMileage', '$enteredSales_Price',
+'$enteredVin', '$enteredvehicle_mileage', '$enteredvehicle_description', '$enteredmodel_name',
+'$enteredmodel_year',  '$enteredtype_name', '$enteredmanufacturer_name', '$enteredsale_price',
 '$enteredVehicle_Description'
 );
+
 
 /*
 Delete a record from the repair table
 */
-DELETE FROM `Vehicle` WHERE Vehicle.VIN = '$enteredVIN';
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 
+DELETE FROM `Vehicle` WHERE Vehicle.vin = '$enteredVin';
 
 /*
 Dsisplay the Vehicle table based on the entered VIN
 */
-SELECT 
-VIN, Vehicle_Type, Vehicle_Manufacturer,
-Model_Name, Model_Year, Color, Mileage, Vehicle_Description 
-FROM ` Vehicle` WHERE Vehicle.VIN = '$enteredVIN';
+/*
+This query will be identical as the query in  View Vehicle Detail Form
+Run view vehicle detail form task.
+*/
+
 
 /*
 Update the Vehicle table based on the entered VIN
 */
-UPDATE `Vehicle`
-SET   VIN = '$enteredVIN', 
-      Vehicle_Type = '$enteredVehicle_Type ', 
-      Vehicle_Manufacturer = 'enteredVehicle_Manufacturer', 
-      Model_Name = 'enteredModel_Name', 
-      Model_Year  = 'enteredModel_Year',  
-      Color  = 'enteredColor',
-      Mileage = 'enteredMileage', 
-      Vehicle_Description = 'enteredVehicle_Description';
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 
-/*
-Add a record to Recall Table
-*/
+SELECT
+vin, vehicle_mileage, vehicle_description,
+model_name, model_year, type_name, manufacturer_name, sale_price
+FROM ` Vehicle` WHERE Vehicle.vin = '$enteredvin';
+
+  /*Assume that the inputs are correct and the permission has been validated by the application.*/
+
+UPDATE `Vehicle`
+SET vin = '$enteredvin',
+     	vehicle_mileage = '$enteredvehicle_mileage',
+     	vehicle_description = '$enteredvehicle_description',
+     	model_name = '$enteredmodel_name',
+     	model_year  = '$enteredmodel_year', 
+     	type_name  = '$enteredtype_name',
+     	manufacturer_name = '$enteredmanufacturer_name',
+     	sale_price = '$enteredsale_price';
+
+/*----------------------------------------------------------------------------------------------------*/
+
+/*Add Recall Form*/
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+
 INSERT INTO `Recall`
-   VALUES(
-   '$enteredNHTSA_Recall_Campagin_Number', 
-   '$enteredRecall_Description', '$enteredRecall_Manufacture', 
+VALUES(
+'$enteredrecall_manufacturer',
+'$enteredrecall_description', 
+'$enteredNHTSA_recall_compaign_number'
 );
 
 /*
 Delete a record in the Recall Table based on the entered NHTSA_Recall_Campagin_Number
 */
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+
 DELETE FROM `Recall`
-WHERE Recall.NHTSA_Recall_Campagin_Number = '$enteredNHTSA_Recall_Campagin_Number'
-AND Recall.NHTSA_Recall_Campagin_Number NOT IN (
-   SELECT DISTINCT(NHTSA_Recall_Campagin_Number) 
-   FROM Repair
-   WHERE Repair.NHTSA_Recall_Campagin_Number = '$enteredNHTSA_Recall_Campagin_Number'
+WHERE Recall.NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
+AND Recall.NHTSA_recall_compaign_number NOT IN (
+SELECT DISTINCT(NHTSA_recall_compaign_number)
+FROM Repair
+WHERE Repair.NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
 );
+
 
 /*
 Display the Recall table based on entered NHTSA_Recall_Campagin_Number
 */
-SELECT NHTSA_Recall_Campagin_Number, Recall_Description, Recall_Manufacture
-FROM `Recall` 
-WHERE Recall. NHTSA_Recall_Campagin_Number = '$enteredNHTSA_Recall_Campagin_Number'
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
+SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number
+FROM `Recall`
+WHERE Recall. NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
 
+
+
+/*Update Recall Table*/
+SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number
+FROM `Recall`
+WHERE Recall. NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
+/*If there is no conflict for the NHTSA_Recall_Campagin_Number and assume that the inputs are correct and the permission has been validated by the application*/
+UPDATE `Recall`
+SET recall_manufacturer = '$enteredrecall_manufacturer',
+     	recall_description = '$enteredrecall_description',
+     	NHTSA_recall_compaign_number = 'enteredNHTSA_recall_compaign_number'
+
+/*----------------------------------------------------------------------------------------------------*/
 
 /*
 Update the Recall Table based on the entered NHTSA_Recall_Campagin_Number
 */
-UPDATE `Recall`
-SET NHTSA_Recall_Campagin_Number = '$enteredNHTSA_Recall_Campagin_Number',
-    Recall_Description = '$enteredRecall_Description ', 
-    Recall_Manufacture = 'entered Recall_Manufacture';
+/*Assume that the inputs are correct and the permission has been validated by the application.*/
 
-/*Get Average Time In Inventory*/
-SELECT Vehicle.Vehicle_Type AS Vehicle_Type, AVE(tbl.DateDiff) AS Average_Time_In_Inventory
+SELECT Vehicle.type_name AS type_name, AVE(tbl.dateDiff) AS average_time_in_inventory
 FROM (
-   SELECT sell.VIN AS VIN, DATEDIFF(day,buy.Purchase_date, sell.Sale_date) AS DateDiff
-   FROM `Sell_transaction` AS sell
-   LEFT JOIN Buy_transaction AS buy
-   ON sell.VIN = buy.VIN
-   WHERE buy.Purchase_date IS NOT NULL AND sell.Sale_date IS NOT NULL;
+        	SELECT Sell.vin AS vin, DATEDIFF(day, Buy.purchase_date, Sell.sale_date) AS dateDiff
+FROM `Sell`
+LEFT JOIN `Buy`
+ON Sell.vin = Buy.vin
+WHERE Buy.purchase_date IS NOT NULL AND Sell.sale_date IS NOT NULL;
 )tbl
 LEFT JOIN `Vehicle`
-ON Vehicle.VIN = tbl.VIN
-GROUP BY Vehicle. Vehicle_Type
-ORDER BY Vehicle. Vehicle_Type;
+ON Vehicle.vin = tbl.vin
+GROUP BY Vehicle.type_name
+ORDER BY Vehicle.type_name;
