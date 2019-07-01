@@ -1,4 +1,47 @@
 --View Price per Condition Report
+DROP TABLE IF EXISTS Vehicle_Sales_Table;
+
+CREATE TABLE Vehicle_Sales_Table
+AS (
+    SELECT Vehicle.vin AS VIN, Vehicle.type_name AS Vehicle_Type,
+      COALESCE(Buy.Purchase_price, 0) AS Purchase_price, Buy.purchase_condition AS Vehicle_Condition
+    FROM Vehicle
+    JOIN Buy
+    ON Buy.vin = Vehicle.vin
+);
+
+SELECT Vehicle_Type,
+  COALESCE(ROUND(AVG(
+	CASE 
+	WHEN Vehicle_Condition = 'Excellent' 
+	THEN ROUND(Purchase_price,0) 
+	ELSE null
+	END
+  ),2),0.00) As Excellent,
+  COALESCE(ROUND(AVG(
+  	CASE
+    WHEN Vehicle_Condition = 'Very Good'
+    THEN Purchase_price
+    ELSE null
+    END
+  ),2),0.00) As very_good,
+  COALESCE(ROUND(AVG(
+  	CASE
+    WHEN Vehicle_Condition = 'Good'
+    THEN Purchase_price
+    ELSE null
+   END
+  ),2),0.00) As good,
+  COALESCE(ROUND(AVG(
+  	CASE
+    WHEN Vehicle_Condition = 'Fair'
+    THEN Purchase_price
+    ELSE null
+   	END
+  ),2),0.00) As fair
+FROM Vehicle_Sales_Table
+GROUP BY Vehicle_Type
+ORDER BY Vehicle_Type;
 
 --View Repair Statistics Report
 SELECT 
