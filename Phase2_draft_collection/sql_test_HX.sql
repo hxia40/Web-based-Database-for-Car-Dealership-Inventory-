@@ -1,3 +1,4 @@
+SET SQL_MODE='ALLOW_INVALID_DATES';
 DROP TABLE IF EXISTS Users, Manager, InventoryClerk, Salesperson, Customer, Person, Business, VehicleType, Manufacturer, Vehicle, VehicleColor, Recall, Vendor, Repair, Buy, Sell;
 
 -- tables for users
@@ -108,7 +109,7 @@ CREATE TABLE VehicleColor (
 CREATE TABLE Recall (
   recall_manufacturer varchar(50) NOT NULL,
   recall_description varchar(250) NULL,
-  NHTSA_recall_compaign_number varchar(50) NULL,
+  NHTSA_recall_compaign_number varchar(50) NOT NULL,
   PRIMARY KEY (nhtsa_recall_compaign_number),
   FOREIGN KEY (recall_manufacturer)
     REFERENCES Manufacturer (manufacturer_name)
@@ -134,7 +135,6 @@ CREATE TABLE Repair (
   repair_cost decimal NOT NULL,
   nhtsa_recall_compaign_number varchar(50) NULL,
   inventory_clerk_permission varchar(50) NOT NULL,
-  PRIMARY KEY (vin),
   UNIQUE (vin, start_date),
   FOREIGN KEY (vin)
     REFERENCES Vehicle (vin),
@@ -331,6 +331,22 @@ VALUES ('5555555', 'Pink');
 
 INSERT INTO VehicleColor(vin, vehicle_color)
 VALUES ('6666666', 'Silver');
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('manager1','123456','Ji', 'Luo');
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('manager2','123456','Qiang', 'Shi');
+
+INSERT INTO Manager(username, manager_permission)
+VALUES ('manager1','manager_permission1');
+
+INSERT INTO Manager(username, manager_permission)
+VALUES ('manager2','manager_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, inventory_clerk_permission, nhtsa_recall_compaign_number, vendor_name)
+VALUES ('4444444',  '2018-05-19 00:00:01', '2018-05-22 00:00:01', 'complete', 'repair_description7', 200, 'inventory_clerk_permission2', '99887766', 'Lisimazi big repair CO.');
+
 
 
 
