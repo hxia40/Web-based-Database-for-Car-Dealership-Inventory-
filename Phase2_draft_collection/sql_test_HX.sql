@@ -1,5 +1,16 @@
+-- CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+CREATE USER IF NOT EXISTS gatechUser@localhost IDENTIFIED BY 'gatech123';
+DROP DATABASE IF EXISTS `cs6400_su19_team22`; 
 SET SQL_MODE='ALLOW_INVALID_DATES';
-DROP TABLE IF EXISTS Users, Manager, InventoryClerk, Salesperson, Customer, Person, Business, VehicleType, Manufacturer, Vehicle, VehicleColor, Recall, Vendor, Repair, Buy, Sell;
+SET default_storage_engine=InnoDB;
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE DATABASE IF NOT EXISTS cs6400_su19_team22 
+    DEFAULT CHARACTER SET utf8mb4 
+    DEFAULT COLLATE utf8mb4_unicode_ci;
+USE cs6400_su19_team22;
+
+-- DROP TABLE IF EXISTS Users, Manager, InventoryClerk, Salesperson, Customer, Person, Business, VehicleType, Manufacturer, Vehicle, VehicleColor, Recall, Vendor, Repair, Buy, Sell;
 
 -- tables for users
 CREATE TABLE Users (
