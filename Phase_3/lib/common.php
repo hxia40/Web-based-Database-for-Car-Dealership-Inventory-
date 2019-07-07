@@ -56,7 +56,7 @@ define('DB_HOST', "localhost");
 define('DB_PORT', "3306");
 define('DB_USER', "gatechUser");
 define('DB_PASS', "gatech123");
-define('DB_SCHEMA', "cs6400_fa17_team001");
+define('DB_SCHEMA', "cs6400_sm19_team22");
 
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
 

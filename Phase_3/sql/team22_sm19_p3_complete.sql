@@ -1,6 +1,24 @@
+-- CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+CREATE USER IF NOT EXISTS gatechUser@localhost IDENTIFIED BY 'gatech123';
+
+DROP DATABASE IF EXISTS `cs6400_sm19_team22`; 
+SET default_storage_engine=InnoDB;
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE DATABASE IF NOT EXISTS cs6400_sm19_team22 
+    DEFAULT CHARACTER SET utf8mb4 
+    DEFAULT COLLATE utf8mb4_unicode_ci;
+USE cs6400_sm19_team22;
+
+GRANT SELECT, INSERT, UPDATE, DELETE, FILE ON *.* TO 'gatechUser'@'localhost';
+GRANT ALL PRIVILEGES ON `gatechuser`.* TO 'gatechUser'@'localhost';
+GRANT ALL PRIVILEGES ON `cs6400_sm19_team22`.* TO 'gatechUser'@'localhost';
+FLUSH PRIVILEGES;
+
 DROP TABLE IF EXISTS Users, Manager, InventoryClerk, Salesperson, Customer, Person, Business, VehicleType, Manufacturer, Vehicle, VehicleColor, Recall, Vendor, Repair, Buy, Sell;
 
 -- tables for users
+
 CREATE TABLE Users (
   username varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
@@ -108,7 +126,7 @@ CREATE TABLE VehicleColor (
 CREATE TABLE Recall (
   recall_manufacturer varchar(50) NOT NULL,
   recall_description varchar(250) NULL,
-  NHTSA_recall_compaign_number varchar(50) NULL,
+  NHTSA_recall_compaign_number varchar(50) NOT NULL,
   PRIMARY KEY (nhtsa_recall_compaign_number),
   FOREIGN KEY (recall_manufacturer)
     REFERENCES Manufacturer (manufacturer_name)
@@ -134,8 +152,7 @@ CREATE TABLE Repair (
   repair_cost decimal NOT NULL,
   nhtsa_recall_compaign_number varchar(50) NULL,
   inventory_clerk_permission varchar(50) NOT NULL,
-  PRIMARY KEY (vin),
-  UNIQUE (vin, start_date),
+  PRIMARY KEY (vin, start_date),
   FOREIGN KEY (vin)
     REFERENCES Vehicle (vin),
   FOREIGN KEY (vendor_name)
@@ -177,7 +194,6 @@ CREATE TABLE Sell (
   FOREIGN KEY (customer_id)
     REFERENCES Customer (customer_id)
 );
-
 
 INSERT INTO VehicleType(type_name)
 VALUES ('SUV');
@@ -331,15 +347,3 @@ VALUES ('5555555', 'Pink');
 
 INSERT INTO VehicleColor(vin, vehicle_color)
 VALUES ('6666666', 'Silver');
-
-
-
-
-
-
-
-
-
-
-
-
