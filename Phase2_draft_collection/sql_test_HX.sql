@@ -358,7 +358,8 @@ VALUES ('manager2','manager_permission2');
 INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, inventory_clerk_permission, nhtsa_recall_compaign_number, vendor_name)
 VALUES ('4444444',  '2018-05-19 00:00:01', '2018-05-22 00:00:01', 'complete', 'repair_description7', 200, 'inventory_clerk_permission2', '99887766', 'Lisimazi big repair CO.');
 
-
+--added by czhang613
+INSERT INTO VehicleColor VALUES ('1111111', 'White');
 
 
 
