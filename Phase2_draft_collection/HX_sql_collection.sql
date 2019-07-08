@@ -62,7 +62,7 @@ SELECT
 	COUNT(Repair.vendor_name) AS num_of_repairs, 
 	SUM(Repair.repair_cost) AS total_repair_cost, 
 	COUNT(Repair.vin)/COUNT(Repair.vendor_name) AS avg_repair_per_vehicle,
-	AVG(DATE_PART('DAY', Repair.end_date - Repair.start_date)) AS avg_time_per_repair
+	AVG(DAY(Repair.end_date) - DAY(Repair.start_date)) AS avg_time_per_repair
 FROM Repair
 WHERE Repair.repair_status = 'complete'
 GROUP BY Repair.vendor_name
