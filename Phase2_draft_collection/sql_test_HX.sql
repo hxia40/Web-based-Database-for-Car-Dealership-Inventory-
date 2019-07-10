@@ -199,6 +199,9 @@ VALUES ('Sedan');
 INSERT INTO VehicleType(type_name)
 VALUES ('Bus');
 
+INSERT INTO VehicleType(type_name)
+VALUES ('Truck');
+
 INSERT INTO Manufacturer(manufacturer_name)
 VALUES ('JEEP CO.');
 
@@ -207,6 +210,9 @@ VALUES ('Geely CO.');
 
 INSERT INTO Manufacturer(manufacturer_name)
 VALUES ('BYD CO.');
+
+INSERT INTO Manufacturer(manufacturer_name)
+VALUES ('Dodge CO.');
 
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
 VALUES ('1111111', 150000, 'first car', 'Cherokee', 1999, 'SUV', 'JEEP CO.', 10000);
@@ -231,6 +237,9 @@ VALUES ('7777777', 270000, 'seventh car', 'BYD K10', 2019, 'Bus', 'BYD CO.', 210
 
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
 VALUES ('8888888', 170000, 'eighth car', 'Grand Cherokee', 2008, 'SUV', 'JEEP CO.', 25000);
+
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('9999999', 70000, 'ninth car', 'Goat', 2000, 'Truck', 'Dodge CO.', 30000);
 
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
 VALUES ('Rich101', '3181112222', 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
@@ -306,6 +315,9 @@ VALUES ('7777777', '2018-02-15 00:00:01',15000,'Very Good',13000,'inventory_cler
 
 INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
 VALUES ('8888888', '2018-02-17 00:00:01',16000,'Fair',13000,'inventory_clerk_permission1','Rich102');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('9999999', '2018-02-19 00:00:01',25000,'Excellent',25000,'inventory_clerk_permission2','Rich101');
 
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
 VALUES ('Wangermazi big repair CO.', '3187778888','222 Big St.', 'Houston', 'TX', 77210);
