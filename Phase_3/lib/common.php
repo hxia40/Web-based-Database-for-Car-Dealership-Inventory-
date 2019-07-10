@@ -77,7 +77,7 @@ define('COLORS_LIST', array(
     "Copper", "Cream", "Gold", "Gray", "Green", "Maroon", "Metallic",
     "Navy", "Orange", "Pink", "Purple", "Red", "Rose", "Rust",
     "Silver", "Tan", "Turquoise", "White", "Yellow"
-))
+));
 
 define("VEHICLE_TYPES_LIST", array(
     "Sedan",
@@ -87,7 +87,7 @@ define("VEHICLE_TYPES_LIST", array(
     "Van",
     "Minivan",
     "SUV"
-))
+));
 
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
 

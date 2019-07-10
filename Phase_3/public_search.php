@@ -5,7 +5,19 @@ include('lib/common.php');
 if($showQueries){
   array_push($query_msg, "showQueries currently turned ON, to disable change to 'false' in lib/common.php");
 }
-                     
+
+//run the search query right away after loading search_friends.php
+$query = "SELECT Vehicle.vin, type_name, model_year, manufacturer_name, vehicle_mileage, sale_price " .
+"FROM Vehicle " .
+"WHERE Vehicle.type_name = '{$_SESSION['type_name']}'";
+  
+$result = mysqli_query($db, $query);
+include('lib/show_queries.php');
+
+if (mysqli_affected_rows($db) == -1) {
+array_push($error_msg,  "SELECT ERROR:Failed to find friends ... <br>" . __FILE__ ." line:". __LINE__ );
+}
+    
 /* if form was submitted, then execute query to search for friends */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
