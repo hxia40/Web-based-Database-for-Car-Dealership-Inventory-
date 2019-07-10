@@ -20,6 +20,23 @@ LEFT JOIN tbl
 ON VehicleType .type_name = tbl.type_name
 ORDER BY tbl.type_name;
 
+============
+SELECT VehicleType.type_name, IFNULL(avg_inventory_age,'N/A') AS avginventoryage, 
+IFNULL(max_inventory_age, 'N/A') AS maxinventoryage, 
+IFNULL(min_inventory_age, 'N/A') AS mininventoryage 
+FROM VehicleType LEFT JOIN ( 
+    SELECT Vehicle.type_name, 
+    ROUND(AVG(DAY(Buy.purchase_date)- DAY(CURRENT_DATE)),1) AS avg_inventory_age, 
+    MAX(DAY(Buy.purchase_date)- DAY(CURRENT_DATE)) AS max_inventory_age, 
+    MIN(DAY(Buy.purchase_date)- DAY(CURRENT_DATE)) AS min_inventory_age 
+    FROM Vehicle LEFT OUTER JOIN Buy ON Vehicle.vin = Buy.vin 
+    RIGHT JOIN VehicleType ON Vehicle.type_name = VehicleType .type_name 
+    WHERE Vehicle.vin NOT IN (SELECT Sell .vin FROM Sell) 
+    GROUP BY Vehicle .type_name)tbl 
+ON VehicleType.type_name = tbl.type_name 
+ORDER BY tbl.type_name;
+=============
+
 --View Price per Condition Report
 
 SELECT Vehicle_Type,
