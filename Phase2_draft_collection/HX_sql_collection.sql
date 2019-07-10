@@ -1,3 +1,20 @@
+--View Average Time in Inventory Report
+
+SELECT vehicletype.type_name AS AAA, IFNULL(otbl.average_time_in_inventory, 'N/A') AS BBB
+FROM vehicletype
+LEFT JOIN (
+    SELECT Vehicle.type_name AS type_name, 
+	ROUND(AVG(tbl.dateDiff),1) AS average_time_in_inventory 
+	FROM (SELECT Sell.vin AS vin, DATEDIFF(Sell.sale_date, Buy.purchase_date) AS dateDiff 
+      FROM Sell LEFT JOIN Buy ON Sell.vin = Buy.vin 
+      WHERE Buy.purchase_date IS NOT NULL AND Sell.sale_date IS NOT NULL)tbl 
+	LEFT JOIN Vehicle ON Vehicle.vin = tbl.vin 
+	GROUP BY Vehicle.type_name 
+	ORDER BY Vehicle.type_name
+    )otbl
+ON vehicletype.type_name = otbl.type_name
+
+
 --View Inventory Age Report
 
 CREATE TEMPORARY TABLE tbl
