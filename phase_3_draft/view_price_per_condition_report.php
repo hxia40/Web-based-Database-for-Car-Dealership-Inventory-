@@ -9,6 +9,7 @@ include('lib/common.php');
 //	exit();
 //}
 
+
 //if ($_SESSION['permission'] < 3) {
 //	  header('Location: employee_search.php');
 //    exit();
@@ -18,6 +19,8 @@ include('lib/common.php');
 //    header('Location: public_search.php');
 //    exit();
 //}
+
+
 
 $query = "SELECT vehicle_type, ".
     "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Excellent' THEN ROUND(Purchase_price,0) ELSE null END),1),0.0) As excellent, ".
@@ -29,6 +32,12 @@ $query = "SELECT vehicle_type, ".
     "FROM Vehicle JOIN Buy ON Buy .vin = Vehicle .vin)Vehicle_Sales_Table ".
     "GROUP BY vehicle_type ".
     "ORDER BY vehicle_type";
+//		 "WHERE User.email='{$_SESSION['email']}'";
+
+
+
+
+
 //		 "WHERE User.email='{$_SESSION['email']}'";
 
 
@@ -53,19 +62,24 @@ include('lib/show_queries.php');
     <?php include("lib/menu.php"); ?>
 
     <div class="center_content">
+        <!--        --><?php //print $row['login_first_name'] . ' ' . $row['login_last_name']. ' ' . $_SESSION['email'].' ' . $row['gender'] ; ?>
+        <!--        --><?php //print $row['vin'] . ' ' . $row['type_name']; ?>
+        <!--        --><?php //print "<h1>1223456789000000</h1>"; ?>
+        <!--        --><?//= $row[1]?>
+
+        <!--        --><?php //print "1223456789000000"; ?>
         <div class="center_left">
             <div class="title_name">
-                <?php print 'Average Time In Inventory Report'; ?>
+                <?php print 'Price per Condition Report'; ?>
             </div>
             <div class="features">
 
                 <div class="profile_section">
-                    <div class="subtitle">Average Time in Inventory (day)</div>
+                    <div class="subtitle">Average Price per Condition ($)</div>
                     <table>
                         <?php
                         echo "<table border='1'>";
-                        echo "<tr><td>Vehicle Type</td><td>Average Time in Inventory (day) </td></tr>";
-
+                        echo "<tr><td>Vehicle Type</td><td>Excellent</td><td>Very Good</td><td>Good</td><td>Fair</td></tr>";
 
 
 
@@ -76,11 +90,14 @@ include('lib/show_queries.php');
 //                            print_r($row);
 //                            echo"<br>";
 
-                            echo "<tr><td>{$row['AAA']}</td><td>{$row['BBB']}</td></tr>";
+
+
+                            echo "<tr><td>{$row['vehicle_type']}</td><td>{$row['excellent']}</td><td>{$row['very_good']}</td><td>{$row['good']}</td><td>{$row['fair']}</td></tr>";
+                            //
                         }
                         echo "</table>";
 
-                        echo "*: If a vehicle type has no unsold units, the report display “N/A” for that vehicle type."
+                        echo "*: If a vehicle type or condition has never been purchased, the report display 0 dollars for that result."
                         ?>
                         <!--                        <tr>-->
                         <!--                            <td class="item_label">Gender</td>-->
