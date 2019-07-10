@@ -62,11 +62,11 @@ include('lib/show_queries.php');
             <div class="features">
 
                 <div class="profile_section">
-                    <div class="subtitle">Average Time In Inventory Report</div>
+                    <div class="subtitle">Average Time in Inventory (day)</div>
                     <table>
                         <?php
                         echo "<table border='1'>";
-                        echo "<tr><td>Vehicle Type</td><td>Average Time in Inventory (days) </td></tr>";
+                        echo "<tr><td>Vehicle Type</td><td>Average Time in Inventory (day) </td></tr>";
 
 
 
