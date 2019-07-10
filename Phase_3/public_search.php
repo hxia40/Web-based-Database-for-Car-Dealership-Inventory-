@@ -5,71 +5,63 @@ include('lib/common.php');
 if($showQueries){
   array_push($query_msg, "showQueries currently turned ON, to disable change to 'false' in lib/common.php");
 }
+                     
+/* if form was submitted, then execute query to search for friends */
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+	$entered_type_name = mysqli_real_escape_string($db, $_POST['type_name']);
+	$entered_manufacturer_name = mysqli_real_escape_string($db, $_POST['manufacturer_name']);
+    $entered_model_year = mysqli_real_escape_string($db, $_POST['model_year']);
+    $entered_vehicle_color = mysqli_real_escape_string($db, $_POST['vehicle_color']);
 
-//Note: known issue with _POST always empty using PHPStorm built-in web server: Use *AMP server instead
-if( $_SERVER['REQUEST_METHOD'] == 'POST') {
-
-	$enteredEmail = mysqli_real_escape_string($db, $_POST['email']);
-	$enteredPassword = mysqli_real_escape_string($db, $_POST['password']);
-
-    if (empty($enteredEmail)) {
-            array_push($error_msg,  "Please enter an email address.");
-    }
-
-	if (empty($enteredPassword)) {
-			array_push($error_msg,  "Please enter a password.");
+    $query = "SELECT Vehicle.vin, type_name, model_year, manufacturer_name, vehicle_mileage, sale_price " .
+             "FROM Vehicle " .
+             "WHERE Vehicle.type_name = '{$_SESSION['type_name']}'";
+    
+    /*
+	if (!empty($name) or !empty($email) or !empty($home_town)) {
+		$query = $query . " AND (1=0 ";
+		
+		if (!empty($name)) {
+			$query = $query . " OR first_name LIKE '%$name%' OR last_name LIKE '%$name%' ";
+		}
+		if (!empty($email)) {
+			$query = $query . " OR RegularUser.email LIKE '%$email%' ";
+		}
+		if (!empty($home_town)) {
+			$query = $query . " OR home_town LIKE '%$home_town%' ";
+		}
+		$query = $query . ") ";
 	}
 	
-    if ( !empty($enteredEmail) && !empty($enteredPassword) )   { 
+    $query = $query . " ORDER BY last_name, first_name";
+    
+    */
+    
+	$result = mysqli_query($db, $query);
+    
+    include('lib/show_queries.php');
 
-        $query = "SELECT password FROM User WHERE email='$enteredEmail'";
-        
-        $result = mysqli_query($db, $query);
-        include('lib/show_queries.php');
-        $count = mysqli_num_rows($result); 
-        
-        if (!empty($result) && ($count > 0) ) {
-            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            $storedPassword = $row['password']; 
-            
-            $options = [
-                'cost' => 8,
-            ];
-             //convert the plaintext passwords to their respective hashses
-             // 'michael123' = $2y$08$kr5P80A7RyA0FDPUa8cB2eaf0EqbUay0nYspuajgHRRXM9SgzNgZO
-            $storedHash = password_hash($storedPassword, PASSWORD_DEFAULT , $options);   //may not want this if $storedPassword are stored as hashes (don't rehash a hash)
-            $enteredHash = password_hash($enteredPassword, PASSWORD_DEFAULT , $options); 
-            
-            if($showQueries){
-                array_push($query_msg, "Plaintext entered password: ". $enteredPassword);
-                //Note: because of salt, the entered and stored password hashes will appear different each time
-                array_push($query_msg, "Entered Hash:". $enteredHash);
-                array_push($query_msg, "Stored Hash:  ". $storedHash . NEWLINE);  //note: change to storedHash if tables store the plaintext password value
-                //unsafe, but left as a learning tool uncomment if you want to log passwords with hash values
-                //error_log('email: '. $enteredEmail  . ' password: '. $enteredPassword . ' hash:'. $enteredHash);
-            }
-            
-            //depends on if you are storing the hash $storedHash or plaintext $storedPassword 
-            if (password_verify($enteredPassword, $storedHash) ) {
-                array_push($query_msg, "Password is Valid! ");
-                $_SESSION['email'] = $enteredEmail;
-                array_push($query_msg, "logging in... ");
-                header(REFRESH_TIME . 'url=view_profile.php');		//to view the password hashes and login success/failure
-                
-            } else {
-                array_push($error_msg, "Login failed: " . $enteredEmail . NEWLINE);
-                array_push($error_msg, "To demo enter: ". NEWLINE . "michael@bluthco.com". NEWLINE ."michael123");
-            }
-            
-        } else {
-                array_push($error_msg, "The username entered does not exist: " . $enteredEmail);
-            }
+    $result = mysqli_query($db, $query);
+    include('lib/show_queries.php');
+    
+    if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $count = mysqli_num_rows($result);
+        //$user_name = $row['first_name'] . " " . $row['last_name'];
+    } else {
+        array_push($error_msg,  "SELECT ERROR: User profile <br>" . __FILE__ ." line:". __LINE__ );
+    }
+
+    if (mysqli_affected_rows($db) == -1) {
+        array_push($error_msg,  "SELECT ERROR:Failed to find friends ... <br>" . __FILE__ ." line:". __LINE__ );
     }
 }
+
 ?>
 
 <?php include("lib/header.php"); ?>
-<title>GTOnline Login</title>
+<title>"Vehicle Search for Public"</title>
 </head>
 <body>
     <div id="main_container">
@@ -80,34 +72,132 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <div class="center_content">
-            <div class="text_box">
-
-                <form action="login.php" method="post" enctype="multipart/form-data">
-                    <div class="title">GTOnline Login</div>
-                    <div class="login_form_row">
-                        <label class="login_label">Email:</label>
-                        <input type="text" name="email" value="michael@bluthco.com" class="login_input"/>
-                    </div>
-                    <div class="login_form_row">
-                        <label class="login_label">Password:</label>
-                        <input type="password" name="password" value="michael123" class="login_input"/>
-                    </div>
-                    <input type="image" src="img/login.gif" class="login"/>
-                    <form/>
-                </div>
-
-                <?php include("lib/error.php"); ?>
-
-                <div class="clear"></div>
-            </div>
-   
-            <!-- 
-			<div class="map">
-			<iframe style="position:relative;z-index:999;" width="820" height="600" src="https://maps.google.com/maps?q=801 Atlantic Drive, Atlanta - 30332&t=&z=14&ie=UTF8&iwloc=B&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a class="google-map-code" href="http://www.embedgooglemap.net" id="get-map-data">801 Atlantic Drive, Atlanta - 30332</a><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></iframe>
-			</div>
-             -->
-					<?php include("lib/footer.php"); ?>
-
-        </div>
-    </body>
+			<div class="center_left">
+                <div class="features">
+					<div class="profile_section">
+						<div class="subtitle">Search for Vehicles</div> 	
+							<form name="searchform" action="search_friends.php" method="POST">
+                                <table>	
+                                    <tr>
+                                        <td class="item_label">Vehicle Type</td>
+                                        <td>
+                                            <select name="type_name">
+                                                <?php
+                                                    for ($type_n = 0, $type_n <= count($VEHICLE_TYPES_LIST)-1, $type_n++) {
+                                                        if ($row['type_name'] == $VEHICLE_TYPES_LIST[$type_n]) {
+                                                            $if_selected = 'selected="true"';
+                                                        } else {
+                                                            $if_selected = '';
+                                                        }
+                                                        echo "<option value='{$VEHICLE_TYPES_LIST[$type_n]}' " . $if_selected .  
+                                                            '>' . $VEHICLE_TYPES_LIST[$type_n]) '</option>';
+                                                    }
+                                                ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_label">Manufacturer</td>
+                                        <td>
+                                            <select name="manufacturer_name">
+                                            <?php
+                                                for ($manu_n = 0, $manu_n <= count($MANUFACTURER_LIST)-1, $manu_n++) {
+                                                    if ($row['type_name'] == $MANUFACTURER_LIST[$manu_n]) {
+                                                        $if_selected = 'selected="true"';
+                                                    } else {
+                                                        $if_selected = '';
+                                                    }
+                                                    echo "<option value='{$MANUFACTURER_LIST[$manu_n]}' " . $if_selected .  
+                                                        '>' . $MANUFACTURER_LIST[$manu_n]) '</option>';
+                                                }
+                                            ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_label">Model year</td>
+                                        <td>
+                                            <select name="model_year">
+                                            <?php
+                                                for ($year_n = 1900, $year_n <= 2020, $year_n++) {
+                                                    if ($row['model_year'] == $year_n) {
+                                                        $if_selected = 'selected="true"';
+                                                    } else {
+                                                        $if_selected = '';
+                                                    }
+                                                    echo "<option value='$year_n' " . $if_selected .  
+                                                        '>' . $year_n '</option>';
+                                                }
+                                            ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item_label">Color</td>
+                                        <td>
+                                            <select name="vehicle_color">
+                                            <?php
+                                                for ($color_n = 0, $color_n <= count($COLORS_LIST)-1, $color_n++) {
+                                                    if ($row['type_name'] == $COLORS_LIST[$color_n]) {
+                                                        $if_selected = 'selected="true"';
+                                                    } else {
+                                                        $if_selected = '';
+                                                    }
+                                                    echo "<option value='{$COLORS_LIST[$color_n]}' " . $if_selected .  
+                                                        '>' . $COLORS_LIST[$color_n]) '</option>';
+                                                }
+                                            ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+									<tr>
+										<td class="item_label">keyword</td>
+										<td><input type="text" name="keyword" /></td>
+									</tr>
+									
+								</table>
+									<a href="javascript:searchform.submit();" class="fancy_button">Search</a> 					
+							</form>
+						</div>
+					</div>	
+					<div class='profile_section'>
+						<div class='subtitle'>Search Results</div>
+					    <table>
+						    <tr>
+							    <td class='heading'>VIN</td>
+                                <td class='heading'>Vehicle Type</td>
+                                <td class='heading'>Model Year</td>
+                                <td class='heading'>Manufacturer</td>
+                                <!-- <td class='heading'>Model</td> -->
+                                <!-- <td class='heading'>Color</td> -->
+                                <td class='heading'>Mileage</td>
+                                <td class='heading'>Sale Price</td>
+							</tr>
+							<?php
+								if (isset($result)) {
+									while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+										$friend_email = urlencode($row['email']);
+										print "<tr>";
+										//print "<td><a href='request_friend.php?friend_email=$friend_email'>{$row['first_name']} {$row['last_name']}</a></td>";
+                                        print "<td>{$row['vin']}</td>";
+                                        print "<td>{$row['type_name']}</td>";	
+                                        print "<td>{$row['model_year']}</td>";	
+                                        print "<td>{$row['manufacturer_name']}</td>";
+                                        print "<td>{$row['vehicle_mileage']}</td>";
+                                        print "<td>{$row['sale_price']}</td>";								
+										print "</tr>";
+									}
+                                }
+                            ?>
+						</table>
+					</div>
+				</div> 
+			</div> 
+            <?php include("lib/error.php"); ?>            
+		    <div class="clear"></div> 
+		</div>
+        
+		<?php include("lib/footer.php"); ?>
+    </div>
+</body>
 </html>

@@ -13,7 +13,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	$enteredPassword = mysqli_real_escape_string($db, $_POST['password']);
 
     if (empty($enteredEmail)) {
-            array_push($error_msg,  "Please enter an email address.");
+            array_push($error_msg,  "Please enter an username.");
     }
 
 	if (empty($enteredPassword)) {

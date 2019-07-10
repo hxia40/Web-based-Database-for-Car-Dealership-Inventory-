@@ -22,7 +22,7 @@ Note: after making changes to source code locally, you will likely need to restr
 // Allow back button without reposting data
 header("Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform");
 //session_cache_limiter("private_no_expire");
-date_default_timezone_set('America/Los_Angeles');
+date_default_timezone_set('America/New_York');
 
 $error_msg = [];
 $query_msg = [];
@@ -57,6 +57,37 @@ define('DB_PORT', "3306");
 define('DB_USER', "gatechUser");
 define('DB_PASS', "gatech123");
 define('DB_SCHEMA', "cs6400_sm19_team22");
+
+define('MANUFACTURER_LIST', array(
+    "Acura", "Alfa Romeo", "Aston Martin", "Audi",
+    "Bentley", "BMW", "Buick", "Cadillac",
+    "Chevrolet", "Chrysler", "Dodge", "Ferrari",
+    "FIAT", "Ford", "Freightliner", "Genesis",
+    "GMC", "Honda", "Hyundai", "INFINITI",
+    "Jaguar", "Jeep", "Kia", "Lamborghini",
+    "Land Rover", "Lexus", "Lincoln", "Lotus",
+    "Maserati", "MAZDA", "McLaren", "Mercedes-Benz",
+    "MINI", "Mitsubishi", "Nissan", "Porsche",
+    "Ram", "Rolls-Royce", "smart", "Subura",
+    "Tesla", "Toyota", "Volkswagen", "Volvo"
+));
+
+define('COLORS_LIST', array(
+    "Aluminum", "Beige", "Black", "Blue","Brown", "Bronze", "Claret",
+    "Copper", "Cream", "Gold", "Gray", "Green", "Maroon", "Metallic",
+    "Navy", "Orange", "Pink", "Purple", "Red", "Rose", "Rust",
+    "Silver", "Tan", "Turquoise", "White", "Yellow"
+))
+
+define("VEHICLE_TYPES_LIST", array(
+    "Sedan",
+    "Coupe",
+    "Convertible",
+    "Truck",
+    "Van",
+    "Minivan",
+    "SUV"
+))
 
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
 
