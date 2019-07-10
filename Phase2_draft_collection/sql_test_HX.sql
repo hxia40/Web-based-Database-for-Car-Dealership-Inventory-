@@ -229,6 +229,9 @@ VALUES ('6666666', 230000, 'sixth car', 'BYD K10', 2019, 'Bus', 'BYD CO.', 24000
 INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
 VALUES ('7777777', 270000, 'seventh car', 'BYD K10', 2019, 'Bus', 'BYD CO.', 21000);
 
+INSERT INTO Vehicle(vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price)
+VALUES ('8888888', 170000, 'eighth car', 'Grand Cherokee', 2008, 'SUV', 'JEEP CO.', 25000);
+
 INSERT INTO Customer(customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)
 VALUES ('Rich101', '3181112222', 'hsr@gmail.com', '333 Gold Blvd.', 'Houston', 'TX', 77202);
 
