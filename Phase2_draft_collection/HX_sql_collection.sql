@@ -1,27 +1,26 @@
 --View Inventory Age Report
 
-WITH tbl AS(
-SELECT 
-	Vehicle.type_name, 
-	AVG(DATE_PART('DAY', CURRENT_DATE - Buy.purchase_date)) AS avg_inventory_age,
-	MAX(DATE_PART('DAY', CURRENT_DATE - Buy.purchase_date)) AS max_inventory_age,
-	MIN(DATE_PART('DAY', CURRENT_DATE - Buy.purchase_date)) AS min_inventory_age
+CREATE TEMPORARY TABLE tbl
+SELECT
+Vehicle .type_name,
+ROUND(AVG(DAY(Buy .purchase_date)- DAY(CURRENT_DATE)),1) AS avg_inventory_age,
+MAX(DAY(Buy .purchase_date)- DAY(CURRENT_DATE)) AS max_inventory_age,
+MIN(DAY(Buy .purchase_date)- DAY(CURRENT_DATE)) AS min_inventory_age
 FROM Vehicle
 LEFT OUTER JOIN Buy
-ON Vehicle.vin = Buy.vin
+ON Vehicle.vin = Buy .vin
 RIGHT JOIN VehicleType
-ON Vehicle.type_name = VehicleType.type_name
-WHERE Vehicle.vin NOT IN (SELECT Sell.vin FROM Sell)
-GROUP BY Vehicle.type_name
-)
+ON Vehicle .type_name = VehicleType .type_name
+WHERE Vehicle .vin NOT IN (SELECT Sell .vin FROM Sell)
+GROUP BY Vehicle .type_name;
 
-
-SELECT VehicleType.type_name, avg_inventory_age, max_inventory_age, min_inventory_age
+SELECT VehicleType .type_name, avg_inventory_age, max_inventory_age, min_inventory_age
 FROM VehicleType
 LEFT JOIN tbl
-ON VehicleType.type_name = tbl.type_name
-ORDER BY tbl.type_name
-;
+ON VehicleType .type_name = tbl.type_name
+ORDER BY tbl.type_name;
+
+--View Price per Condition Report
 
 SELECT Vehicle_Type,
   COALESCE(ROUND(AVG(
