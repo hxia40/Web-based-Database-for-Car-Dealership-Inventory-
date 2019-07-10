@@ -301,6 +301,12 @@ VALUES ('5555555', '2018-02-09 00:00:01',11000,'Good',11000,'inventory_clerk_per
 INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
 VALUES ('6666666', '2018-02-11 00:00:01',13000,'Fair',13000,'inventory_clerk_permission1','Rich102');
 
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('7777777', '2018-02-15 00:00:01',15000,'Very Good',13000,'inventory_clerk_permission1','Rich101');
+
+INSERT INTO Buy(vin, purchase_date, purchase_price, purchase_condition, kbb_value, inventory_clerk_permission, customer_id)
+VALUES ('8888888', '2018-02-17 00:00:01',16000,'Fair',13000,'inventory_clerk_permission1','Rich102');
+
 INSERT INTO Vendor(vendor_name, vendor_phone_number, vendor_street, vendor_city, vendor_state, vendor_zip)
 VALUES ('Wangermazi big repair CO.', '3187778888','222 Big St.', 'Houston', 'TX', 77210);
 
