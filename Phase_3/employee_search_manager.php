@@ -71,18 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vehicle_filter = mysqli_real_escape_string($db, $_POST['filter']);
 
     if($vehicle_filter=='all vehicles'){
-        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', '), vehicle_mileage, sale_price " . 
+        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+        "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
         "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
         "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin WHERE (1=1) ";
     } else{
         if($vehicle_filter=='sold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', '), vehicle_mileage, sale_price " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
             "WHERE Vehicle.vin IN (SELECT vin FROM Sell) ";
         }
         if($vehicle_filter=='unsold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', '), vehicle_mileage, sale_price " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
