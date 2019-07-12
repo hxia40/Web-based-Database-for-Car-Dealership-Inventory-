@@ -82,9 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Friend Search</title>
-	</head>
-	
+<title>GTOnline Friend Search</title>
+</head>
 	<body>
     	<div id="main_container">
         	<?php include("lib/menu.php"); ?>
@@ -125,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 								<td class='heading'>Hometown</td>
 							</tr>
 								<?php
+									print "tst";
 									if (isset($result)) {
 										while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 											$friend_email = urlencode($row['email']);

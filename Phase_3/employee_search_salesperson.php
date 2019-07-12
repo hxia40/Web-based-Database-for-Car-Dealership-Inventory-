@@ -1,7 +1,24 @@
 <?php
-
 include('lib/common.php');
 // written by jliu788
+
+if (!isset($_SESSION['username'])) {
+	header('Location: public_search.php');
+	exit();
+} else {
+    if($_SESSION['permission'] == 1){
+        header("Location: employee_search_clerk.php");
+        exit();
+    }
+    if($_SESSION['permission'] == 3){
+        header("Location: employee_search_manager.php");
+        exit();
+    }
+    if($_SESSION['permission'] == 4){
+        header("Location: employee_search_owner.php");
+        exit();
+    }
+}
 
 if($showQueries){
   array_push($query_msg, "showQueries currently turned ON, to disable change to 'false' in lib/common.php");
@@ -11,17 +28,14 @@ $query = "SELECT COUNT(Vehicle.vin) as total " .
 		 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
          "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
          "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
-
 $result = mysqli_query($db, $query);
-
 include('lib/show_queries.php');
 
 if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
-    //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $car_num1 = mysqli_fetch_assoc($result);
-    $car1 = $car_num1['total'];
+    $car_num3 = mysqli_fetch_assoc($result);
+    $car3 = $car_num3['total'];
 } else {
-    $car1 = 0;
+    $car3 = 0;
 }
 
 /* if form was submitted, then execute query to search for vehicles */
@@ -31,18 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entered_model_year = mysqli_real_escape_string($db, $_POST['model_year']);
     $entered_vehicle_color = mysqli_real_escape_string($db, $_POST['vehicle_color']);
     $keyword = mysqli_real_escape_string($db, $_POST['keyword']);
-
-    /*
-    if($entered_type_name=="select"){
-        $entered_type_name=''
-    }
-    if($entered_manufacturer_name=="select"){
-        $entered_manufacturer_name=''
-    }
-    if($entered_vehicle_color=="select"){
-        $entered_vehicle_color=''
-    }
-    */
+    $entered_vin = mysqli_real_escape_string($db, $_POST['vin']);
 
     $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
@@ -52,7 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
         or $entered_vehicle_color != "select" or $entered_model_year != 0 
-        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')) {
+        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')
+        or (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '')) {
         
 		$query = $query . " AND (1=1";
 		
@@ -76,15 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "OR vehicle_description LIKE '%$keyword%' " . 
             ") ";
         }
+        if (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '') {
+            $query = $query . " AND Vehicle.vin='$entered_vin' ";
+        }
+        
 		$query = $query . ") ";
 	}
 	
     $query = $query . " ORDER BY Vehicle.vin ASC";
-    
-	$result = mysqli_query($db, $query);
-    
-    include('lib/show_queries.php');
-
     $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
     
@@ -102,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <?php include("lib/header.php"); ?>
-<title>Vehicle Search for Public</title>
+<title>Vehicle Search for Salesperson</title>
 </head>
 <body>
     <div id="main_container">
@@ -114,15 +117,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="center_content">
 			<div class="center_left">
                 <div class="features">
+                <div class='profile_section'>
+					    <div class='subtitle'>Your permission: salesperson</div>
+					    <tr> <a href='logout.php'>Logout</a></tr>
+				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Total number of available vehicles</div>
 					    <?php
-                        echo "We have {$car1} vehicles available!";
+                        echo "<tr>Number of vehicles available for purchase: {$car3}</tr>";
                         ?>
 				    </div>
 					<div class="profile_section">
 						<div class="subtitle">Search for Vehicles</div> 	
-						<form name="searchform" action="public_search.php" method="POST">
+						<form name="searchform" action="employee_search_salesperson.php" method="POST">
                             <table>
                                 <tr>
                                     <td class="item_label">Vehicle Type</td>
@@ -184,6 +191,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </select>
                                     </td>
                                 </tr>
+                                <tr>
+									<td class="item_label">VIN</td>
+									<td><input type="text" name="vin" value="(input VIN)" 
+										onclick="if(this.value=='(input VIN)'){this.value=''}"
+										onblur="if(this.value==''){this.value='(input VIN)'}"/></td>
+								</tr>
 								<tr>
 									<td class="item_label">keyword</td>
 									<td><input type="text" name="keyword" value="(input search keyword)" 
@@ -204,7 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             } else {
                                 echo "Sorry, it looks like we don't have that in stock!";
                             }
-                            
                         ?>
 					    <table>
 						    <tr>
@@ -229,16 +241,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         print "<td>{$row['vehicle_color']}</td>";
                                         print "<td>{$row['vehicle_mileage']}</td>";
                                         print "<td>{$row['sale_price']}</td>";
-                                        $get_url="view_vehicle_detail_public.php?vin={$row['vin']}";
+                                        $get_url="view_vehicle_detail_salesperson.php?vin={$row['vin']}";
                                         print "<td><a href={$get_url}>View detail</a></td>";
                                         print "</tr>";
 								    }
                                 }
                             ?>
 					    </table>
-				    </div>
-                    <div class='profile_section'>
-					    <div class='subtitle'><a href="login.php">Login for employees</a></div>
 				    </div>
                 </div>
             </div>

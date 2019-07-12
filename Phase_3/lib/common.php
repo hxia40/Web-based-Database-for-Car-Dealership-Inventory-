@@ -1,4 +1,5 @@
 <?php
+
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -26,8 +27,8 @@ date_default_timezone_set('America/New_York');
 
 $error_msg = [];
 $query_msg = [];
-$showQueries = true; 
-$showCounts = false; 
+$showQueries = true;
+$showCounts = false;
 $dumpResults = false;
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')           
@@ -58,7 +59,7 @@ define('DB_USER', "gatechUser");
 define('DB_PASS', "gatech123");
 define('DB_SCHEMA', "cs6400_sm19_team22");
 
-define('MANUFACTURER_LIST', array(
+$MANUFACTURER_LIST=array(
     "Acura", "Alfa Romeo", "Aston Martin", "Audi",
     "Bentley", "BMW", "Buick", "Cadillac",
     "Chevrolet", "Chrysler", "Dodge", "Ferrari",
@@ -70,16 +71,16 @@ define('MANUFACTURER_LIST', array(
     "MINI", "Mitsubishi", "Nissan", "Porsche",
     "Ram", "Rolls-Royce", "smart", "Subura",
     "Tesla", "Toyota", "Volkswagen", "Volvo"
-));
+);
 
-define('COLORS_LIST', array(
+$COLORS_LIST=array(
     "Aluminum", "Beige", "Black", "Blue","Brown", "Bronze", "Claret",
     "Copper", "Cream", "Gold", "Gray", "Green", "Maroon", "Metallic",
     "Navy", "Orange", "Pink", "Purple", "Red", "Rose", "Rust",
     "Silver", "Tan", "Turquoise", "White", "Yellow"
-));
+);
 
-define("VEHICLE_TYPES_LIST", array(
+$VEHICLE_TYPES_LIST=array(
     "Sedan",
     "Coupe",
     "Convertible",
@@ -87,7 +88,7 @@ define("VEHICLE_TYPES_LIST", array(
     "Van",
     "Minivan",
     "SUV"
-));
+);
 
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
 

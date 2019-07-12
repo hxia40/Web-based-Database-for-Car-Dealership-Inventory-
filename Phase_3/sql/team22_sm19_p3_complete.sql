@@ -249,8 +249,23 @@ VALUES ('sales1','123456','Tianming', 'Yun');
 INSERT INTO Users(username, password, login_first_name, login_last_name)
 VALUES ('sales2','123456','Yifan', 'Guan');
 
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('manager1','123456','Ha', 'Haha');
+
+INSERT INTO Users(username, password, login_first_name, login_last_name)
+VALUES ('burdell','123456','Hu', 'Huhu');
+
+INSERT INTO Manager(username, manager_permission)
+VALUES ('manager1','manager_permission1');
+
+INSERT INTO Manager(username, manager_permission)
+VALUES ('burdell','manager_permission3');
+
 INSERT INTO Salesperson(username, salesperson_permission)
 VALUES ('sales1','salesperson_permission1');
+
+INSERT INTO Salesperson(username, salesperson_permission)
+VALUES ('burdell','salesperson_permission3');
 
 INSERT INTO Salesperson(username, salesperson_permission)
 VALUES ('sales2','salesperson_permission2');
@@ -263,6 +278,9 @@ VALUES ('clerk2','123456','AA', 'Ai');
 
 INSERT INTO InventoryClerk(username, inventory_clerk_permission)
 VALUES ('clerk1','inventory_clerk_permission1');
+
+INSERT INTO InventoryClerk(username, inventory_clerk_permission)
+VALUES ('burdell','inventory_clerk_permission3');
 
 INSERT INTO InventoryClerk(username, inventory_clerk_permission)
 VALUES ('clerk2','inventory_clerk_permission2');
