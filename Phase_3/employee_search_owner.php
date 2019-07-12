@@ -71,18 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vehicle_filter = mysqli_real_escape_string($db, $_POST['filter']);
 
     if($vehicle_filter=='all vehicles'){
-        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
+        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+        "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
         "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
-        "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin ";
+        "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin WHERE (1=1) ";
     } else{
         if($vehicle_filter=='sold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
             "WHERE Vehicle.vin IN (SELECT vin FROM Sell) ";
         }
         if($vehicle_filter=='unsold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
@@ -122,13 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$query = $query . ") ";
 	}
 	
-    $query = $query . " ORDER BY Vehicle.vin ASC";
-    
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
 	$result = mysqli_query($db, $query);
-    
-    include('lib/show_queries.php');
-
-    $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
     
     if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
@@ -145,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <?php include("lib/header.php"); ?>
-<title>Employee Search for Mr. Burdell</title>
+<title>Vehicle Search for Owner</title>
 </head>
 <body>
     <div id="main_container">
@@ -158,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<div class="center_left">
                 <div class="features">
                 <div class='profile_section'>
-					    <div class='subtitle'>Your permission: owner (Mr. Burdell)</div>
+					    <div class='subtitle'>Your are the Owner (Mr. Burdell)</div>
 					    <tr> <a href='logout.php'>Logout</a></tr>
 				    </div>
                     <div class='profile_section'>
@@ -291,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         print "<td>{$row['model_year']}</td>";
                                         print "<td>{$row['manufacturer_name']}</td>";
                                         print "<td>{$row['model_name']}</td>";
-                                        print "<td>{$row['vehicle_color']}</td>";
+                                        print "<td>{$row['color']}</td>";
                                         print "<td>{$row['vehicle_mileage']}</td>";
                                         print "<td>{$row['sale_price']}</td>";
                                         $get_url="view_vehicle_detail_owner.php?vin={$row['vin']}";
@@ -302,6 +300,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 //print "<tr> <a href='add_vehicle.php'>Add Vehicle</a></tr>";
                             ?>
 					    </table>
+				    </div>
+                    <div class='profile_section'>
+					    <div class='subtitle'><a href='add_vehicle.php'>Add Vehicle</a></div>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>View Reports</a></div>

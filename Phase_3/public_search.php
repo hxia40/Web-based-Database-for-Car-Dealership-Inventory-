@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     */
 
-    $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
+    $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', '), vehicle_mileage, sale_price " . 
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$query = $query . ") ";
 	}
 	
-    $query = $query . " ORDER BY Vehicle.vin ASC";
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
     
 	$result = mysqli_query($db, $query);
     
@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         print "<td>{$row['model_year']}</td>";
                                         print "<td>{$row['manufacturer_name']}</td>";
                                         print "<td>{$row['model_name']}</td>";
-                                        print "<td>{$row['vehicle_color']}</td>";
+                                        print "<td>{$row['color']}</td>";
                                         print "<td>{$row['vehicle_mileage']}</td>";
                                         print "<td>{$row['sale_price']}</td>";
                                         $get_url="view_vehicle_detail_public.php?vin={$row['vin']}";

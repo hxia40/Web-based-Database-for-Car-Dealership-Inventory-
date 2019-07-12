@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $keyword = mysqli_real_escape_string($db, $_POST['keyword']);
     $entered_vin = mysqli_real_escape_string($db, $_POST['vin']);
 
-    $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, vehicle_color, vehicle_mileage, sale_price " . 
+    $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$query = $query . ") ";
 	}
 	
-    $query = $query . " ORDER BY Vehicle.vin ASC";
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
 	$result = mysqli_query($db, $query);
     include('lib/show_queries.php');
     
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<div class="center_left">
                 <div class="features">
                 <div class='profile_section'>
-					    <div class='subtitle'>Your permission: inventory clerk</div>
+					    <div class='subtitle'>Your are an inventory clerk</div>
 					    <tr> <a href='logout.php'>Logout</a></tr>
 				    </div>
                     <div class='profile_section'>
@@ -264,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         print "<td>{$row['model_year']}</td>";
                                         print "<td>{$row['manufacturer_name']}</td>";
                                         print "<td>{$row['model_name']}</td>";
-                                        print "<td>{$row['vehicle_color']}</td>";
+                                        print "<td>{$row['color']}</td>";
                                         print "<td>{$row['vehicle_mileage']}</td>";
                                         print "<td>{$row['sale_price']}</td>";
                                         $get_url="view_vehicle_detail_clerk.php?vin={$row['vin']}";
