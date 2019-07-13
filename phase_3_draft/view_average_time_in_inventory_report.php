@@ -2,17 +2,17 @@
 
 include('lib/common.php');
 // written by GTusername4
- 
+
 
 //if (!isset($_SESSION['email'])) {
 //	header('Location: login.php');
 //	exit();
 //}
 
-//if ($_SESSION['permission'] < 3) {
-//	  header('Location: employee_search.php');
-//    exit();
-//}
+if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
+    header('Location: employee_search.php');
+    exit();
+}
 
 //if (!isset($_SESSION['permission'])) {
 //    header('Location: public_search.php');
