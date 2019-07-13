@@ -8,23 +8,21 @@ if ($_SESSION['permission'] != 2) {
 	exit();
 }
 $enteredVIN = $_GET['vin'];
+
 $enteredcustomer_id = 'Rich101';
-?>
 
-<?php
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $enteredsalesperson_permission = mysqli_real_escape_string($db, $_POST['salesperson_permission']);
-        $enteredsale_date = mysqli_real_escape_string($db, $_POST['sale_date']);
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $enteredsalesperson_permission = mysqli_real_escape_string($db, $_POST['salesperson_permission']);
+    $enteredsale_date = mysqli_real_escape_string($db, $_POST['sale_date']);
 
-
-            $query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date)"
-                    ."VALUES('$enteredVIN', '$enteredcustomer_id', '$enteredsalesperson_permission', '$enteredsale_date')";
-            $result = mysqli_query($db, $query);
-            include('lib/show_queries.php');
-            if (mysqli_affected_rows($db) == -1) {
-                array_push($error_msg, "ADD ERROR: Customer Table form  <br>".  __FILE__ ." line:". __LINE__ );
-            }
+    $query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date) "
+                . "VALUES('{$enteredVIN}', '$enteredcustomer_id', '$enteredsalesperson_permission', '$enteredsale_date')";
+    $result = mysqli_query($db, $query);
+    include('lib/show_queries.php');
+    if (mysqli_affected_rows($db) == -1) {
+        array_push($error_msg, "ADD ERROR: Customer Table form  <br>".  __FILE__ ." line:". __LINE__ );
     }
+}
 ?>
 
 
@@ -43,7 +41,7 @@ $enteredcustomer_id = 'Rich101';
             <div class="Sale Order section">
 							<div class="subtitle">Sale Order Form</div>
 
-                            <form name = "sale_order" action = "sale_order.php" method="post">
+                            <form name = "sale_order" action = "sale_order.php?vin=<?php echo $enteredVIN;?>" method="post">
                                 <table>
                                     <tr>
                                         <td class ="item_label">Salesperson Permission</td>
