@@ -9,16 +9,28 @@ include('lib/common.php');
 //	exit();
 //}
 
+if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
+    header('Location: employee_search.php');
+    exit();
+}
+
+
+//if (!isset($_SESSION['permission'])) {
+//    header('Location: public_search.php');
+//    exit();
+//}
+
 $query = "SELECT ".
-         "Repair.vendor_name, ".
-         "COUNT(Repair.vendor_name) AS num_of_repairs, " .
-	     "SUM(Repair.repair_cost) AS total_repair_cost, " .
-	     "ROUND(COUNT(Repair.vin)/COUNT(Repair.vendor_name),1) AS avg_repair_per_vehicle, ".
-	     "CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair ".
-         "FROM Repair ".
-         "WHERE Repair.repair_status = 'complete' ".
-         "GROUP BY Repair.vendor_name ".
-         "ORDER BY Repair.vendor_name";
+    "Repair.vendor_name, ".
+    "COUNT(Repair.vendor_name) AS num_of_repairs, " .
+    "SUM(Repair.repair_cost) AS total_repair_cost, " .
+    "ROUND(COUNT(Repair.vin)/COUNT(Repair.vendor_name),1) AS avg_repair_per_vehicle, ".
+    "CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair ".
+    "FROM Repair ".
+    "WHERE Repair.repair_status = 'complete' ".
+    "GROUP BY Repair.vendor_name ".
+    "ORDER BY Repair.vendor_name";
+
 //		 "WHERE User.email='{$_SESSION['email']}'";
 
 
@@ -26,8 +38,8 @@ $query = "SELECT ".
 //		 "FROM vehicle";
 ////		 "WHERE User.email='{$_SESSION['email']}'";
 
-    $result = mysqli_query($db, $query);
-    include('lib/show_queries.php');
+$result = mysqli_query($db, $query);
+include('lib/show_queries.php');
 
 
 ?>
@@ -39,22 +51,22 @@ $query = "SELECT ".
 </head>
 
 <body>
-		<div id="main_container">
+<div id="main_container">
     <?php include("lib/menu.php"); ?>
 
     <div class="center_content">
-<!--        --><?php //print $row['login_first_name'] . ' ' . $row['login_last_name']. ' ' . $_SESSION['email'].' ' . $row['gender'] ; ?>
-<!--        --><?php //print $row['vin'] . ' ' . $row['type_name']; ?>
-<!--        --><?php //print "<h1>1223456789000000</h1>"; ?>
-<!--        --><?//= $row[1]?>
+        <!--        --><?php //print $row['login_first_name'] . ' ' . $row['login_last_name']. ' ' . $_SESSION['email'].' ' . $row['gender'] ; ?>
+        <!--        --><?php //print $row['vin'] . ' ' . $row['type_name']; ?>
+        <!--        --><?php //print "<h1>1223456789000000</h1>"; ?>
+        <!--        --><?//= $row[1]?>
 
-<!--        --><?php //print "1223456789000000"; ?>
+        <!--        --><?php //print "1223456789000000"; ?>
         <div class="center_left">
             <div class="title_name">
                 <?php print 'Repair Statistics Report'; ?>
-            </div>          
-            <div class="features">   
-            
+            </div>
+            <div class="features">
+
                 <div class="profile_section">
                     <div class="subtitle">Repair Statistics Report</div>
                     <table>
@@ -66,7 +78,7 @@ $query = "SELECT ".
 
                         if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
                             array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
-                            }
+                        }
                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 //                            print_r($row);
 //                            echo"<br>";
@@ -82,127 +94,127 @@ $query = "SELECT ".
 
 
                         ?>
-<!--                        <tr>-->
-<!--                            <td class="item_label">Gender</td>-->
-<!--                            <td>-->
-<!--                                --><?php //if ($row['gender'] == 'Male') { print 'Male';} else {print 'Female';} ?>
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <td class="item_label">Birthdate</td>-->
-<!--                            <td>-->
-<!--                                --><?php //print $row['birthdate'];?>
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <td class="item_label">Current City</td>-->
-<!--                            <td>-->
-<!--                                --><?php //print $row['currentcity'];?>
-<!--                            </td>-->
-<!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td class="item_label">Gender</td>-->
+                        <!--                            <td>-->
+                        <!--                                --><?php //if ($row['gender'] == 'Male') { print 'Male';} else {print 'Female';} ?>
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td class="item_label">Birthdate</td>-->
+                        <!--                            <td>-->
+                        <!--                                --><?php //print $row['birthdate'];?>
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td class="item_label">Current City</td>-->
+                        <!--                            <td>-->
+                        <!--                                --><?php //print $row['currentcity'];?>
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
 
-<!--                        <tr>-->
-<!--                            <td class="item_label">Hometown</td>-->
-<!--                            <td>-->
-<!--                                --><?php //print $row['hometown'];?>
-<!--                            </td>-->
-<!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td class="item_label">Hometown</td>-->
+                        <!--                            <td>-->
+                        <!--                                --><?php //print $row['hometown'];?>
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
 
-<!--                        <tr>-->
-<!--                            <td class="item_label">Interests</td>-->
-<!--                            <td>-->
-<!--                                <ul>-->
-<!--                                    --><?php
-//                                            $query = "SELECT interest FROM UserInterest WHERE email='{$_SESSION['email']}'";
-//                                            $result = mysqli_query($db, $query);
-//
-//                                            include('lib/show_queries.php');
-//
-//                                             if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
-//                                                    array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
-//                                             }
-//
-//                                            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-//                                                print "<li>{$row['interest']}</li>";
-//                                            }
-//										?>
-<!--                                </ul>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-                    </table>						
+                        <!--                        <tr>-->
+                        <!--                            <td class="item_label">Interests</td>-->
+                        <!--                            <td>-->
+                        <!--                                <ul>-->
+                        <!--                                    --><?php
+                        //                                            $query = "SELECT interest FROM UserInterest WHERE email='{$_SESSION['email']}'";
+                        //                                            $result = mysqli_query($db, $query);
+                        //
+                        //                                            include('lib/show_queries.php');
+                        //
+                        //                                             if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+                        //                                                    array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
+                        //                                             }
+                        //
+                        //                                            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                        //                                                print "<li>{$row['interest']}</li>";
+                        //                                            }
+                        //										?>
+                        <!--                                </ul>-->
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
+                    </table>
                 </div>
 
-<!--                <div class="profile_section">-->
-<!--                    <div class="subtitle">Education</div>-->
-<!--                    <table>-->
-<!--                        <tr>-->
-<!--                            <td class="heading">School</td>-->
-<!--                            <td class="heading">Year Graduated</td>-->
-<!--                        </tr>-->
-<!---->
-<!--                        --><?php
-//									    $query = "SELECT schoolname, yeargraduated " .
-//											 "FROM Attend " .
-//											 "WHERE email='{$_SESSION['email']}' " .
-//											 "ORDER BY yeargraduated DESC";
-//									    $result = mysqli_query($db, $query);
-//                                        include('lib/show_queries.php');
-//
-//                                        if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
-//                                                    array_push($error_msg,  "Query ERROR: Failed to get School information...<br>" . __FILE__ ." line:". __LINE__ );
-//                                             }
-//
-//									while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-//										print "<tr>";
-//										print "<td>" . $row['schoolname'] . "</td>";
-//										print "<td>" . $row['yeargraduated'] . "</td>";
-//										print "</tr>";
-//									}
-//								?>
-<!--                    </table>-->
-<!--                </div>-->
+                <!--                <div class="profile_section">-->
+                <!--                    <div class="subtitle">Education</div>-->
+                <!--                    <table>-->
+                <!--                        <tr>-->
+                <!--                            <td class="heading">School</td>-->
+                <!--                            <td class="heading">Year Graduated</td>-->
+                <!--                        </tr>-->
+                <!---->
+                <!--                        --><?php
+                //									    $query = "SELECT schoolname, yeargraduated " .
+                //											 "FROM Attend " .
+                //											 "WHERE email='{$_SESSION['email']}' " .
+                //											 "ORDER BY yeargraduated DESC";
+                //									    $result = mysqli_query($db, $query);
+                //                                        include('lib/show_queries.php');
+                //
+                //                                        if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+                //                                                    array_push($error_msg,  "Query ERROR: Failed to get School information...<br>" . __FILE__ ." line:". __LINE__ );
+                //                                             }
+                //
+                //									while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                //										print "<tr>";
+                //										print "<td>" . $row['schoolname'] . "</td>";
+                //										print "<td>" . $row['yeargraduated'] . "</td>";
+                //										print "</tr>";
+                //									}
+                //								?>
+                <!--                    </table>-->
+                <!--                </div>-->
 
-<!--                <div class="profile_section">-->
-<!--                    <div class="subtitle">Professional</div>-->
-<!--                    <table>-->
-<!--                        <tr>-->
-<!--                            <td class="heading">Employer</td>-->
-<!--                            <td class="heading">Job Title</td>-->
-<!--                        </tr>-->
-<!---->
-<!--                        --><?php
-//                                        $query = "SELECT employername, jobtitle " .
-//											 "FROM Employment " .
-//											"WHERE email='{$_SESSION['email']}' " .
-//											 "ORDER BY employername DESC";
-//									   $result = mysqli_query($db, $query);
-//
-//                                       include('lib/show_queries.php');
-//
-//                                       if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
-//                                             array_push($error_msg,  "Query ERROR: Failed to get Employment information..." . __FILE__ ." line:". __LINE__ );
-//                                        }
-//
-//									while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-//										print "<tr>";
-//										print "<td>" . $row['employername'] . "</td>";
-//										print "<td>" . $row['jobtitle'] . "</td>";
-//										print "</tr>";
-//									}
-//								?>
-<!--                    </table>-->
-<!--                </div>-->
+                <!--                <div class="profile_section">-->
+                <!--                    <div class="subtitle">Professional</div>-->
+                <!--                    <table>-->
+                <!--                        <tr>-->
+                <!--                            <td class="heading">Employer</td>-->
+                <!--                            <td class="heading">Job Title</td>-->
+                <!--                        </tr>-->
+                <!---->
+                <!--                        --><?php
+                //                                        $query = "SELECT employername, jobtitle " .
+                //											 "FROM Employment " .
+                //											"WHERE email='{$_SESSION['email']}' " .
+                //											 "ORDER BY employername DESC";
+                //									   $result = mysqli_query($db, $query);
+                //
+                //                                       include('lib/show_queries.php');
+                //
+                //                                       if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+                //                                             array_push($error_msg,  "Query ERROR: Failed to get Employment information..." . __FILE__ ." line:". __LINE__ );
+                //                                        }
+                //
+                //									while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                //										print "<tr>";
+                //										print "<td>" . $row['employername'] . "</td>";
+                //										print "<td>" . $row['jobtitle'] . "</td>";
+                //										print "</tr>";
+                //									}
+                //								?>
+                <!--                    </table>-->
+                <!--                </div>-->
 
-            </div> 			
-        </div> 
+            </div>
+        </div>
 
-                <?php include("lib/error.php"); ?>
-                    
-				<div class="clear"></div> 		
-			</div>    
+        <?php include("lib/error.php"); ?>
 
-               <?php include("lib/footer.php"); ?>
-				 
-		</div>
-	</body>
+        <div class="clear"></div>
+    </div>
+
+    <?php include("lib/footer.php"); ?>
+
+</div>
+</body>
 </html>
