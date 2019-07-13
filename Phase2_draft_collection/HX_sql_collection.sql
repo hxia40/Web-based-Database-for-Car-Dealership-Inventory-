@@ -1,3 +1,25 @@
+--View seller history report
+
+CREATE TEMPORARY TABLE aaa
+SELECT 
+	repair.vin, 
+	COUNT(repair.vin) as number_of_repair_for_this_vehicle
+	FROM repair 
+	GROUP BY repair.vin;
+
+
+SELECT 
+Buy.customer_id, 
+COUNT( Buy .vin) AS total_vehicle_number_sold_to_us,
+
+ROUND(AVG(Buy .purchase_price),2) AS avg_purchase_price
+FROM Buy 
+LEFT OUTER JOIN Repair
+on Buy.vin = Repair.vin
+GROUP BY Buy.customer_id;
+
+
+
 --View Average Time in Inventory Report
 
 SELECT vehicletype.type_name AS AAA, IFNULL(otbl.average_time_in_inventory, 'N/A') AS BBB
