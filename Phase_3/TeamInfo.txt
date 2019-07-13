@@ -1,5 +1,5 @@
 Team22:
 Jinjun Liu    email: jliu788@gatech.edu
-TeamMember2Name    email: GTusername2@gatech.edu
-TeamMember3Name    email: GTusername3@gatech.edu
-TeamMember4Name    email: GTusername4@gatech.edu
+Zijian Xie    email: zxie86@gatech.edu
+Hui Xia       email: hxia40@gatech.edu
+Chen Zhang    email: czhang613@gatech.edu
