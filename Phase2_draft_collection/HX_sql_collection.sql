@@ -1,23 +1,31 @@
 --View seller history report
 
+
 CREATE TEMPORARY TABLE aaa
 SELECT 
-	repair.vin, 
-	COUNT(repair.vin) as number_of_repair_for_this_vehicle
-	FROM repair 
-	GROUP BY repair.vin;
-
-
-SELECT 
-Buy.customer_id, 
-COUNT( Buy .vin) AS total_vehicle_number_sold_to_us,
-
-ROUND(AVG(Buy .purchase_price),2) AS avg_purchase_price
+Buy.vin, 
+COUNT(repair.vin) as number_of_repair_for_this_vehicle
 FROM Buy 
 LEFT OUTER JOIN Repair
-on Buy.vin = Repair.vin
-GROUP BY Buy.customer_id;
+ON Buy.vin = Repair.vin
+GROUP BY Buy.vin;
 
+SELECT 
+Customer.customer_id, 
+COUNT( Buy .vin) AS total_vehicle_number_sold_to_us,
+ROUND(AVG(aaa.number_of_repair_for_this_vehicle),1) AS repairs_per_vehicle,
+
+ROUND(AVG(Buy.purchase_price),2) AS avg_purchase_price
+FROM Buy 
+LEFT OUTER JOIN Repair
+ON Buy.vin = Repair.vin
+LEFT OUTER JOIN aaa
+ON Buy.vin = aaa.vin
+JOIN Customer
+ON Buy.customer_id = Customer.customer_id
+GROUP BY Customer.customer_id;
+
+--JOIN (SELECT CONCAT(ISNULL(Person.last_name, ''), ISNULL(Business.business_name, '')) AS name,
 
 
 --View Average Time in Inventory Report
