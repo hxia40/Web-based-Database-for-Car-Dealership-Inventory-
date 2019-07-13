@@ -135,20 +135,20 @@ ORDER BY Repair.vendor_name;
 
 --Monthly Report
 --Yearly sale summary page	
-SELECT 
-	COUNT(Sell.vin) AS Num_of_vehicle_sold,
-	SUM(Vehicle.sale_price) AS total_sale_income,
-	(SUM(Vehicle.sale_price)- SUM(Buy.purchase_price) - SUM(Repair.repair_cost)) AS net_income,
-	LEFT(Sell.sale_date::text, 4) AS Sale_year
+SELECT
+YEAR(Sell.sale_date) AS Sale_year,
+COUNT( Sell .vin) AS Num_of_vehicle_sold,
+SUM( Vehicle .sale_price) AS total_sale_income,
+(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM( Repair .repair_cost)) AS net_income
 FROM Sell
 JOIN Buy
-ON Sell.vin = Buy.vin
+ON Sell .vin = Buy .vin
 JOIN Repair
-ON Sell.vin = Repair.vin
+ON Sell .vin = Repair .vin
 JOIN Vehicle
-ON Sell.vin = Vehicle.vin
+ON Vehicle .vin = Repair .vin
 GROUP BY Sale_year
-ORDER BY Sale_year DESC; 
+ORDER BY Sale_year DESC;
 
 							     
 --Year sale drill down report
@@ -173,20 +173,20 @@ total_sales DESC
 LIMIT 1;   
 		      
 --Monthly sale summary page		      
-SELECT 
-	COUNT(Sell.vin) AS Num_of_vehicle_sold,
-	SUM(Vehicle.sale_price) AS total_sale_income,
-	(SUM(Vehicle.sale_price)- SUM(Buy.purchase_price) - SUM(Repair.repair_cost)) AS net_income,
-	LEFT(Sell.sale_date::text, 7) AS Sale_month
+SELECT
+CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) AS Sale_month,
+COUNT( Sell .vin) AS Num_of_vehicle_sold,
+SUM( Vehicle .sale_price) AS total_sale_income,
+(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM( Repair .repair_cost)) AS net_income
 FROM Sell
 JOIN Buy
-ON Sell.vin = Buy.vin
+ON Sell .vin = Buy .vin
 JOIN Repair
-ON Sell.vin = Repair.vin
+ON Sell .vin = Repair .vin
 JOIN Vehicle
-ON Sell.vin = Vehicle.vin
+ON Vehicle .vin = Repair .vin
 GROUP BY Sale_month
-ORDER BY Sale_month DESC; 
+ORDER BY Sale_month DESC;
 							     
 
 							     
