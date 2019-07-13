@@ -136,12 +136,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="clear"></div>
             </div>
-   
-            <!-- 
-			<div class="map">
-			<iframe style="position:relative;z-index:999;" width="820" height="600" src="https://maps.google.com/maps?q=801 Atlantic Drive, Atlanta - 30332&t=&z=14&ie=UTF8&iwloc=B&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a class="google-map-code" href="http://www.embedgooglemap.net" id="get-map-data">801 Atlantic Drive, Atlanta - 30332</a><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></iframe>
-			</div>
-             -->
+            
 			<?php include("lib/footer.php"); ?>
 
         </div>
