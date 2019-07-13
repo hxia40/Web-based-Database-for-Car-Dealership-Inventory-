@@ -10,10 +10,10 @@ include('lib/common.php');
 //}
 
 
-//if ($_SESSION['permission'] < 3) {
-//	  header('Location: employee_search.php');
-//    exit();
-//}
+if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
+    header('Location: employee_search.php');
+    exit();
+}
 
 //if (!isset($_SESSION['permission'])) {
 //    header('Location: public_search.php');
@@ -24,7 +24,7 @@ include('lib/common.php');
 
 $query = "SELECT vehicle_type, ".
     "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Excellent' THEN ROUND(Purchase_price,0) ELSE null END),1),0.0) As excellent, ".
-    "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Very Good' THEN Purchase_price ELSE null END),1),0.0) As very_good, " .
+    "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Very Good' THEN Purchase_price ELSE null END),1),0.0) As very_good, " .  
     "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Good' THEN Purchase_price ELSE null END),1),0.0) As good, " .
     "COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Fair' THEN Purchase_price ELSE null END),1),0.0) As fair ".
     "FROM (SELECT Vehicle .vin AS VIN, Vehicle .type_name AS vehicle_type, ".
