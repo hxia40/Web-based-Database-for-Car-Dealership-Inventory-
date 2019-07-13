@@ -9,10 +9,10 @@ include('lib/common.php');
 //	exit();
 //}
 
-//if ($_SESSION['permission'] < 3) {
-//	  header('Location: employee_search.php');
-//    exit();
-//}
+if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
+    header('Location: employee_search.php');
+    exit();
+}
 
 //if (!isset($_SESSION['permission'])) {
 //    header('Location: public_search.php');
