@@ -1,11 +1,23 @@
 <?php
 include('lib/common.php');
 // written by czhang613
-
 // setup permission and login info
-if ($_SESSION['permission'] != 2) {
+if (!isset($_SESSION['username'])) {
 	header('Location: public_search.php');
 	exit();
+} else {
+    if($_SESSION['permission'] == 1){
+        header("Location: employee_search_clerk.php");
+        exit();
+    }
+    if($_SESSION['permission'] == 3){
+        header("Location: employee_search_manager.php");
+        exit();
+    }
+    if($_SESSION['permission'] == 4){
+        header("Location: employee_search_owner.php");
+        exit();
+    }
 }
 
     $enteredVIN = $_GET['vin'];
@@ -15,14 +27,12 @@ if ($_SESSION['permission'] != 2) {
     WHERE repair_status = 'complete' AND Vehicle.vin = $enteredVIN";
     $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
-
     if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     } else {
         array_push($error_msg,  "Query ERROR: Failed to fetch Vehicle Detail Information... <br>".  __FILE__ ." line:". __LINE__ );
     }
 ?>
-
 
 
 <?php include("lib/header.php"); ?>
@@ -104,7 +114,7 @@ if ($_SESSION['permission'] != 2) {
                   print "</tr>";
 
                   print "<tr>";
-                  $get_url1="sale_order.php?vin={$row['vin']}";
+                  $get_url1="search_customer.php?vin={$row['vin']}";
                   // echo $row['vin'];
                   print "<td><a href={$get_url1}>Sell This Car</a></td>";
                   print "</tr>";

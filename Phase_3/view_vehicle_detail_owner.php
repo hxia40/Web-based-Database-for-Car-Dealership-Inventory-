@@ -15,8 +15,8 @@ if (!isset($_SESSION['username'])) {
         header("Location: employee_search_salesperson.php");
         exit();
     }
-    if($_SESSION['permission'] == 4){
-        header("Location: employee_search_owner.php");
+    if($_SESSION['permission'] == 3){
+        header("Location: employee_search_manager.php");
         exit();
     }
 }
@@ -374,10 +374,41 @@ if (!isset($_SESSION['username'])) {
                     echo "</tr>";
 									}
 
+									if (empty($row3['sale_date'])) {
+										if ($row2['repair_status'] == 'complete') {
+											print "<tr>";
+		                  $get_url1="add_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}";
+		                  print "<td><a href={$get_url1}>Add Repair</a></td>";
+		                  print "</tr>";
+										}
+										if ($row2['repair_status'] != 'complete' ) {
+											print "<tr>";
+		                  $get_url2="edit_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}".
+		                      "&start_date={$row2['start_date']}&repair_description={$row2['repair_description']}&vendor_name={$row2['vendor_name']}".
+		                      "&repair_cost={$row2['repair_cost']}&nhtsa_recall_compaign_number={$row2['nhtsa_recall_compaign_number']}".
+		                      "&inventory_clerk_permission = {$row2['inventory_clerk_permission']}&end_date ={$row2['end_date']}";
+		                  print "<td><a href={$get_url2}>Edit Ongoing Repair</a></td>";
+		                  print "</tr>";
+		                  print "<tr>";
+		                  $get_url3="delete_repair.php?vin={$enteredVIN}&start_date={$row2['start_date']}";
+		                  print "<td><a href={$get_url3}>Delete Ongoing Repair</a></td>";
+		                  print "</tr>";
+										}
+									}
+
+
 									print "<tr>";
                   $get_url="employee_search_manager.php";
                   print "<td><a href={$get_url}>Back To Search</a></td>";
                   print "</tr>";
+
+									if (empty($row3['sale_date'])){
+										print "<tr>";
+										$get_url1="search_customer.php?vin={$row['vin']}";
+										// echo $row['vin'];
+										print "<td><a href={$get_url1}>Sell This Car</a></td>";
+										print "</tr>";
+									}
 
                   ?>
 
