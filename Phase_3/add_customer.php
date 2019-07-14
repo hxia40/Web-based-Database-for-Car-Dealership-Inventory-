@@ -5,6 +5,7 @@ include('lib/common.php');
 ?>
 
 <?php
+$enteredVIN = $_GET['vin'];
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $enteredcustomer_id = mysqli_real_escape_string($db, $_POST['customer_id']);
         $enteredphone_number = mysqli_real_escape_string($db, $_POST['phone_number']);
@@ -56,6 +57,9 @@ include('lib/common.php');
             array_push($error_msg, "ADD ERROR: Please enter a primary contact title <br>" . __FILE__ . " line: " . __LINE__);
         }
         else{
+            $query_id = "SELECT MAX(customer_id) AS largestid FROM Customer";
+            $result_id = mysqli_query($db, $query_id);
+            $row1 = mysqli_fetch_assoc($result_id);
 
             $query = "INSERT INTO Customer (customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)"
                     ."VALUES('$enteredcustomer_id', '$enteredphone_number', '$enteredemail', ".
@@ -107,8 +111,16 @@ include('lib/common.php');
             <div class="Add Customer section">
 							<div class="subtitle">Add Customer Info</div>
 
-                            <form name = "add_customer" action = "add_customer.php" method="post">
+                            <form name = "add_customer" action = "add_customer.php?vin=<?php echo $enteredVIN;?>&customer_id=<?php echo $enteredcustomer_id;?>" method="post">
                                 <table>
+                                  <!-- <tr>
+                                      <td class ="item_label">Current Largest Customer ID</td>
+                                      <td>
+                                          <?php
+                                          // echo $row1['largestid'];
+                                          ?>
+                                      </td>
+                                  </tr> -->
                                     <tr>
                                         <td class ="item_label">Customer ID</td>
                                         <td>
@@ -212,6 +224,12 @@ include('lib/common.php');
                                     <tr>
                                         <input name = "add" type = "submit" id = "add" value = "Add">
                                     </tr>
+                                    <?php
+                                    print "<tr>";
+                                    $get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$enteredcustomer_id}";
+                                    print "<td><a href={$get_url2}>Next</a></td>";
+                                    print "</tr>";
+                                    ?>
                                 </table>
                             </form>
               </div>

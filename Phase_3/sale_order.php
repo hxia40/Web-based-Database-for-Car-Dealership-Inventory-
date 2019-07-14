@@ -7,7 +7,7 @@ if ($_SESSION['permission'] != 2) {
 	exit();
 }
 $enteredVIN = $_GET['vin'];
-$enteredcustomer_id = 'Rich101';
+$enteredcustomer_id = $_GET['customer_id'];
 
 ?>
 
@@ -41,7 +41,7 @@ $enteredcustomer_id = 'Rich101';
             <div class="Sale Order section">
 							<div class="subtitle">Sale Order Form</div>
 
-                            <form name = "sale_order" action = "sale_order.php?vin=<?php echo $enteredVIN;?>" method="post">
+                            <form name = "sale_order" action = "sale_order.php?vin=<?php echo $enteredVIN;?>&customer_id=<?php echo $enteredcustomer_id;?>" method="post">
                                 <table>
                                     <tr>
                                         <td class ="item_label">Salesperson Permission</td>
@@ -61,7 +61,7 @@ $enteredcustomer_id = 'Rich101';
                                     <tr>
                                         <td class="item_label">Sale Date</td>
                                         <td>
-                                            <input name = "sale_date" type = "datetime-local" id = "sale_date" value="<?php if ($_POST['sale_date']) { print $_POST['sale_date']; } ?>" >
+                                            <input name = "sale_date" type = "date" id = "sale_date" value="<?php if ($_POST['sale_date']) { print $_POST['sale_date']; } ?>" >
                                         </td>
                                     </tr>
 
