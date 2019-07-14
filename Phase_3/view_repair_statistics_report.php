@@ -20,16 +20,21 @@ if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
 //    exit();
 //}
 
-$query = "SELECT ".
-    "Repair.vendor_name, ".
-    "COUNT(Repair.vendor_name) AS num_of_repairs, " .
-    "SUM(Repair.repair_cost) AS total_repair_cost, " .
-    "ROUND(COUNT(Repair.vin)/COUNT(Repair.vendor_name),1) AS avg_repair_per_vehicle, ".
-    "CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair ".
-    "FROM Repair ".
-    "WHERE Repair.repair_status = 'complete' ".
-    "GROUP BY Repair.vendor_name ".
-    "ORDER BY Repair.vendor_name";
+$query = "SELECT Repair.vendor_name, COUNT(Repair.vendor_name) AS num_of_repairs, ".
+        "SUM(Repair.repair_cost) AS total_repair_cost,  ".
+        "ROUND(AVG(rep_ven.rep_times),1) AS avg_repair_per_vehicle,  ".
+        "CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair  ".
+        "FROM Repair JOIN ( ".
+            "SELECT Repair.vin, ".
+            "Repair.vendor_name, ".
+            "COUNT(*) AS rep_times ".
+            "FROM Repair ".
+            "GROUP BY Repair.vin,Repair.vendor_name ".
+            ")rep_ven ".
+        "ON Repair.vin = rep_ven.vin ".
+        "WHERE Repair.repair_status = 'complete'  ".
+        "GROUP BY Repair.vendor_name  ".
+        "ORDER BY Repair.vendor_name ";
 
 //		 "WHERE User.email='{$_SESSION['email']}'";
 
