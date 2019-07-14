@@ -3,9 +3,22 @@ include('lib/common.php');
 // written by czhang613
 
 // setup permission and login info
-if ($_SESSION['permission'] != 1) {
+if (!isset($_SESSION['username'])) {
 	header('Location: public_search.php');
 	exit();
+} else {  
+    if($_SESSION['permission'] == 2){
+        header("Location: employee_search_salesperson.php");
+        exit();
+    }
+    if($_SESSION['permission'] == 3){
+        header("Location: employee_search_manager.php");
+        exit();
+    }
+		if($_SESSION['permission'] == 4){
+        header("Location: employee_search_owner.php");
+        exit();
+    }
 }
 
 
