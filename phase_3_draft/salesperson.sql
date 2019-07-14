@@ -1,0 +1,11 @@
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" burdell"," salesperson_permission_burdell ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user08"," salesperson_permission_user08 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user09"," salesperson_permission_user09 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user11"," salesperson_permission_user11 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user13"," salesperson_permission_user13 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user15"," salesperson_permission_user15 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user16"," salesperson_permission_user16 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user17"," salesperson_permission_user17 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user20"," salesperson_permission_user20 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user23"," salesperson_permission_user23 ");
+INSERT IGNORE INTO salesperson( username, salesperson_permission ) VALUES(" user25"," salesperson_permission_user25 ");
