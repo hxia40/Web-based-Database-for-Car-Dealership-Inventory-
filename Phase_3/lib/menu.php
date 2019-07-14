@@ -1,23 +1,10 @@
-
-			<div id="header">
-                <div class="logo"><img src="img/gtonline_logo.png" style="opacity:0.6;background-color:E9E5E2;" border="0" alt="" title="GT Online Logo"/></div>
-			</div>
+<div id="header">
+     <div class="logo"><img src="img/team22_logo.png" style="opacity:0.6;background-color:E9E5E2;" border="0" alt="" title="team 22 Logo"/></div>
+</div>
 			
-			<div class="nav_bar">
-				<ul>    
-                    <li><a href="view_profile.php" <?php if($current_filename=='view_profile.php') echo "class='active'"; ?>>View Profile</a></li>                       
-					<li><a href="edit_profile.php" <?php if(strpos($current_filename, 'edit_profile.php') !== false) echo "class='active'"; ?>>Edit Profile</a></li>  
-                    <li><a href="view_friends.php" <?php if($current_filename=='view_friends.php') echo "class='active'"; ?>>View Friends</a></li>  
-                    <li><a href="search_friends.php" <?php if($current_filename=='search_friends.php') echo "class='active'"; ?>>Search for Friends</a></li>  
-                    <li><a href="view_requests.php" <?php if($current_filename=='view_requests.php') echo "class='active'"; ?>>View Requests</a></li>  
-                    <li><a href="view_updates.php" <?php if($current_filename=='view_updates.php') echo "class='active'"; ?>>View Status Updates</a></li>  
-                    <li><a href="logout.php" <span class='glyphicon glyphicon-log-out'></span> Log Out</a></li>
-<!-- 		    HX - Below are report menus -->
-		    <li><a href="view_seller_history_report.php" <?php if($current_filename=='view_seller_history_report.php') echo "class='active'"; ?>>View Seller History Report</a></li>
-                    <li><a href="view_inventory_age_report.php" <?php if($current_filename=='view_inventory_age_report.php') echo "class='active'"; ?>>View Inventory Age Report</a></li>
-                    <li><a href="view_average_time_in_inventory_report.php" <?php if($current_filename=='view_average_time_in_inventory_report.php') echo "class='active'"; ?>>View Average Time In Inventory Report</a></li>
-                    <li><a href="view_price_per_condition_report.php" <?php if($current_filename=='view_price_per_condition_report.php') echo "class='active'"; ?>>View Price Per Condition Report</a></li>
-                    <li><a href="view_repair_statistics_report.php" <?php if($current_filename=='view_repair_statistics_report.php') echo "class='active'"; ?>>View Repair Statistics Report</a></li>
-                    <li><a href="view_monthly_sales_report.php" <?php if($current_filename=='view_monthly_sales_report.php') echo "class='active'"; ?>>View Monthly Sales Report</a></li>
-				</ul>
-			</div>
+<div class="nav_bar">
+	<ul>    
+     <li><a href="index.php" <?php if($current_filename=='view_profile.php') echo "class='active'"; ?>>Search Page</a></li> 
+     <li><a href="logout.php" <span class='glyphicon glyphicon-log-out'></span>Log Out</a></li>
+	</ul>
+</div>

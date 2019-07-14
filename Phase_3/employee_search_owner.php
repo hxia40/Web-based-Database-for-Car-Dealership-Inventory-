@@ -147,11 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div id="main_container">
-        <div id="header">
-            <div class="logo">
-                <img src="img/team22_logo.png" style="opacity:0.5;background-color:E9E5E2;" border="0" alt="" title="Team 22 Logo"/>
-            </div>
-        </div>
+    <?php include("lib/menu.php"); ?>
         <div class="center_content">
 			<div class="center_left">
                 <div class="features">
