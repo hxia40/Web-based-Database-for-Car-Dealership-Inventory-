@@ -314,7 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='view_view_inventory_age_report.php'>View Inventory Age Report</a></tr>
+                        <tr><a href='view_inventory_age_report.php'>View Inventory Age Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
