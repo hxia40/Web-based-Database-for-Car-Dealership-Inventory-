@@ -153,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="features">
                 <div class='profile_section'>
 					    <div class='subtitle'>Your are a manager</div>
-					    <tr> <a href='logout.php'>Logout</a></tr>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Number of vehicles (for manager view)</div>

@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="features">
                 <div class='profile_section'>
 					    <div class='subtitle'>Your are a salesperson</div>
-					    <tr> <a href='logout.php'>Logout</a></tr>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Total number of available vehicles</div>

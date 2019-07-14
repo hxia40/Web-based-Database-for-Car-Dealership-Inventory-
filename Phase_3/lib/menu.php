@@ -4,7 +4,7 @@
 			
 <div class="nav_bar">
 	<ul>    
-     <li><a href="index.php" <?php if($current_filename=='view_profile.php') echo "class='active'"; ?>>Search Page</a></li> 
+     <li><a href="index.php" class='active'>Search Page</a></li> 
      <li><a href="logout.php" <span class='glyphicon glyphicon-log-out'></span>Log Out</a></li>
 	</ul>
 </div>
