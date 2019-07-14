@@ -83,7 +83,7 @@ include('lib/show_queries.php');
                         }
                         echo "</table>";
 
-                        echo "*: If a vehicle type has no unsold units, the report display “N/A” for that vehicle type."
+                        echo "*: If a vehicle type has no sale history, the report display “N/A” for that vehicle type."
                         ?>
                         <!--                        <tr>-->
                         <!--                            <td class="item_label">Gender</td>-->
