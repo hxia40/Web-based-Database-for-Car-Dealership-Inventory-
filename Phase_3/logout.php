@@ -1,13 +1,13 @@
 <?php
 
-// written by GTusername1
+// written by jliu788
 
 /* destroy session data */
 session_start();
 session_destroy();
 $_SESSION = array();
 
-/* redirect to login page */
+/* redirect to public search page */
 header('Location: public_search.php');
 
 ?>
