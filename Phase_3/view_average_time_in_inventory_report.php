@@ -53,6 +53,7 @@ include('lib/show_queries.php');
 <body>
 <div id="main_container">
     <?php include("lib/menu.php"); ?>
+    <?php include("lib/reports_menu.php"); ?>
 
     <div class="center_content">
         <div class="center_left">
