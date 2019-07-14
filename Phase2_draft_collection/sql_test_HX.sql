@@ -341,6 +341,30 @@ INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description,
 VALUES ('4444444',  '2018-05-09 00:00:01', '2018-05-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
 
 INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-05-19 00:00:01', '2018-05-28 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-06-09 00:00:01', '2018-06-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-06-19 00:00:01', '2018-06-28 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-07-09 00:00:01', '2018-07-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-08-09 00:00:01', '2018-08-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-08-19 00:00:01', '2018-08-28 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-09-09 00:00:01', '2018-09-18 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
+VALUES ('4444444',  '2018-09-19 00:00:01', '2018-09-28 00:00:01', 'complete', 'repair_description4', 1200, 'Lisimazi big repair CO.', 'inventory_clerk_permission2');
+
+INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
 VALUES ('5555555',  '2018-06-09 00:00:01', '2018-06-21 00:00:01', 'complete', 'repair_description5', 1500, 'Wangermazi big repair CO.', 'inventory_clerk_permission1');
 
 INSERT INTO Repair(vin, start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, inventory_clerk_permission)
