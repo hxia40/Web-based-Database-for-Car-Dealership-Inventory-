@@ -74,7 +74,7 @@ include('lib/show_queries.php');
             <div class="features">
 
                 <div class="profile_section">
-                    <div class="subtitle">Best Sellers</div>
+                    <div class="subtitle">Salespeople Performance of the Year</div>
                     <!--                    <p style="color:red;">This is a paragraph.</p>-->
                     <table>
                         <?php
