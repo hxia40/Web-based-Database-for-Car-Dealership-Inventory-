@@ -303,27 +303,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>View Reports</a></div>
-                        <tr><a href='monthly_sales_report.php'>View Monthly Sales Report</a></tr>
+                        <tr><a href='view_monthly_sales_report.php'>View Monthly Sales Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='repair_statistics_report.php'>View Repair Statistics Report</a></tr>
+                        <tr><a href='view_repair_statistics_report.php'>View Repair Statistics Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='average_time_in_inventory_report.php'>View Average Time in Inventory Report</a></tr>
+                        <tr><a href='view_average_time_in_inventory_report.php'>View Average Time in Inventory Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='price_per_condition_report.php'>View Price Per Condition Report</a></tr>
+                        <tr><a href='view_price_per_condition_report.php'>View Price Per Condition Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='inventory_age_report.php'>View Inventory Age Report</a></tr>
+                        <tr><a href='view_view_inventory_age_report.php'>View Inventory Age Report</a></tr>
                         <?php
                             echo NEWLINE
                         ?>
-                        <tr><a href='seller_history_report.php'>View Seller History Report</a></tr>
+                        <tr><a href='view_seller_history_report.php'>View Seller History Report</a></tr>
 				    </div>
                 </div>
             </div>
