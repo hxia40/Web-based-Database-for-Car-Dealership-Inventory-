@@ -1,0 +1,13 @@
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" burdell"," inventory_clerk_permission00 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user02"," inventory_clerk_permission01 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user03"," inventory_clerk_permission02 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user04"," inventory_clerk_permission03 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user05"," inventory_clerk_permission04 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user06"," inventory_clerk_permission05 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user07"," inventory_clerk_permission06 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user10"," inventory_clerk_permission07 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user12"," inventory_clerk_permission08 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user14"," inventory_clerk_permission09 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user18"," inventory_clerk_permission10 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user22"," inventory_clerk_permission11 ");
+INSERT IGNORE INTO inventoryclerk( username, inventory_clerk_permission ) VALUES(" user24"," inventory_clerk_permission12 ");
