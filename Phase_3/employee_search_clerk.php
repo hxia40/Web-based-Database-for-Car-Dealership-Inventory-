@@ -2,22 +2,9 @@
 include('lib/common.php');
 // written by jliu788
 
-if (!isset($_SESSION['username'])) {
-	header('Location: public_search.php');
+if (!isset($_SESSION['username']) OR $_SESSION['permission'] != 1) {
+	header('Location: index.php');
 	exit();
-} else {
-    if($_SESSION['permission'] == 2){
-        header("Location: employee_search_salesperson.php");
-        exit();
-    }
-    if($_SESSION['permission'] == 3){
-        header("Location: employee_search_manager.php");
-        exit();
-    }
-    if($_SESSION['permission'] == 4){
-        header("Location: employee_search_owner.php");
-        exit();
-    }
 }
 
 if($showQueries){
