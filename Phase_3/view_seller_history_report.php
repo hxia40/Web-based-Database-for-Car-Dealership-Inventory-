@@ -10,8 +10,8 @@ include('lib/common.php');
 //}
 
 
-if (isset($_SESSION['permission']) AND $_SESSION['permission'] < 3) {
-	  header('Location: employee_search.php');
+if (!isset($_SESSION['permission']) OR $_SESSION['permission'] < 3) {
+	  header('Location: index.php');
     exit();
 }
 
