@@ -139,16 +139,20 @@ SELECT
 YEAR(Sell.sale_date) AS Sale_year,
 COUNT( Sell .vin) AS Num_of_vehicle_sold,
 SUM( Vehicle .sale_price) AS total_sale_income,
-(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM( Repair .repair_cost)) AS net_income
+(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM(repairsum.totalrepaircost)) AS net_income
 FROM Sell
+JOIN Vehicle
+ON Vehicle .vin = Sell .vin
 JOIN Buy
 ON Sell .vin = Buy .vin
-JOIN Repair
-ON Sell .vin = Repair .vin
-JOIN Vehicle
-ON Vehicle .vin = Repair .vin
+JOIN (
+SELECT Repair.vin,
+SUM(Repair.repair_cost) AS totalrepaircost
+FROM Repair
+GROUP BY Repair.vin)repairsum
+ON Sell .vin = repairsum.vin
 GROUP BY Sale_year
-ORDER BY Sale_year DESC;
+ORDER BY Sale_year DESC
 
 							     
 --Year sale drill down report
