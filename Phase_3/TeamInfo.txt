@@ -10,7 +10,7 @@ The cartoon car on the logo image is from: http://www.sclance.com/pngs/car-carto
 Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 
 1. query number of available vehicles for purchase:
-	$query = "SELECT COUNT(Vehicle.vin) as total " . 
+	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total " . 
 			 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
 			 "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
 			 "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
@@ -58,11 +58,11 @@ Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 	$query = "SELECT password FROM Users WHERE username='$entered_username'";
 	
 4. query number of vehicles with repair pending:
-	$query = "SELECT COUNT(Vehicle.vin) as total FROM Vehicle LEFT JOIN Repair " . 
+	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
 			 "ON Vehicle.vin=Repair.vin WHERE repair_status='pending'";
 
 5. query number of vehicles with repair in progress:
-	$query = "SELECT COUNT(Vehicle.vin) as total FROM Vehicle LEFT JOIN Repair " . 
+	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
 			 "ON Vehicle.vin = Repair.vin WHERE repair_status = 'In progress'";
 			 
 6. search vehicles for salesperson
