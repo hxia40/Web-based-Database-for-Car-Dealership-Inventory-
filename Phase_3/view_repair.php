@@ -125,7 +125,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
             }else{
                 $query = "SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission ";
                 $from = " FROM Repair ";
-                $where = " WHERE vin = $enteredVin ";
+                $where = " WHERE vin = '$enteredVin' ";
                 if(!empty($enteredStart_date)){
                     $where .= " AND start_date = '$enteredStart_date'";
                 }

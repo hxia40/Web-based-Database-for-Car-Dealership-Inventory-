@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
                 $new_sale_price = $previous_sale_price + $change_repair_cost;
 
-                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = $enteredVin" ;
+                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = '$enteredVin'" ;
                 $result = mysqli_query($db, $query);
                 include('lib/show_queries.php');
             }
