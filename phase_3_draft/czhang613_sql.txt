@@ -2,45 +2,45 @@ sql statements by czhang613
 
 ------
 Add Customer Form:
-// the following query insert entered information into Customer table
+8. the following query insert entered information into Customer table
 $query = "INSERT INTO Customer (customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)"
         ."VALUES('$enteredcustomer_id', '$enteredphone_number', '$enteredemail', ".
     "'$enteredcustomer_street', '$enteredcustomer_city', '$enteredcustomer_state',".
     "'$enteredcustomer_zip')";
 
-// the following query insert entered information into Person table
+9. the following query insert entered information into Person table
 $query1 = "INSERT INTO Person (customer_id, driver_license_number, customer_first_name, customer_last_name)"
         ."VALUES('$enteredcustomer_id', '$entereddriver_license_number', '$enteredcustomer_first_name', ". "'$enteredcustomer_last_name')";
 
-// the following query insert entered information into Business table
+10. the following query insert entered information into Business table
 $query2 = "INSERT INTO Business (customer_id, tax_identification_number, business_name, primary_contact_name, primary_contact_title)"
         ."VALUES('$enteredcustomer_id', '$enteredtax_identification_number', '$enteredbusiness_name', ". "'$enteredprimary_contact_name', '$enteredprimary_contact_title')";
 
 ------
 Search Customer:
-// the following query compared entered ID with Person.driver_license_number
+11. the following query compared entered ID with Person.driver_license_number
 $query_p ="SELECT customer_id FROM Person WHERE driver_license_number = '$entered_id'";
 
-// the following query compared entered ID with Business.tax_identification_number
+12. the following query compared entered ID with Business.tax_identification_number
 $query_b ="SELECT customer_id FROM Business WHERE tax_identification_number = '$entered_id'";
 
 ------
 Sale Order Form:
-// the following query insert entered information into Sell table
+13. the following query insert entered information into Sell table
 $query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date)"
         ."VALUES('$enteredVIN', '$enteredcustomer_id', '$enteredsalesperson_permission', '$enteredsale_date')";
 
 
 ------
 View Vehicle Detail Form, Clerk Permission:
-// the following query extract basic vehicle information
+14. the following query extract basic vehicle information
 $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
 manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
 FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
 JOIN Repair ON Vehicle.vin = Repair.vin
 WHERE Vehicle.vin = $enteredVIN";
 
-// the following query extract repair information
+15. the following query extract repair information
 $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
 FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
 JOIN Repair on Vehicle.vin = Repair.vin
@@ -48,7 +48,7 @@ WHERE Vehicle.vin = $enteredVIN ORDER BY start_date DESC";
 
 ------
 View Vehicle Detail Form, Manager & Owner Permission:
-// the following query extract basic vehicle information
+16. the following query extract basic vehicle information
 $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
 manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
 FROM Vehicle
@@ -56,7 +56,7 @@ JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
 JOIN Repair ON Vehicle.vin = Repair.vin
 WHERE Vehicle.vin = $enteredVIN";
 
-// the following query extract repair and purchase transaction information
+17. the following query extract repair and purchase transaction information
 $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
 Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
 FROM Vehicle
@@ -67,7 +67,7 @@ JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_
 JOIN Users ON InventoryClerk.username = Users.username
 WHERE Vehicle.vin = $enteredVIN";
 
-// the following query extract sale transaction information from Person
+18. the following query extract sale transaction information from Person
 $query3 = "SELECT Vehicle.vin,
 Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
 login_first_name AS login_first_name2, login_last_name AS login_last_name2
@@ -78,7 +78,7 @@ JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permis
 JOIN Users ON Salesperson.username = Users.username
 WHERE Vehicle.vin = $enteredVIN";
 
-// the following two queries to get SELLER's information, ethier a person or business:
+19. the following query to get SELLER's information as person:
 $query_seller_person = "SELECT customer_first_name, customer_last_name FROM Person
     JOIN BUY ON Buy.customer_id = Person.customer_id
     JOIN Vehicle ON Buy.vin = Vehicle.vin
@@ -86,6 +86,7 @@ $query_seller_person = "SELECT customer_first_name, customer_last_name FROM Pers
     $result_seller_person = mysqli_query($db, $query_seller_person);
     $array_seller_person = mysqli_fetch_array($result_seller_person, MYSQLI_ASSOC);
 
+20. the following query to get SELLER's information as business:
 $query_seller_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
     JOIN BUY ON Buy.customer_id = Business.customer_id
     JOIN Vehicle ON Buy.vin = Vehicle.vin
@@ -93,7 +94,7 @@ $query_seller_business = "SELECT business_name, primary_contact_name, primary_co
     $result_seller_business = mysqli_query($db, $query_seller_business);
     $array_seller_business = mysqli_fetch_array($result_seller_business, MYSQLI_ASSOC);\
 
-// the following two queries to get BUYER's information, ethier a person or business:
+21. the following query to get BUYER's information as person:
 $query_buyer_person = "SELECT customer_first_name, customer_last_name FROM Person
     JOIN Sell ON Sell.customer_id = Person.customer_id
     JOIN Vehicle ON Sell.vin = Vehicle.vin
@@ -101,6 +102,7 @@ $query_buyer_person = "SELECT customer_first_name, customer_last_name FROM Perso
     $result_buyer_person = mysqli_query($db, $query_buyer_person);
     $array_buyer_person = mysqli_fetch_array($result_buyer_person, MYSQLI_ASSOC);
 
+22. the following query to get BUYER's information as business:
 $query_buyer_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
     JOIN Sell ON Sell.customer_id = Business.customer_id
     JOIN Vehicle ON Sell.vin = Vehicle.vin
@@ -110,7 +112,7 @@ $query_buyer_business = "SELECT business_name, primary_contact_name, primary_con
 
 ------
 View Vehicle Detail Form, Salesperson & Public Permission:
-// the following query extract basic vehicle information
+23. the following query extract basic vehicle information
 $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
 FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
 JOIN Repair ON Vehicle.vin = Repair.vin
