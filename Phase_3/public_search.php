@@ -85,9 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$result = mysqli_query($db, $query);
     
     include('lib/show_queries.php');
-
-    $result = mysqli_query($db, $query);
-    include('lib/show_queries.php');
     
     if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
         //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
