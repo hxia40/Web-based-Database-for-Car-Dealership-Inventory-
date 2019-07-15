@@ -27,8 +27,6 @@ $query = "SELECT sellernames.name, ".
     "ROUND(AVG(repaircounts.number_of_repair_for_this_vehicle),1) AS repairs_per_vehicle, ".
     "ROUND(AVG(Buy.purchase_price),2) AS avg_purchase_price ".
     "FROM Buy  ".
-    "LEFT OUTER JOIN Repair ".
-    "ON Buy.vin = Repair.vin ".
     "LEFT OUTER JOIN ( ".
     "SELECT Buy.vin, ".
     "COUNT(repair.vin) as number_of_repair_for_this_vehicle ".

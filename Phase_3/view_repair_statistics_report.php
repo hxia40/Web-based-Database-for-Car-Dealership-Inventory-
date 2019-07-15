@@ -32,7 +32,7 @@ $query = "SELECT Repair.vendor_name, COUNT(Repair.vendor_name) AS num_of_repairs
             "GROUP BY Repair.vin,Repair.vendor_name ".
             ")rep_ven ".
         "ON Repair.vin = rep_ven.vin ".
-        "WHERE Repair.repair_status = 'complete'  ".
+        "WHERE Repair.repair_status = 'completed'  ".
         "GROUP BY Repair.vendor_name  ".
         "ORDER BY Repair.vendor_name ";
 
