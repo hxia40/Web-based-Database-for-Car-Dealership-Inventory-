@@ -32,18 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entered_vehicle_color = mysqli_real_escape_string($db, $_POST['vehicle_color']);
     $keyword = mysqli_real_escape_string($db, $_POST['keyword']);
 
-    /*
-    if($entered_type_name=="select"){
-        $entered_type_name=''
-    }
-    if($entered_manufacturer_name=="select"){
-        $entered_manufacturer_name=''
-    }
-    if($entered_vehicle_color=="select"){
-        $entered_vehicle_color=''
-    }
-    */
-
     $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
              "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
