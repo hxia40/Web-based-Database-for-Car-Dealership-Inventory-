@@ -23,7 +23,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
 }
 
 $query = "SELECT COUNT(Vehicle.vin) as total FROM Vehicle LEFT JOIN Repair " . 
-         "ON Vehicle.vin = Repair.vin WHERE repair_status = 'In progress'";
+         "ON Vehicle.vin = Repair.vin WHERE repair_status = 'in progress'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
 if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
@@ -36,7 +36,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
 $query = "SELECT COUNT(Vehicle.vin) as total " . 
          "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
          "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-         "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+         "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
 if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {

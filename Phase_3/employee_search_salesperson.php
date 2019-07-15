@@ -27,7 +27,7 @@ if($showQueries){
 $query = "SELECT COUNT(Vehicle.vin) as total " . 
 		 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
          "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-         "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+         "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-             "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+             "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
 
     if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
         or $entered_vehicle_color != "select" or $entered_model_year != 0 
