@@ -24,7 +24,7 @@ if (!isset($_SESSION['username'])) {
 
     $enteredVIN = $_GET['vin'];
     $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
-    manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
+    manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price
     FROM Vehicle
     JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
     JOIN Repair ON Vehicle.vin = Repair.vin
