@@ -28,7 +28,7 @@ if (!isset($_SESSION['username'])) {
     FROM Vehicle
     JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
     JOIN Repair ON Vehicle.vin = Repair.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
 
     $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
     Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
@@ -38,7 +38,7 @@ if (!isset($_SESSION['username'])) {
     JOIN Customer ON Buy.customer_id = Customer.customer_id
     JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission
     JOIN Users ON InventoryClerk.username = Users.username
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
 
     $query3 = "SELECT Vehicle.vin,
     Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
@@ -48,20 +48,20 @@ if (!isset($_SESSION['username'])) {
     JOIN Customer ON Sell.customer_id = Customer.customer_id
     JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission
     JOIN Users ON Salesperson.username = Users.username
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
 
 // setup queries to get SELLERS name, ethier a person or business:
     $query_seller_person = "SELECT customer_first_name, customer_last_name FROM Person
     JOIN BUY ON Buy.customer_id = Person.customer_id
     JOIN Vehicle ON Buy.vin = Vehicle.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
     $result_seller_person = mysqli_query($db, $query_seller_person);
     $array_seller_person = mysqli_fetch_array($result_seller_person, MYSQLI_ASSOC);
 
     $query_seller_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
     JOIN BUY ON Buy.customer_id = Business.customer_id
     JOIN Vehicle ON Buy.vin = Vehicle.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
     $result_seller_business = mysqli_query($db, $query_seller_business);
     $array_seller_business = mysqli_fetch_array($result_seller_business, MYSQLI_ASSOC);
 
@@ -69,14 +69,14 @@ if (!isset($_SESSION['username'])) {
     $query_buyer_person = "SELECT customer_first_name, customer_last_name FROM Person
     JOIN Sell ON Sell.customer_id = Person.customer_id
     JOIN Vehicle ON Sell.vin = Vehicle.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
     $result_buyer_person = mysqli_query($db, $query_buyer_person);
     $array_buyer_person = mysqli_fetch_array($result_buyer_person, MYSQLI_ASSOC);
 
     $query_buyer_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
     JOIN Sell ON Sell.customer_id = Business.customer_id
     JOIN Vehicle ON Sell.vin = Vehicle.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
     $result_buyer_business = mysqli_query($db, $query_buyer_business);
     $array_buyer_business = mysqli_fetch_array($result_buyer_business, MYSQLI_ASSOC);
 

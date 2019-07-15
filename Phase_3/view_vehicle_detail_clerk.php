@@ -27,12 +27,12 @@ if (!isset($_SESSION['username'])) {
     manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
     FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
     JOIN Repair ON Vehicle.vin = Repair.vin
-    WHERE Vehicle.vin = $enteredVIN";
+    WHERE Vehicle.vin = '$enteredVIN'";
 
-    $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
+    $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
     FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
     JOIN Repair on Vehicle.vin = Repair.vin
-    WHERE Vehicle.vin = $enteredVIN ORDER BY start_date DESC";
+    WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
 
     $result = mysqli_query($db, $query);
     $result2 = mysqli_query($db, $query2);

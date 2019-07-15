@@ -94,7 +94,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
                 
             } else {
                 array_push($error_msg, "Login failed: " . $entered_username . NEWLINE);
-                array_push($error_msg, "To demo enter: ". NEWLINE . "clerk1". NEWLINE ."123456");
+                array_push($error_msg, "To demo enter: ". NEWLINE . "burdell". NEWLINE ."burdell");
             }
             
         } else {
@@ -122,11 +122,11 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="title">Employee Login</div>
                     <div class="login_form_row">
                         <label class="login_label">Username:</label>
-                        <input type="text" name="username" value="clerk1" class="login_input"/>
+                        <input type="text" name="username" value="burdell" class="login_input"/>
                     </div>
                     <div class="login_form_row">
                         <label class="login_label">Password:</label>
-                        <input type="password" name="password" value="123456" class="login_input"/>
+                        <input type="password" name="password" value="burdell" class="login_input"/>
                     </div>
                     <input type="image" src="img/login.gif" class="login"/>
                     </form>
