@@ -198,3 +198,139 @@ ON Salesperson.username = Users.username
 WHERE CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) = '{$_POST["monthly"]}'
 GROUP BY Salesperson.username 
 ORDER BY num_vehicle_sold DESC, total_sales DESC ;
+
+#Vehicle Table, Buy Table, Repair Table and Recall Table queries for View, Delete, Add and Edit.
+
+#Find out the repair_status for the given Vin and the repair status is not 'completed', so we could judge whether we could add or delete/edit a repair history
+SELECT repair_status from Repair WHERE vin = '$enteredVin' AND repair_status != 'completed'
+
+
+#Add a new tuple into the Repair table
+INSERT INTO Repair (vin, start_date, repair_status, repair_description, vendor_name, repair_cost, inventory_clerk_permission, end_date)"
+            ."VALUES('$enteredVin', '$enteredStart_date', '$enteredRepair_status', ".
+        "'$enteredRepair_Description', '$enteredVendor_name', '$enteredRepair_cost',".
+        "'$enteredInventory_clerk_permssion', '$enteredEnd_date');
+
+#Update the sale price for the vehicle because we add a repair.
+UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = '$enteredVin';
+
+
+#Find out the repair status from the Repair Table by the given Vin and the start date, and the repair status is completed, so we could judge whether we could add or delete/edit a repair history
+SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed';
+
+#Delete a tuple from Repair by the given vin and start date
+DELETE FROM Repair WHERE vin = '$vin' AND start_date = '$start_date' ;
+
+#Add a new tuple into the Recall Table.
+INSERT INTO Recall VALUES('$enteredrecall_manufacturer','$enteredrecall_description','$enteredNHTSA_recall_compaign_number');
+
+
+#Add a new tuple into the Buy Table, a new Purchase record.
+INSERT INTO Buy (vin, customer_id, inventory_clerk_permission, purchase_date, purchase_price, purchase_condition, KBB_value) "
+            ." VALUES('$enteredVin', '$enteredCustomer_id', '$enteredInventory_clerk_permission', '$enteredPurchase_date', $enteredPurchase_price, ".
+        "' $enteredPurchase_condition', $enteredKBB_value ) 
+
+#Add a new tuple into the Vehicle Table, a new Vehicle information.
+INSERT INTO Vehicle ".
+        "VALUES('$enteredVin', $enteredvehicle_mileage, '$enteredvehicle_description', ".
+        "'$enteredmodel_name', $enteredmodel_year, '$enteredtype_name',".
+        "'$enteredmanufacturer_name', $sale_new_price );
+
+#Delete a tuple from Buy Table with the given Vin.
+DELETE FROM Buy WHERE vin = $enteredVin;
+
+#Update the Buy table for the given vin, and set the customer_id to the enteredCustomer_id
+UPDATE Buy SET customer_id = '$enteredCustomer_id' WHERE vin = '$enteredVin';
+
+#Update the Buy table for the given vin, and set the inventory_clerk_permission to the enteredInventory_clerk_permission
+UPDATE Buy SET inventory_clerk_permission = '$enteredInventory_clerk_permission' WHERE vin = '$enteredVin';
+
+#Update the Buy table for the given vin, and set the purchase_date to the enteredPurchase_date
+UPDATE Buy SET purchase_date = '$enteredPurchase_date' WHERE vin = '$enteredVin';
+
+#Update the Buy table for the given vin, and set the purchase_condition to the enteredPurchase_condition
+UPDATE Buy SET purchase_condition = '$enteredPurchase_condition' WHERE vin = '$enteredVin';
+
+#Update the Buy table for the given vin, and set the KBB_value to the enteredKBB_value
+UPDATE Buy SET KBB_value = '$enteredKBB_value' WHERE vin = '$enteredVin';
+
+#Delete a tuple from Recall Table with the given NHTSA_recall_compaign_number.
+DELETE FROM Recall WHERE NHTSA_recall_compaign_number = $enteredNHTSA_recall_compaign_number;
+
+#Delete a tuple from Vehicle Table with the given Vin.
+DELETE FROM Vehicle WHERE vin = $vin;
+
+#Update the recall_manufacturer to $enteredrecall_manufacturer in the Recall table by the given NHTSA_recall_compaign_number
+UPDATE Recall SET recall_manufacturer = '$enteredrecall_manufacturer' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
+
+#Update the recall_description to $enteredrecall_description in the Recall table by the given NHTSA_recall_compaign_number
+UPDATE Recall SET recall_description = '$enteredrecall_description' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';
+
+#Update the vehicle_mileage to $enteredvehicle_mileage in the Vehicle table by the given enteredVin
+UPDATE Vehicle SET vehicle_mileage = '$enteredvehicle_mileage' WHERE vin = '$enteredVin';
+
+#Update the vehicle_description to $enteredvehicle_description in the Vehicle table by the given enteredVin
+UPDATE Vehicle SET vehicle_description = '$enteredvehicle_description' WHERE vin = '$enteredVin';
+
+
+#Update the model_name to $enteredmodel_name in the Vehicle table by the given enteredVin
+UPDATE Vehicle SET model_name = '$enteredmodel_name' WHERE vin = '$enteredVin'
+
+
+#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
+UPDATE Vehicle SET model_year = '$enteredmodel_year' WHERE vin = '$enteredVin';
+
+#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
+UPDATE Vehicle SET manufacturer_name = '$enteredmanufacturer_name' WHERE vin = '$enteredVin'
+
+
+#Update the sale_price to $new_sale_price in the Vehicle table by the given enteredVin
+UPDATE Vehicle  SET sale_price = $new_sale_price WHERE vin = '$enteredVin';
+
+#Update the purchase_price to $enteredsale_price in the Buy table by the given enteredVin
+UPDATE Buy SET purchase_price = $enteredsale_price WHERE vin = '$enteredVin';
+
+#Pull all columns informations the Buy ordered by purchase_date desc
+SELECT * FROM Buy ORDER BY purchase_date DESC;
+
+#Pull recall_manufacturer, recall_description, NHTSA_recall_compaign_number from recall table by the given enteredNHTSA_recall_compaign_number
+SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number FROM Recall WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';
+
+# get the Repair information by the given conditions.
+SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission 
+FROM Repair 
+WHERE vin = $enteredVin AND start_date = '$enteredStart_date' AND end_date = '$enteredEnd_date'  AND repair_status = '$enteredRepair_status' 
+AND repair_description = '$enteredRepair_Description'  AND vendor_name = '$enteredVendor_name'  AND repair_cost = '$enteredRepair_cost' 
+AND nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number'  AND inventory_clerk_permission = '$enteredInventory_clerk_permssion' 
+
+#Get the vehicle information by the given vin number
+SELECT vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price
+FROM Vehicle 
+WHERE vin = '$enteredVin' ;
+
+#Get all repair status equals to 'completed' and the vin number is $enteredVin and start_date is $enteredStart_date from Repair Table
+SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ;
+
+#update end date information in Repair table.
+UPDATE Repair SET end_date = '$enteredEnd_date' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'
+
+#update repair_status information in Repair table.
+UPDATE Repair SET repair_status = '$enteredRepair_status' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
+
+#update repair_description information in Repair table.
+UPDATE Repair SET repair_description = '$enteredRepair_Description' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
+
+#update vendor_name information in Repair table.
+UPDATE Repair SET vendor_name = '$enteredVendor_name' WHERE vin = '$enteredVin'  AND start_date = '$enteredStart_date';
+
+#update repair_cost information in Repair table.
+UPDATE Repair SET repair_cost = $enteredRepair_cost WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
+
+#update sale_price information in Vehicle table.
+UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = $enteredVin;
+
+#update nhtsa_recall_compaign_number information in Repair table.
+UPDATE Repair SET nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
+
+#update inventory_clerk_permission information in Repair table.
+UPDATE Repair SET inventory_clerk_permission = '$enteredInventory_clerk_permssion' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
