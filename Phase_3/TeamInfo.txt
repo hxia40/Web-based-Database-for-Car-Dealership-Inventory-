@@ -9,328 +9,590 @@ We used some codes and materials from GTOnline template.
 The cartoon car on the logo image is from: http://www.sclance.com/pngs/car-cartoon-png/view-page-2.htm
 Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 
-
-
-
-view_average_time_in_inventory_report.php include below SQL queries:
-
-1. Query to generate the Average Time in Inventory Report. 
-
-SELECT vehicletype.type_name AS AAA, IFNULL(otbl.average_time_in_inventory, 'N/A') AS BBB 
-FROM vehicletype LEFT JOIN (
-	SELECT Vehicle.type_name AS type_name, 
-	ROUND(AVG(tbl.dateDiff),1) AS average_time_in_inventory 
-	FROM (SELECT Sell.vin AS vin, DATEDIFF(Sell.sale_date, Buy.purchase_date) AS dateDiff 
-		FROM Sell LEFT JOIN Buy ON Sell.vin = Buy.vin
-		WHERE Buy.purchase_date IS NOT NULL AND Sell.sale_date IS NOT NULL)tbl 
-	LEFT JOIN Vehicle ON Vehicle.vin = tbl.vin 
-	GROUP BY Vehicle.type_name 
-	ORDER BY Vehicle.type_name)otbl
-ON vehicletype.type_name = otbl.type_name;
-
-
-view_inventory_age_report.php include below SQL queries:
-
-1. Query to generate the Inventory Age Report. 
-
-SELECT VehicleType.type_name, IFNULL(avg_inventory_age,'N/A') AS avginventoryage,
-IFNULL(max_inventory_age, 'N/A') AS maxinventoryage, IFNULL(min_inventory_age, 'N/A') AS mininventoryage
-FROM VehicleType LEFT JOIN (
-	SELECT Vehicle.type_name,
-	ROUND(AVG(DATEDIFF(CURRENT_DATE, Buy.purchase_date)),1) AS avg_inventory_age,
-	MAX(DATEDIFF(CURRENT_DATE, Buy.purchase_date)) AS max_inventory_age,
-	MIN(DATEDIFF(CURRENT_DATE, Buy.purchase_date)) AS min_inventory_age
-	FROM Vehicle LEFT OUTER JOIN Buy ON Vehicle.vin = Buy.vin
-	RIGHT JOIN VehicleType ON Vehicle.type_name = VehicleType .type_name
-	WHERE Vehicle.vin NOT IN (SELECT Sell .vin FROM Sell)
-	GROUP BY Vehicle .type_name)tbl
-ON VehicleType.type_name = tbl.type_name
-ORDER BY tbl.type_name;
-
-
-view_price_per_condition_report.php include below SQL queries:
-
-1. Query to generate the Price per Condition Report. 
-
-SELECT vehicle_type,
-COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Excellent' THEN ROUND(Purchase_price,0) ELSE null END),1),0.0) As excellent,
-COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Very Good' THEN Purchase_price ELSE null END),1),0.0) As very_good, 
-COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Good' THEN Purchase_price ELSE null END),1),0.0) As good,
-COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Fair' THEN Purchase_price ELSE null END),1),0.0) As fair
-FROM (
-	SELECT Vehicle .vin AS VIN, Vehicle .type_name AS vehicle_type,
-	COALESCE(Buy.Purchase_price, 0) AS Purchase_price, Buy.purchase_condition AS Vehicle_Condition
-	FROM Vehicle JOIN Buy ON Buy .vin = Vehicle .vin)Vehicle_Sales_Table
-GROUP BY vehicle_type
-ORDER BY vehicle_type;
-
-
-view_repair_statistics_report.php include below SQL queries:
-
-1. Query to generate the Repair Statistics Report. 
-
-SELECT Repair.vendor_name, 
-COUNT(Repair.vendor_name) AS num_of_repairs, 
-SUM(Repair.repair_cost) AS total_repair_cost, 
-ROUND(AVG(rep_ven.rep_times),1) AS avg_repair_per_vehicle, 
-CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair 
-FROM Repair JOIN (
-	SELECT Repair.vin, 
-	Repair.vendor_name, 
-	COUNT(*) AS rep_times 
-	FROM Repair 
-	GROUP BY Repair.vin,Repair.vendor_name )rep_ven 
-ON Repair.vin = rep_ven.vin 
-WHERE Repair.repair_status = 'completed' 
-GROUP BY Repair.vendor_name 
-ORDER BY Repair.vendor_name;
-
-
-view_seller_history_report.php include below SQL queries:
-
-1. Query to generate the Seller History Report. 
-
-SELECT sellernames.name, 
-COUNT(Buy .vin) AS total_vehicle_number_sold_to_us, 
-ROUND(AVG(repaircounts.number_of_repair_for_this_vehicle),1) AS repairs_per_vehicle, 
-ROUND(AVG(Buy.purchase_price),2) AS avg_purchase_price 
-FROM Buy 
-	LEFT OUTER JOIN ( 
-	SELECT Buy.vin, 
-	COUNT(repair.vin) as number_of_repair_for_this_vehicle 
-	FROM Buy LEFT OUTER 
-	JOIN Repair 
-	ON Buy.vin = Repair.vin 
-	GROUP BY Buy.vin)repaircounts 
-ON Buy.vin = repaircounts.vin 
-JOIN ( 
-	SELECT customer_id, 
-	CONCAT(customer_first_name, ' ', customer_last_name) AS name 
-	FROM Person 
-	UNION 
-	SELECT customer_id, 
-	business_name AS name 
-	FROM Business)sellernames 
-ON Buy.customer_id = sellernames.customer_id 
-GROUP BY sellernames.name;
-
-
-view_monthly_sales_report.php include below SQL queries:
-
-1. Query to generate the Yearly Sales Report. 
-
-SELECT
-YEAR(Sell.sale_date) AS sale_year,
-COUNT( Sell .vin) AS num_of_vehicle_sold,
-SUM( Vehicle .sale_price) AS total_sale_income,
-(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM(repairsum.totalrepaircost)) AS net_income
-FROM Sell
-JOIN Vehicle
-ON Vehicle .vin = Sell .vin
-JOIN Buy
-ON Sell .vin = Buy .vin
-JOIN (
-	SELECT Repair.vin,
-	SUM(Repair.repair_cost) AS totalrepaircost
-	FROM Repair
-	GROUP BY Repair.vin)repairsum
-ON Sell .vin = repairsum.vin
-GROUP BY Sale_year
-ORDER BY Sale_year DESC;
-
-2. Query to generate the Monthly Sales Report. 
-
-SELECT
-CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) AS sale_month, 
-COUNT( Sell .vin) AS num_of_vehicle_sold,
-SUM( Vehicle .sale_price) AS total_sale_income,
-(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM(repairsum.totalrepaircost)) AS net_income
-FROM Sell
-JOIN Vehicle
-ON Vehicle .vin = Sell .vin
-JOIN Buy
-ON Sell .vin = Buy .vin
-JOIN (
-	SELECT Repair.vin,
-	SUM(Repair.repair_cost) AS totalrepaircost
-	FROM Repair
-	GROUP BY Repair.vin)repairsum
-ON Sell .vin = repairsum.vin
-GROUP BY Sale_month
-ORDER BY Sale_month DESC;
-
-
-view_detailed_yearly_report.php include below SQL queries:
-
-1. Query to generate the Detailed Yearly Sales Report. 
-
-SELECT MAX(Users.login_first_name) AS top_seller_first_name, 
-MAX(Users.login_last_name) AS top_seller_last_name, 
-COUNT(Sell.vin) AS num_vehicle_sold, 
-SUM(Vehicle.sale_price) AS total_sales 
-FROM Sell 
-JOIN Vehicle 
-ON Vehicle.vin = Sell.vin 
-JOIN Salesperson 
-ON Sell.salesperson_permission = Salesperson.salesperson_permission 
-JOIN Users 
-ON Salesperson.username = Users.username 
-WHERE YEAR(Sell.sale_date) = '{$_POST["yearly"]}' 
-GROUP BY Salesperson.username 
-ORDER BY num_vehicle_sold DESC, total_sales DESC ;
-
-
-view_detailed_monthly_report.php include below SQL queries:
-
-1. Query to generate the Detailed Monthly Sales Report. 
-
-SELECT MAX(Users.login_first_name) AS top_seller_first_name, 
-MAX(Users.login_last_name) AS top_seller_last_name, 
-COUNT(Sell.vin) AS num_vehicle_sold, 
-SUM(Vehicle.sale_price) AS total_sales 
-FROM Sell 
-JOIN Vehicle 
-ON Vehicle.vin = Sell.vin 
-JOIN Salesperson 
-ON Sell.salesperson_permission = Salesperson.salesperson_permission 
-JOIN Users 
-ON Salesperson.username = Users.username 
-WHERE CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) = '{$_POST["monthly"]}'
-GROUP BY Salesperson.username 
-ORDER BY num_vehicle_sold DESC, total_sales DESC ;
-
-#Vehicle Table, Buy Table, Repair Table and Recall Table queries for View, Delete, Add and Edit.
-
-#Find out the repair_status for the given Vin and the repair status is not 'completed', so we could judge whether we could add or delete/edit a repair history
-SELECT repair_status from Repair WHERE vin = '$enteredVin' AND repair_status != 'completed'
-
-
-#Add a new tuple into the Repair table
-INSERT INTO Repair (vin, start_date, repair_status, repair_description, vendor_name, repair_cost, inventory_clerk_permission, end_date)"
-            ."VALUES('$enteredVin', '$enteredStart_date', '$enteredRepair_status', ".
-        "'$enteredRepair_Description', '$enteredVendor_name', '$enteredRepair_cost',".
-        "'$enteredInventory_clerk_permssion', '$enteredEnd_date');
-
-#Update the sale price for the vehicle because we add a repair.
-UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = '$enteredVin';
-
-
-#Find out the repair status from the Repair Table by the given Vin and the start date, and the repair status is completed, so we could judge whether we could add or delete/edit a repair history
-SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed';
-
-#Delete a tuple from Repair by the given vin and start date
-DELETE FROM Repair WHERE vin = '$vin' AND start_date = '$start_date' ;
-
-#Add a new tuple into the Recall Table.
-INSERT INTO Recall VALUES('$enteredrecall_manufacturer','$enteredrecall_description','$enteredNHTSA_recall_compaign_number');
-
-
-#Add a new tuple into the Buy Table, a new Purchase record.
-INSERT INTO Buy (vin, customer_id, inventory_clerk_permission, purchase_date, purchase_price, purchase_condition, KBB_value) "
-            ." VALUES('$enteredVin', '$enteredCustomer_id', '$enteredInventory_clerk_permission', '$enteredPurchase_date', $enteredPurchase_price, ".
-        "' $enteredPurchase_condition', $enteredKBB_value ) 
-
-#Add a new tuple into the Vehicle Table, a new Vehicle information.
-INSERT INTO Vehicle ".
-        "VALUES('$enteredVin', $enteredvehicle_mileage, '$enteredvehicle_description', ".
-        "'$enteredmodel_name', $enteredmodel_year, '$enteredtype_name',".
-        "'$enteredmanufacturer_name', $sale_new_price );
-
-#Delete a tuple from Buy Table with the given Vin.
-DELETE FROM Buy WHERE vin = $enteredVin;
-
-#Update the Buy table for the given vin, and set the customer_id to the enteredCustomer_id
-UPDATE Buy SET customer_id = '$enteredCustomer_id' WHERE vin = '$enteredVin';
-
-#Update the Buy table for the given vin, and set the inventory_clerk_permission to the enteredInventory_clerk_permission
-UPDATE Buy SET inventory_clerk_permission = '$enteredInventory_clerk_permission' WHERE vin = '$enteredVin';
-
-#Update the Buy table for the given vin, and set the purchase_date to the enteredPurchase_date
-UPDATE Buy SET purchase_date = '$enteredPurchase_date' WHERE vin = '$enteredVin';
-
-#Update the Buy table for the given vin, and set the purchase_condition to the enteredPurchase_condition
-UPDATE Buy SET purchase_condition = '$enteredPurchase_condition' WHERE vin = '$enteredVin';
-
-#Update the Buy table for the given vin, and set the KBB_value to the enteredKBB_value
-UPDATE Buy SET KBB_value = '$enteredKBB_value' WHERE vin = '$enteredVin';
-
-#Delete a tuple from Recall Table with the given NHTSA_recall_compaign_number.
-DELETE FROM Recall WHERE NHTSA_recall_compaign_number = $enteredNHTSA_recall_compaign_number;
-
-#Delete a tuple from Vehicle Table with the given Vin.
-DELETE FROM Vehicle WHERE vin = $vin;
-
-#Update the recall_manufacturer to $enteredrecall_manufacturer in the Recall table by the given NHTSA_recall_compaign_number
-UPDATE Recall SET recall_manufacturer = '$enteredrecall_manufacturer' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'
-
-#Update the recall_description to $enteredrecall_description in the Recall table by the given NHTSA_recall_compaign_number
-UPDATE Recall SET recall_description = '$enteredrecall_description' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';
-
-#Update the vehicle_mileage to $enteredvehicle_mileage in the Vehicle table by the given enteredVin
-UPDATE Vehicle SET vehicle_mileage = '$enteredvehicle_mileage' WHERE vin = '$enteredVin';
-
-#Update the vehicle_description to $enteredvehicle_description in the Vehicle table by the given enteredVin
-UPDATE Vehicle SET vehicle_description = '$enteredvehicle_description' WHERE vin = '$enteredVin';
-
-
-#Update the model_name to $enteredmodel_name in the Vehicle table by the given enteredVin
-UPDATE Vehicle SET model_name = '$enteredmodel_name' WHERE vin = '$enteredVin'
-
-
-#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
-UPDATE Vehicle SET model_year = '$enteredmodel_year' WHERE vin = '$enteredVin';
-
-#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
-UPDATE Vehicle SET manufacturer_name = '$enteredmanufacturer_name' WHERE vin = '$enteredVin'
-
-
-#Update the sale_price to $new_sale_price in the Vehicle table by the given enteredVin
-UPDATE Vehicle  SET sale_price = $new_sale_price WHERE vin = '$enteredVin';
-
-#Update the purchase_price to $enteredsale_price in the Buy table by the given enteredVin
-UPDATE Buy SET purchase_price = $enteredsale_price WHERE vin = '$enteredVin';
-
-#Pull all columns informations the Buy ordered by purchase_date desc
-SELECT * FROM Buy ORDER BY purchase_date DESC;
-
-#Pull recall_manufacturer, recall_description, NHTSA_recall_compaign_number from recall table by the given enteredNHTSA_recall_compaign_number
-SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number FROM Recall WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';
-
-# get the Repair information by the given conditions.
-SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission 
-FROM Repair 
-WHERE vin = $enteredVin AND start_date = '$enteredStart_date' AND end_date = '$enteredEnd_date'  AND repair_status = '$enteredRepair_status' 
-AND repair_description = '$enteredRepair_Description'  AND vendor_name = '$enteredVendor_name'  AND repair_cost = '$enteredRepair_cost' 
-AND nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number'  AND inventory_clerk_permission = '$enteredInventory_clerk_permssion' 
-
-#Get the vehicle information by the given vin number
-SELECT vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price
-FROM Vehicle 
-WHERE vin = '$enteredVin' ;
-
-#Get all repair status equals to 'completed' and the vin number is $enteredVin and start_date is $enteredStart_date from Repair Table
-SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ;
-
-#update end date information in Repair table.
-UPDATE Repair SET end_date = '$enteredEnd_date' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'
-
-#update repair_status information in Repair table.
-UPDATE Repair SET repair_status = '$enteredRepair_status' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
-
-#update repair_description information in Repair table.
-UPDATE Repair SET repair_description = '$enteredRepair_Description' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
-
-#update vendor_name information in Repair table.
-UPDATE Repair SET vendor_name = '$enteredVendor_name' WHERE vin = '$enteredVin'  AND start_date = '$enteredStart_date';
-
-#update repair_cost information in Repair table.
-UPDATE Repair SET repair_cost = $enteredRepair_cost WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
-
-#update sale_price information in Vehicle table.
-UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = $enteredVin;
-
-#update nhtsa_recall_compaign_number information in Repair table.
-UPDATE Repair SET nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
-
-#update inventory_clerk_permission information in Repair table.
-UPDATE Repair SET inventory_clerk_permission = '$enteredInventory_clerk_permssion' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';
+1. query number of available vehicles for purchase:
+	$query = "SELECT COUNT(Vehicle.vin) as total " . 
+			 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+			 "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+			 "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+		 
+2. search vehicles for public:
+	$query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+             "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+             "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+
+    if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
+        or $entered_vehicle_color != "select" or $entered_model_year != 0 
+        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')) {
+        
+		$query = $query . " AND (1=1";
+		
+		if ($entered_type_name != "select") {
+			$query = $query . " AND `type_name`='$entered_type_name' ";
+        }
+        if ($entered_manufacturer_name != "select") {
+			$query = $query . " AND manufacturer_name='$entered_manufacturer_name' ";
+        }
+        if ($entered_vehicle_color != "select") {
+			$query = $query . " AND vehicle_color='$entered_vehicle_color' ";
+        }
+        if ($entered_model_year != 0) {
+			$query = $query . " AND model_year=$entered_model_year ";
+        }
+        if (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '') {
+            $query = $query . " AND (" . 
+            "manufacturer_name LIKE '%$keyword%' " . 
+            "OR model_year LIKE '%$keyword%' " . 
+            "OR model_name LIKE '%$keyword%' " . 
+            "OR vehicle_description LIKE '%$keyword%' " . 
+            ") ";
+        }
+		$query = $query . ") ";
+	}
+	
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
+	
+3. query password for login:
+	$query = "SELECT password FROM Users WHERE username='$entered_username'";
+	
+4. query number of vehicles with repair pending:
+	$query = "SELECT COUNT(Vehicle.vin) as total FROM Vehicle LEFT JOIN Repair " . 
+			 "ON Vehicle.vin=Repair.vin WHERE repair_status='pending'";
+
+5. query number of vehicles with repair in progress:
+	$query = "SELECT COUNT(Vehicle.vin) as total FROM Vehicle LEFT JOIN Repair " . 
+			 "ON Vehicle.vin = Repair.vin WHERE repair_status = 'In progress'";
+			 
+6. search vehicles for salesperson
+	$query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+             "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+             "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+             "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+
+    if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
+        or $entered_vehicle_color != "select" or $entered_model_year != 0 
+        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')
+        or (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '')) {
+        
+		$query = $query . " AND (1=1";
+		
+		if ($entered_type_name != "select") {
+			$query = $query . " AND `type_name`='$entered_type_name' ";
+        }
+        if ($entered_manufacturer_name != "select") {
+			$query = $query . " AND manufacturer_name='$entered_manufacturer_name' ";
+        }
+        if ($entered_vehicle_color != "select") {
+			$query = $query . " AND vehicle_color='$entered_vehicle_color' ";
+        }
+        if ($entered_model_year != 0) {
+			$query = $query . " AND model_year=$entered_model_year ";
+        }
+        if (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '') {
+            $query = $query . " AND (" . 
+            "manufacturer_name LIKE '%$keyword%' " . 
+            "OR model_year LIKE '%$keyword%' " . 
+            "OR model_name LIKE '%$keyword%' " . 
+            "OR vehicle_description LIKE '%$keyword%' " . 
+            ") ";
+        }
+        if (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '') {
+            $query = $query . " AND Vehicle.vin='$entered_vin' ";
+        }
+        
+		$query = $query . ") ";
+	}
+	
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
+	
+7. search vehicles for manager and Mr. Burdell
+	if($vehicle_filter=='all vehicles'){
+        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+        "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+        "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+        "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin WHERE (1=1) ";
+    }else{
+        if($vehicle_filter=='sold vehicles'){
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+            "WHERE Vehicle.vin IN (SELECT vin FROM Sell) ";
+        }
+        if($vehicle_filter=='unsold vehicles'){
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+            "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+            "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
+        }
+    }
+
+    if($entered_type_name != "select" or $entered_manufacturer_name != "select" 
+        or $entered_vehicle_color != "select" or $entered_model_year != 0 
+        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')
+        or (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '')) {
+        
+		$query = $query . " AND (1=1";
+		
+		if ($entered_type_name != "select") {
+			$query = $query . " AND `type_name`='$entered_type_name' ";
+        }
+        if ($entered_manufacturer_name != "select") {
+			$query = $query . " AND manufacturer_name='$entered_manufacturer_name' ";
+        }
+        if ($entered_vehicle_color != "select") {
+			$query = $query . " AND vehicle_color='$entered_vehicle_color' ";
+        }
+        if ($entered_model_year != 0) {
+			$query = $query . " AND model_year=$entered_model_year ";
+        }
+        if (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '') {
+            $query = $query . " AND (" . 
+            "manufacturer_name LIKE '%$keyword%' " . 
+            "OR model_year LIKE '%$keyword%' " . 
+            "OR model_name LIKE '%$keyword%' " . 
+            "OR vehicle_description LIKE '%$keyword%' " . 
+            ") ";
+        }
+        if (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '') {
+            $query = $query . " AND Vehicle.vin='$entered_vin' ";
+        }
+		$query = $query . ") ";
+	}
+	
+    $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
+
+Add Customer Form:
+8. the following query insert entered information into Customer table
+$query = "INSERT INTO Customer (customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip)"
+        ."VALUES('$enteredcustomer_id', '$enteredphone_number', '$enteredemail', ".
+    "'$enteredcustomer_street', '$enteredcustomer_city', '$enteredcustomer_state',".
+    "'$enteredcustomer_zip')";
+
+9. the following query insert entered information into Person table
+$query1 = "INSERT INTO Person (customer_id, driver_license_number, customer_first_name, customer_last_name)"
+        ."VALUES('$enteredcustomer_id', '$entereddriver_license_number', '$enteredcustomer_first_name', ". "'$enteredcustomer_last_name')";
+
+10. the following query insert entered information into Business table
+$query2 = "INSERT INTO Business (customer_id, tax_identification_number, business_name, primary_contact_name, primary_contact_title)"
+        ."VALUES('$enteredcustomer_id', '$enteredtax_identification_number', '$enteredbusiness_name', ". "'$enteredprimary_contact_name', '$enteredprimary_contact_title')";
+
+Search Customer:
+11. the following query compared entered ID with Person.driver_license_number
+$query_p ="SELECT customer_id FROM Person WHERE driver_license_number = '$entered_id'";
+
+12. the following query compared entered ID with Business.tax_identification_number
+$query_b ="SELECT customer_id FROM Business WHERE tax_identification_number = '$entered_id'";
+
+Sale Order Form:
+13. the following query insert entered information into Sell table
+$query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date)"
+        ."VALUES('$enteredVIN', '$enteredcustomer_id', '$enteredsalesperson_permission', '$enteredsale_date')";
+
+View Vehicle Detail Form, Clerk Permission:
+14. the following query extract basic vehicle information
+$query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
+manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
+FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
+JOIN Repair ON Vehicle.vin = Repair.vin
+WHERE Vehicle.vin = $enteredVIN";
+
+15. the following query extract repair information
+$query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
+FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
+JOIN Repair on Vehicle.vin = Repair.vin
+WHERE Vehicle.vin = $enteredVIN ORDER BY start_date DESC";
+
+View Vehicle Detail Form, Manager & Owner Permission:
+16. the following query extract basic vehicle information
+$query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
+manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
+FROM Vehicle
+JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
+JOIN Repair ON Vehicle.vin = Repair.vin
+WHERE Vehicle.vin = $enteredVIN";
+
+17. the following query extract repair and purchase transaction information
+$query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
+Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
+FROM Vehicle
+JOIN Buy ON Vehicle.vin = Buy.vin
+JOIN Repair ON Vehicle.vin = Repair.vin
+JOIN Customer ON Buy.customer_id = Customer.customer_id
+JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission
+JOIN Users ON InventoryClerk.username = Users.username
+WHERE Vehicle.vin = $enteredVIN";
+
+18. the following query extract sale transaction information from Person
+$query3 = "SELECT Vehicle.vin,
+Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
+login_first_name AS login_first_name2, login_last_name AS login_last_name2
+FROM Vehicle
+JOIN Sell ON Vehicle.vin = Sell.vin
+JOIN Customer ON Sell.customer_id = Customer.customer_id
+JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission
+JOIN Users ON Salesperson.username = Users.username
+WHERE Vehicle.vin = $enteredVIN";
+
+19. the following query to get SELLER's information as person:
+$query_seller_person = "SELECT customer_first_name, customer_last_name FROM Person
+    JOIN BUY ON Buy.customer_id = Person.customer_id
+    JOIN Vehicle ON Buy.vin = Vehicle.vin
+    WHERE Vehicle.vin = $enteredVIN";
+    $result_seller_person = mysqli_query($db, $query_seller_person);
+    $array_seller_person = mysqli_fetch_array($result_seller_person, MYSQLI_ASSOC);
+
+20. the following query to get SELLER's information as business:
+$query_seller_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
+    JOIN BUY ON Buy.customer_id = Business.customer_id
+    JOIN Vehicle ON Buy.vin = Vehicle.vin
+    WHERE Vehicle.vin = $enteredVIN";
+    $result_seller_business = mysqli_query($db, $query_seller_business);
+    $array_seller_business = mysqli_fetch_array($result_seller_business, MYSQLI_ASSOC);\
+
+21. the following query to get BUYER's information as person:
+$query_buyer_person = "SELECT customer_first_name, customer_last_name FROM Person
+    JOIN Sell ON Sell.customer_id = Person.customer_id
+    JOIN Vehicle ON Sell.vin = Vehicle.vin
+    WHERE Vehicle.vin = $enteredVIN";
+    $result_buyer_person = mysqli_query($db, $query_buyer_person);
+    $array_buyer_person = mysqli_fetch_array($result_buyer_person, MYSQLI_ASSOC);
+
+22. the following query to get BUYER's information as business:
+$query_buyer_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
+    JOIN Sell ON Sell.customer_id = Business.customer_id
+    JOIN Vehicle ON Sell.vin = Vehicle.vin
+    WHERE Vehicle.vin = $enteredVIN";
+    $result_buyer_business = mysqli_query($db, $query_buyer_business);
+    $array_buyer_business = mysqli_fetch_array($result_buyer_business, MYSQLI_ASSOC);
+
+View Vehicle Detail Form, Salesperson & Public Permission:
+23. the following query extract basic vehicle information
+$query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, sale_price
+FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
+JOIN Repair ON Vehicle.vin = Repair.vin
+WHERE repair_status = 'complete' AND Vehicle.vin = $enteredVIN";
+
+24. query for Vehicle Table
+
+		#update sale_price information in Vehicle table.
+		query = "UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = $enteredVin;"
+
+
+		#Get the vehicle information by the given vin number
+		query = "SELECT vin, vehicle_mileage, vehicle_description, model_name, model_year, type_name, manufacturer_name, sale_price
+		FROM Vehicle 
+		WHERE vin = '$enteredVin' ;"
+
+
+		#Update the sale price for the vehicle because we add a repair.
+		query = "UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = '$enteredVin';"
+
+		#Add a new tuple into the Vehicle Table, a new Vehicle information.
+		query = "INSERT INTO Vehicle ".
+		"VALUES('$enteredVin', $enteredvehicle_mileage, '$enteredvehicle_description', ".
+		"'$enteredmodel_name', $enteredmodel_year, '$enteredtype_name',".
+		"'$enteredmanufacturer_name', $sale_new_price );"
+
+		#Delete a tuple from Vehicle Table with the given Vin.
+		query = "DELETE FROM Vehicle WHERE vin = $vin;"
+
+		#Update the vehicle_mileage to $enteredvehicle_mileage in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle SET vehicle_mileage = '$enteredvehicle_mileage' WHERE vin = '$enteredVin';"
+
+		#Update the vehicle_description to $enteredvehicle_description in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle SET vehicle_description = '$enteredvehicle_description' WHERE vin = '$enteredVin';"
+
+
+		#Update the model_name to $enteredmodel_name in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle SET model_name = '$enteredmodel_name' WHERE vin = '$enteredVin'"
+
+
+		#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle SET model_year = '$enteredmodel_year' WHERE vin = '$enteredVin';"
+
+		#Update the model_year to $enteredmodel_year in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle SET manufacturer_name = '$enteredmanufacturer_name' WHERE vin = '$enteredVin'"
+
+
+		#Update the sale_price to $new_sale_price in the Vehicle table by the given enteredVin
+		query = "UPDATE Vehicle  SET sale_price = $new_sale_price WHERE vin = '$enteredVin';"
+
+25. query for Repair Table
+		#Find out the repair_status for the given Vin and the repair status is not 'completed', so we could judge whether we could add or delete/edit a repair history
+		query = "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND repair_status != 'completed';"
+
+		#Add a new tuple into the Repair table
+		query = "INSERT INTO Repair (vin, start_date, repair_status, repair_description, vendor_name, repair_cost, inventory_clerk_permission, end_date)"
+		    ."VALUES('$enteredVin', '$enteredStart_date', '$enteredRepair_status', ".
+		"'$enteredRepair_Description', '$enteredVendor_name', '$enteredRepair_cost',".
+		"'$enteredInventory_clerk_permssion', '$enteredEnd_date');"
+
+		#Find out the repair status from the Repair Table by the given Vin and the start date, and the repair status is completed, so we could judge whether we could add or delete/edit a repair history
+		query = "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed';"
+
+		#Delete a tuple from Repair by the given vin and start date
+		query = "DELETE FROM Repair WHERE vin = '$vin' AND start_date = '$start_date' ;"
+
+		# get the Repair information by the given conditions.
+		query = "SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission 
+		FROM Repair 
+		WHERE vin = $enteredVin AND start_date = '$enteredStart_date' AND end_date = '$enteredEnd_date'  AND repair_status = '$enteredRepair_status' 
+		AND repair_description = '$enteredRepair_Description'  AND vendor_name = '$enteredVendor_name'  AND repair_cost = '$enteredRepair_cost' 
+		AND nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number'  AND inventory_clerk_permission = '$enteredInventory_clerk_permssion' "
+
+		#Get all repair status equals to 'completed' and the vin number is $enteredVin and start_date is $enteredStart_date from Repair Table
+		query = " SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ;"
+
+		#update end date information in Repair table.
+		query = "UPDATE Repair SET end_date = '$enteredEnd_date' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'"
+
+		#update repair_status information in Repair table.
+		query = "UPDATE Repair SET repair_status = '$enteredRepair_status' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';"
+
+		#update repair_description information in Repair table.
+		query = "UPDATE Repair SET repair_description = '$enteredRepair_Description' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';"
+
+		#update vendor_name information in Repair table.
+		query = "UPDATE Repair SET vendor_name = '$enteredVendor_name' WHERE vin = '$enteredVin'  AND start_date = '$enteredStart_date';"
+
+		#update repair_cost information in Repair table.
+		query = "UPDATE Repair SET repair_cost = $enteredRepair_cost WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';"
+
+
+		#update nhtsa_recall_compaign_number information in Repair table.
+		query = "UPDATE Repair SET nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';"
+
+		#update inventory_clerk_permission information in Repair table.
+		query = "UPDATE Repair SET inventory_clerk_permission = '$enteredInventory_clerk_permssion' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date';"
+
+
+
+26. query for Recall Table
+		#Add a new tuple into the Recall Table.
+		query = "INSERT INTO Recall VALUES('$enteredrecall_manufacturer','$enteredrecall_description','$enteredNHTSA_recall_compaign_number');"
+
+		#Delete a tuple from Recall Table with the given NHTSA_recall_compaign_number.
+		query = "DELETE FROM Recall WHERE NHTSA_recall_compaign_number = $enteredNHTSA_recall_compaign_number;"
+
+		#Update the recall_manufacturer to $enteredrecall_manufacturer in the Recall table by the given NHTSA_recall_compaign_number
+		query = "UPDATE Recall SET recall_manufacturer = '$enteredrecall_manufacturer' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'"
+
+		#Update the recall_description to $enteredrecall_description in the Recall table by the given NHTSA_recall_compaign_number
+		query = "UPDATE Recall SET recall_description = '$enteredrecall_description' WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';"
+
+		#Pull recall_manufacturer, recall_description, NHTSA_recall_compaign_number from recall table by the given enteredNHTSA_recall_compaign_number
+		query = "SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number FROM Recall WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number';"
+
+27. query for Buy Table
+		#Add a new tuple into the Buy Table, a new Purchase record.
+		query = "INSERT INTO Buy (vin, customer_id, inventory_clerk_permission, purchase_date, purchase_price, purchase_condition, KBB_value)  VALUES('$enteredVin', '$enteredCustomer_id', '$enteredInventory_clerk_permission', '$enteredPurchase_date', $enteredPurchase_price, 
+		' $enteredPurchase_condition', $enteredKBB_value ) "
+
+		#Delete a tuple from Buy Table with the given Vin.
+		query = "DELETE FROM Buy WHERE vin = $enteredVin;"
+
+		#Update the Buy table for the given vin, and set the customer_id to the enteredCustomer_id
+		query = "UPDATE Buy SET customer_id = '$enteredCustomer_id' WHERE vin = '$enteredVin';"
+
+		#Update the Buy table for the given vin, and set the inventory_clerk_permission to the enteredInventory_clerk_permission
+		query = "UPDATE Buy SET inventory_clerk_permission = '$enteredInventory_clerk_permission' WHERE vin = '$enteredVin';"
+
+		#Update the Buy table for the given vin, and set the purchase_date to the enteredPurchase_date
+		query = "UPDATE Buy SET purchase_date = '$enteredPurchase_date' WHERE vin = '$enteredVin';"
+
+		#Update the Buy table for the given vin, and set the purchase_condition to the enteredPurchase_condition
+		query = "UPDATE Buy SET purchase_condition = '$enteredPurchase_condition' WHERE vin = '$enteredVin';"
+
+		#Update the Buy table for the given vin, and set the KBB_value to the enteredKBB_value
+		query = "UPDATE Buy SET KBB_value = '$enteredKBB_value' WHERE vin = '$enteredVin';"
+
+		#Update the purchase_price to $enteredsale_price in the Buy table by the given enteredVin
+		query = "UPDATE Buy SET purchase_price = $enteredsale_price WHERE vin = '$enteredVin';"
+
+		#Pull all columns informations the Buy ordered by purchase_date desc
+		query = "SELECT * FROM Buy ORDER BY purchase_date DESC;"
+
+28. query to generate the Average Time in Inventory Report:
+
+//On view_average_time_in_inventory_report
+	$query =
+    	"SELECT vehicletype.type_name AS AAA, IFNULL(otbl.average_time_in_inventory, 'N/A') AS BBB ".
+    	"FROM vehicletype LEFT JOIN ( ".
+        	"SELECT Vehicle.type_name AS type_name, ".
+	    	"ROUND(AVG(tbl.dateDiff),1) AS average_time_in_inventory ".
+	    	"FROM (SELECT Sell.vin AS vin, DATEDIFF(Sell.sale_date, Buy.purchase_date) AS dateDiff ".
+            	"FROM Sell LEFT JOIN Buy ON Sell.vin = Buy.vin ".
+            	"WHERE Buy.purchase_date IS NOT NULL AND Sell.sale_date IS NOT NULL)tbl ".
+	    	"LEFT JOIN Vehicle ON Vehicle.vin = tbl.vin ".
+	    	"GROUP BY Vehicle.type_name ".
+	    	"ORDER BY Vehicle.type_name)otbl ".
+    	"ON vehicletype.type_name = otbl.type_name";
+		 
+29. query to generate the Inventory Age Report:
+
+//On view_inventory_age_report.php:
+	$query =
+    	"SELECT VehicleType.type_name, IFNULL(avg_inventory_age,'N/A') AS avginventoryage, ".
+    	"IFNULL(max_inventory_age, 'N/A') AS maxinventoryage, IFNULL(min_inventory_age, 'N/A') AS mininventoryage ".
+    	"FROM VehicleType LEFT JOIN ( ".
+    		"SELECT Vehicle.type_name, ".
+    		"ROUND(AVG(DATEDIFF(CURRENT_DATE, Buy.purchase_date)),1) AS avg_inventory_age, ".
+    		"MAX(DATEDIFF(CURRENT_DATE, Buy.purchase_date)) AS max_inventory_age,  ".
+    		"MIN(DATEDIFF(CURRENT_DATE, Buy.purchase_date)) AS min_inventory_age ".
+    		"FROM Vehicle LEFT OUTER JOIN Buy ON Vehicle.vin = Buy.vin ".
+    		"RIGHT JOIN VehicleType ON Vehicle.type_name = VehicleType .type_name ".
+    		"WHERE Vehicle.vin NOT IN (SELECT Sell .vin FROM Sell) ".
+    		"GROUP BY Vehicle .type_name)tbl ".
+    	"ON VehicleType.type_name = tbl.type_name ".
+    	"ORDER BY tbl.type_name";
+
+30. query to generate the Price per Condition Report:
+
+//On view_price_per_condition_report.php:
+	$query = 
+	"SELECT vehicle_type, ".
+    	"COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Excellent' THEN ROUND(Purchase_price,0) ELSE null END),1),0.0) As excellent, ".
+    	"COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Very Good' THEN Purchase_price ELSE null END),1),0.0) As very_good, " .  
+    	"COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Good' THEN Purchase_price ELSE null END),1),0.0) As good, " .
+    	"COALESCE(ROUND(AVG(CASE WHEN Vehicle_Condition = 'Fair' THEN Purchase_price ELSE null END),1),0.0) As fair ".
+    	"FROM (SELECT Vehicle .vin AS VIN, Vehicle .type_name AS vehicle_type, ".
+    		"COALESCE(Buy.Purchase_price, 0) AS Purchase_price, Buy.purchase_condition AS Vehicle_Condition ".
+    		"FROM Vehicle JOIN Buy ON Buy .vin = Vehicle .vin)Vehicle_Sales_Table ".
+    	"GROUP BY vehicle_type ".
+    	"ORDER BY vehicle_type";
+
+31. query to generate the Repair Statistics Report:
+
+//On view_repair_statistics_report.php:
+	$query = 
+	"SELECT Repair.vendor_name, COUNT(Repair.vendor_name) AS num_of_repairs, ".
+        "SUM(Repair.repair_cost) AS total_repair_cost,  ".
+        "ROUND(AVG(rep_ven.rep_times),1) AS avg_repair_per_vehicle,  ".
+        "CEILING(AVG(DAY(Repair.end_date) - DAY(Repair.start_date))) AS avg_time_per_repair  ".
+        "FROM Repair JOIN ( ".
+            	"SELECT Repair.vin, ".
+            	"Repair.vendor_name, ".
+            	"COUNT(*) AS rep_times ".
+            	"FROM Repair ".
+            	"GROUP BY Repair.vin,Repair.vendor_name ".
+            	")rep_ven ".
+        "ON Repair.vin = rep_ven.vin ".
+        "WHERE Repair.repair_status = 'completed'  ".
+        "GROUP BY Repair.vendor_name  ".
+        "ORDER BY Repair.vendor_name ";
+
+32. query to generate the Seller History Report:
+
+//On view_rseller_history_report.php:
+	$query = 
+	"SELECT sellernames.name, ".
+    	"COUNT(Buy .vin) AS total_vehicle_number_sold_to_us, ".
+    	"ROUND(AVG(repaircounts.number_of_repair_for_this_vehicle),1) AS repairs_per_vehicle, ".
+    	"ROUND(AVG(Buy.purchase_price),2) AS avg_purchase_price ".
+    	"FROM Buy  ".
+    	"LEFT OUTER JOIN ( ".
+    		"SELECT Buy.vin, ".
+    		"COUNT(repair.vin) as number_of_repair_for_this_vehicle ".
+    		"FROM Buy ".
+    		"LEFT OUTER JOIN Repair ".
+    		"ON Buy.vin = Repair.vin ".
+    		"GROUP BY Buy.vin)repaircounts ".
+    	"ON Buy.vin = repaircounts.vin ".
+    	"JOIN ( ".
+    		"SELECT customer_id, CONCAT(customer_first_name, ' ', customer_last_name) AS name ".
+    		"FROM Person ".
+    		"UNION ".
+    		"SELECT customer_id, business_name AS name ".
+    		"FROM Business)sellernames ".
+    	"ON Buy.customer_id = sellernames.customer_id ".
+    	"GROUP BY sellernames.name";
+
+33. query to generate the View Monthly Sales Report:
+
+//To generate the sales report by year, on view_monthly_sales_report.php::
+	$query_y = 
+	"SELECT ".
+        "YEAR(Sell.sale_date) AS sale_year, ".
+        "COUNT( Sell .vin) AS num_of_vehicle_sold, ".
+        "SUM( Vehicle .sale_price) AS total_sale_income, ".
+        "(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM(repairsum.totalrepaircost)) AS net_income ".
+        "FROM Sell ".
+        "JOIN Vehicle ".
+        "ON Vehicle .vin = Sell .vin ".
+        "JOIN Buy ".
+        "ON Sell .vin = Buy .vin ".
+        "JOIN ( ".
+            "SELECT Repair.vin, ".
+            "SUM(Repair.repair_cost) AS totalrepaircost ".
+            "FROM Repair ".
+            "GROUP BY Repair.vin)repairsum ".
+        "ON Sell .vin = repairsum.vin ".
+        "GROUP BY Sale_year ".
+        "ORDER BY Sale_year DESC";
+
+//Upon the user chose a year, it will be saved in $_POST["yearly"] and be used on view_detailed_yearly_report.php:
+	$query = 
+	"SELECT ".
+	        "MAX(Users.login_first_name) AS top_seller_first_name, ".
+	        "MAX(Users.login_last_name) AS top_seller_last_name, ".
+	        "COUNT(Sell.vin) AS num_vehicle_sold, ".
+	        "SUM(Vehicle.sale_price) AS total_sales ".
+        "FROM Sell ".
+        "JOIN Vehicle ".
+        "ON Vehicle.vin = Sell.vin ".
+        "JOIN Salesperson ".
+        "ON Sell.salesperson_permission = Salesperson.salesperson_permission ".
+        "JOIN Users ".
+        "ON Salesperson.username = Users.username ".
+        "WHERE YEAR(Sell.sale_date) = '{$_POST["yearly"]}' ".
+        "GROUP BY Salesperson.username ".
+        "ORDER BY  ".
+        "num_vehicle_sold DESC, ".
+        "total_sales DESC ";
+
+//To generate the sales report by month, on view_monthly_sales_report.php:
+	$query_m = 
+	"SELECT ".
+        "CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) AS sale_month, ".
+        "COUNT( Sell .vin) AS num_of_vehicle_sold, ".
+        "SUM( Vehicle .sale_price) AS total_sale_income, ".
+        "(SUM( Vehicle .sale_price)- SUM( Buy .purchase_price) - SUM(repairsum.totalrepaircost)) AS net_income ".
+        "FROM Sell JOIN Vehicle ".
+        "ON Vehicle .vin = Sell .vin ".
+        "JOIN Buy ".
+        "ON Sell .vin = Buy .vin ".
+        "JOIN ( ".
+        	"SELECT Repair.vin, ".
+        	"SUM(Repair.repair_cost) AS totalrepaircost ".
+        	"FROM Repair ".
+        	"GROUP BY Repair.vin)repairsum ".
+        "ON Sell .vin = repairsum.vin ".
+        "GROUP BY Sale_month ".
+        "ORDER BY Sale_month DESC";
+
+//Upon the user chose a month, it will be saved in $_POST["monthly"] and be used on view_detailed_monthly_report.php:
+
+	$query = 
+	"SELECT ".
+	        "MAX(Users.login_first_name) AS top_seller_first_name, ".
+	        "MAX(Users.login_last_name) AS top_seller_last_name, ".
+	        "COUNT(Sell.vin) AS num_vehicle_sold, ".
+	        "SUM(Vehicle.sale_price) AS total_sales ".
+        "FROM Sell ".
+        "JOIN Vehicle ".
+        "ON Vehicle.vin = Sell.vin ".
+        "JOIN Salesperson ".
+        "ON Sell.salesperson_permission = Salesperson.salesperson_permission ".
+        "JOIN Users ".
+        "ON Salesperson.username = Users.username ".
+        "WHERE CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) = '{$_POST["monthly"]}' ".
+        "GROUP BY Salesperson.username ".
+        "ORDER BY  ".
+        "num_vehicle_sold DESC, ".
+        "total_sales DESC ";
