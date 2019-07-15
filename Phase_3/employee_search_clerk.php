@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entered_vin = mysqli_real_escape_string($db, $_POST['vin']);
 
     $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
-             "GROUP_CONCAT(vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
+             "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
              "FROM Vehicle " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
