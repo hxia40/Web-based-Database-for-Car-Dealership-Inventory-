@@ -374,11 +374,6 @@ if (!isset($_SESSION['username'])) {
                     echo "</tr>";
 									}
 
-									print "<tr>";
-                  $get_url="employee_search_manager.php";
-                  print "<td><a href={$get_url}>Back To Search</a></td>";
-                  print "</tr>";
-
                   ?>
 
 

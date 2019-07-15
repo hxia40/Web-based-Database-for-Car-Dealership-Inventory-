@@ -91,12 +91,7 @@ include('lib/common.php');
                           <?php print $row['sale_price'];?>
                       </td>
                   </tr>
-<?php
-                  print "<tr>";
-                  $get_url="public_search.php";
-                  print "<td><a href={$get_url}>Back To Search</a></td>";
-                  print "</tr>";
-?>
+
               </table>
                           </div>
 					 </div>

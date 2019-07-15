@@ -108,10 +108,6 @@ if (!isset($_SESSION['username'])) {
                       </td>
                   </tr>
 <?php
-                  print "<tr>";
-                  $get_url="employee_search_salesperson.php";
-                  print "<td><a href={$get_url}>Back To Search</a></td>";
-                  print "</tr>";
 
                   print "<tr>";
                   $get_url1="search_customer.php?vin={$row['vin']}";

@@ -397,10 +397,6 @@ if (!isset($_SESSION['username'])) {
 									}
 
 
-									print "<tr>";
-                  $get_url="employee_search_manager.php";
-                  print "<td><a href={$get_url}>Back To Search</a></td>";
-                  print "</tr>";
 
 									if (empty($row3['sale_date'])){
 										print "<tr>";

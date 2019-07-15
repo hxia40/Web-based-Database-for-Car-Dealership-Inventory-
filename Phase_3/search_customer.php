@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
 
 					<div class="profile_section">
-						<div class="subtitle">Search for Vehicles</div>
+						<div class="subtitle">Search Customer</div>
 						<form name="searchform" action="search_customer.php?vin=<?php echo $enteredVIN;?>" method="POST">
                             <table>
                                 <!-- <tr>

@@ -6,7 +6,7 @@ include('lib/common.php');
 if (!isset($_SESSION['username'])) {
 	header('Location: public_search.php');
 	exit();
-} else {  
+} else {
     if($_SESSION['permission'] == 2){
         header("Location: employee_search_salesperson.php");
         exit();
@@ -114,16 +114,19 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row['sale_price'];?>
                       </td>
                   </tr>
+									<?php
+									print "<tr>";
+									$get_url3="view_vehicle.php?view=View&vin={$enteredVIN}";
+									print "<td><a href={$get_url3}>Edit This Vehicle</a></td>";
+									print "</tr>";
+									?>
+
+
+
 
                   <th class="subtitle">Most Recent Repair</th>
 
 
-									<?php
-									print "<tr>";
-                  $get_url0="view_repair.php?vin={$enteredVIN}";
-                  print "<td><a href={$get_url0}>View Repair History</a></td>";
-                  print "</tr>";
-									?>
 
                   <tr>
                       <td class="item_label">Repair Start Date</td>
@@ -193,6 +196,11 @@ if (!isset($_SESSION['username'])) {
 									<?php
                   // setup links to view, add repair, edit repair
 
+									print "<tr>";
+                  $get_url0="view_repair.php?vin={$enteredVIN}";
+                  print "<td><a href={$get_url0}>View Repair History</a></td>";
+                  print "</tr>";
+
 									if ($row2['repair_status'] == 'complete') {
 										print "<tr>";
 	                  $get_url1="add_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}";
@@ -213,10 +221,6 @@ if (!isset($_SESSION['username'])) {
 	                  print "</tr>";
 									}
 
-									print "<tr>";
-                  $get_url="employee_search_clerk.php";
-                  print "<td><a href={$get_url}>Back To Search</a></td>";
-                  print "</tr>";
 
                   // echo $_SESSION['permission']
 ?>
