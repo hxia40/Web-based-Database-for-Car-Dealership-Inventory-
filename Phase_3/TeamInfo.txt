@@ -3,3 +3,8 @@ Jinjun Liu    email: jliu788@gatech.edu
 Zijian Xie    email: zxie86@gatech.edu
 Hui Xia       email: hxia40@gatech.edu
 Chen Zhang    email: czhang613@gatech.edu
+
+Credit:
+We used some codes and materials from GTOnline template.
+The cartoon car on the logo image is from: http://www.sclance.com/pngs/car-cartoon-png/view-page-2.htm
+Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
