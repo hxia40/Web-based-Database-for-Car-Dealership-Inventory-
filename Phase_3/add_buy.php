@@ -43,10 +43,10 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
             array_push($error_msg, "ADD ERROR: Please enter a validate Purchase Price... <br>" . __FILE__ . " line: " . __LINE__);
         }else if(empty($enteredPurchase_condition)){
             array_push($error_msg, "ADD ERROR: Please enter a validate Purchase Condition... <br>" . __FILE__ . " line: " . __LINE__);
-        }else if(empty($enteredKBB_value)){
-            array_push($error_msg, "ADD ERROR: Please enter a validate KBB Value... <br>" . __FILE__ . " line: " . __LINE__);
-
         }else{
+	    if(empty($enteredKBB_value)){
+	    	$enteredKBB_value = 0;
+	    }
             $query = "INSERT INTO Buy (vin, customer_id, inventory_clerk_permission, purchase_date, purchase_price, purchase_condition, KBB_value) "
                     ." VALUES('$enteredVin', '$enteredCustomer_id', '$enteredInventory_clerk_permission', '$enteredPurchase_date', $enteredPurchase_price, ".
                 "' $enteredPurchase_condition', $enteredKBB_value ) ";
@@ -81,7 +81,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     <tr>
                                         <td class ="item_label">VIN Number</td>
                                         <td>
-                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" readonly/>
+                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" />
                                         </td>
                                     </tr>
 
@@ -109,7 +109,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     <tr>
                                         <td class="item_label">Purchase Price</td>
                                         <td>
-                                            <input type="number" name= "purchase_price" value="<?php if ($_GET['sale_price']) { print $_GET['sale_price']; } ?>" readonly/>
+                                            <input type="number" name= "purchase_price" value="<?php if ($_GET['sale_price']) { print $_GET['sale_price']; } ?>" />
                                         </td>
                                     </tr>
 
