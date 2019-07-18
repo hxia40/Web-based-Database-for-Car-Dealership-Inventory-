@@ -128,7 +128,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     </tr>
 
                                     <tr>
-                                        <input name = "add" type = "submit" id = "add" value = "Add">
+                                        <input name = "add" type = "submit" id = "add" value = "Submit">
                                         <input type="button" value="Cancel" onclick="history.go(-1)">
                                         <button type="reset" value="Reset">Reset</button>
                                     </tr>
