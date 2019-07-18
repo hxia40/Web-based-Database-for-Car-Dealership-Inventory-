@@ -23,43 +23,24 @@ if (!isset($_SESSION['username'])) {
 
 
     $enteredVIN = $_GET['vin'];
-
     $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
-    manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price, purchase_price
+    manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price
     FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-		JOIN Buy on Vehicle.vin = Buy.vin
+    JOIN Repair ON Vehicle.vin = Repair.vin
     WHERE Vehicle.vin = '$enteredVIN'";
-		$result = mysqli_query($db, $query);
-		include('lib/show_queries.php');
-		$result1 = $result;
 
-    $query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
+    $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
     FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
     JOIN Repair on Vehicle.vin = Repair.vin
     WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+
     $result = mysqli_query($db, $query);
-		include('lib/show_queries.php');
-		$result2 = $result;
+    $result2 = mysqli_query($db, $query2);
+    include('lib/show_queries.php');
 
-
-		$query = "SELECT SUM(repair_cost) AS totalcost FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
-    $result = mysqli_query($db, $query);
-		include('lib/show_queries.php');
-		$result3 = $result;
-		// $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
-
-
-
-
-    if (!is_bool($result1) && (mysqli_num_rows($result1) > 0) ) {
-        $row = mysqli_fetch_array($result1, MYSQLI_ASSOC);
-        // $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-    } else {
-        array_push($error_msg,  "Query ERROR: Failed to fetch Vehicle Detail Information... <br>".  __FILE__ ." line:". __LINE__ );
-    }
-		if (!is_bool($result3) && (mysqli_num_rows($result3) > 0) ) {
-        $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
-        // $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+    if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
     } else {
         array_push($error_msg,  "Query ERROR: Failed to fetch Vehicle Detail Information... <br>".  __FILE__ ." line:". __LINE__ );
     }
@@ -68,9 +49,11 @@ if (!isset($_SESSION['username'])) {
 
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+	<title>GTOnline Edit Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	</head>
-
 	<body>
     	<div id="main_container">
         <?php include("lib/menu.php"); ?>
@@ -133,26 +116,6 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row['sale_price'];?>
                       </td>
                   </tr>
-
-									<tr>
-                      <td class="item_label">Purchase Price</td>
-                      <td>
-                          <?php print $row['purchase_price'];?>
-                      </td>
-                  </tr>
-									<tr>
-                      <td class="item_label">Total Repair Cost</td>
-                      <td>
-                          <?php
-													if (empty($row3['totalcost'])){
-														$row3['totalcost'] = '0';
-														print $row3['totalcost'];
-													} else {
-														print $row3['totalcost'];
-													}
-													?>
-                      </td>
-                  </tr>
 									<?php
 									print "<tr>";
 									$get_url3="view_vehicle.php?view=View&vin={$enteredVIN}";
@@ -160,45 +123,91 @@ if (!isset($_SESSION['username'])) {
 									print "</tr>";
 									?>
 
-                  <th class="subtitle">Repair</th>
-								</table>
-								<table>
-
-									<?php
-									echo "<table border='1'>";
-									echo "<tr><td>Vendor</td><td>Start Date</td><td>End Date</td><td>Status</td><td>Cost</td><td>Recall Number</td></tr>";
-
-
-									if (is_bool($result2) && (mysqli_num_rows($result2) == 0) ) {
-											array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
-									}
-									while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
-//                            print_r($row);
-//                            echo"<br>"
-											echo "<tr><td>{$row2['vendor_name']}</td><td>{$row2['start_date']}</td><td>{$row2['end_date']}</td><td>{$row2['repair_status']}</td><td>{$row2['repair_cost']}</td><td>{$row2['nhtsa_recall_compaign_number']}</td></tr>";
-											//
-									}
-									?>
 
 
 
+                  <th class="subtitle">Most Recent Repair</th>
 
 
 
+                  <tr>
+                      <td class="item_label">Repair Start Date</td>
+                      <td>
+                          <?php print $row2['start_date'];?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Repair End Date</td>
+                      <td>
+                          <?php
+													if ($row2['end_date'] != '1970-01-01 00:00:00'){
+													print $row2['end_date'];
+												} else {
+													print "N/A";
+												}
+												?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Repair Status</td>
+                      <td>
+                          <?php print $row2['repair_status'];?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Repair Description</td>
+                      <td>
+                      <button id="b1">Repair Description</button>
+                        <div id="my_dialog" title="Repair Description">
+                        <p><?php print $row2['repair_description'];?></p>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $(function() {
+                                $( "#my_dialog" ).dialog({
+                                autoOpen: false
+                                });
+                                });
+                                $("#b1").click(function(){
+                                    $( "#my_dialog" ).dialog( "open" );
+                                    })
+                                })
+                        </script>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Repair Cost</td>
+                      <td>
+                          <?php print $row2['repair_cost'];?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Vendor Name</td>
+                      <td>
+                          <?php print $row2['vendor_name'];?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Recall Number</td>
+                      <td>
+                          <?php print $row2['nhtsa_recall_compaign_number'];?>
+                      </td>
+                  </tr>
 
-<!--
                   <th class="subtitle">Purhcase Information</th>
                   <tr>
                       <td class="item_label">Purchased Clerk Permission</td>
                       <td>
-                          <?php
-													// print $row2['inventory_clerk_permission'];
-													?>
+                          <?php print $row2['inventory_clerk_permission'];?>
                       </td>
-                  </tr> -->
+                  </tr>
+                  <tr>
+                      <td class="item_label">Purchase Price</td>
+                      <td>
+                          <?php print $row2['purchase_price'];?>
+                      </td>
+                  </tr>
 
-								</table>
-								<table>
 
 
 									<?php
@@ -206,28 +215,28 @@ if (!isset($_SESSION['username'])) {
 
 									print "<tr>";
                   $get_url0="view_repair.php?vin={$enteredVIN}";
-                  print "<td><a href={$get_url0}>View/Edit/Add/Delete Repairs</a></td>";
+                  print "<td><a href={$get_url0}>View Repair History</a></td>";
                   print "</tr>";
 
-
-										// print "<tr>";
-	                  // $get_url1="add_repair.php?vin={$enteredVIN}}";
-	                  // print "<td><a href={$get_url1}>Add Repair</a></td>";
-	                  // print "</tr>";
-										//
-										//
-										// print "<tr>";
-	                  // $get_url2="edit_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}".
-	                  //     "&start_date={$row2['start_date']}&repair_description={$row2['repair_description']}&vendor_name={$row2['vendor_name']}".
-	                  //     "&repair_cost={$row2['repair_cost']}&nhtsa_recall_compaign_number={$row2['nhtsa_recall_compaign_number']}".
-	                  //     "&inventory_clerk_permission = {$row2['inventory_clerk_permission']}&end_date ={$row2['end_date']}";
-	                  // print "<td><a href={$get_url2}>Edit Ongoing Repair</a></td>";
-	                  // print "</tr>";
-	                  // print "<tr>";
-	                  // $get_url3="delete_repair.php?vin={$enteredVIN}&start_date={$row2['start_date']}";
-	                  // print "<td><a href={$get_url3}>Delete Ongoing Repair</a></td>";
-	                  // print "</tr>";
-
+									if ($row2['repair_status'] == 'complete') {
+										print "<tr>";
+	                  $get_url1="add_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}";
+	                  print "<td><a href={$get_url1}>Add Repair</a></td>";
+	                  print "</tr>";
+									}
+									if ($row2['repair_status'] != 'complete' ) {
+										print "<tr>";
+	                  $get_url2="edit_repair.php?vin={$enteredVIN}&repair_status={$row2['repair_status']}".
+	                      "&start_date={$row2['start_date']}&repair_description={$row2['repair_description']}&vendor_name={$row2['vendor_name']}".
+	                      "&repair_cost={$row2['repair_cost']}&nhtsa_recall_compaign_number={$row2['nhtsa_recall_compaign_number']}".
+	                      "&inventory_clerk_permission = {$row2['inventory_clerk_permission']}&end_date ={$row2['end_date']}";
+	                  print "<td><a href={$get_url2}>Edit Ongoing Repair</a></td>";
+	                  print "</tr>";
+	                  print "<tr>";
+	                  $get_url3="delete_repair.php?vin={$enteredVIN}&start_date={$row2['start_date']}";
+	                  print "<td><a href={$get_url3}>Delete Ongoing Repair</a></td>";
+	                  print "</tr>";
+									}
 
 
                   // echo $_SESSION['permission']

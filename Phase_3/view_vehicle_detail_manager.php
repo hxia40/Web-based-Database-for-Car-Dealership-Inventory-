@@ -95,6 +95,9 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
 <?php include("lib/header.php"); ?>
 		<title>GTOnline Edit Profile</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	</head>
 
 	<body>
@@ -105,7 +108,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 				<div class="center_left">
 					<!-- <div class="title_name"><?php //print $row['first_name'] . ' ' . $row['last_name']; ?></div> -->
 					<div class="features">
-                           <div class="View vehicle detail section">
+              <div class="View vehicle detail section">
 							<div class="subtitle">View Vehicle Detail</div>
 
               <table>
@@ -168,8 +171,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
                   <th class="subtitle">Repair Information</th>
                   <tr>
-                      <td class="item_label">Total Cost</td>
-                      <td>
+                      <td class="item_label">Total Repair Cost: 
                           <?php
 													if (empty($row4['totalcost'])){
 														$row4['totalcost'] = '0';
@@ -178,28 +180,60 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 														print $row4['totalcost'];
 													}
 													?>
-                      </td>
+                        </td>
                   </tr>
-								</table>
-								<table>
-									<?php
-									echo "<table border='1'>";
-									echo "<tr><td>Vendor</td><td>Start Date</td><td>End Date</td><td>Status</td><td>Cost</td><td>Recall Number</td><td>Repair Description</td></tr>";
-
+                </table>
+                <table>
+								<table border='1'>
+								<tr>
+                <td>Vendor</td>
+                <td>Start Date</td>
+                <td>End Date</td>
+                <td>Status</td>
+                <td>Cost</td>
+                <td>Recall Number</td>
+                <td>Repair Description</td>
+                </tr>
+                <?php
 									if (is_bool($result5) && (mysqli_num_rows($result5) == 0) ) {
 											array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
-									}
+                  }
+                  $button_num = 1;
 									while ($row5 = mysqli_fetch_array($result5, MYSQLI_ASSOC)) {
-											echo "<tr><td>{$row5['vendor_name']}</td><td>{$row5['start_date']}</td><td>{$row5['end_date']}</td><td>{$row5['repair_status']}</td><td>{$row5['repair_cost']}</td><td>{$row5['nhtsa_recall_compaign_number']}</td>";
-											echo "<td>";
-											echo "{$row5['repair_description']}";
-											echo "</td></tr>";
-											//
-									}
-									?>
+                    //$button_id = "#b1";
+                    //$dialog_id = "#my_dialog";
+                    $button_id = "#b" . "$button_num";
+                    $dialog_id = "#my_dialog" . "$button_num";
+                    //echo "$dialog_id";
+                ?>
+								<tr>
+                <td><?php echo $row5['vendor_name'] ?></td>
+                <td><?php echo $row5['start_date'] ?></td>
+                <td><?php echo $row5['end_date'] ?></td>
+                <td><?php echo $row5['repair_status']?></td>
+                <td><?php echo $row5['repair_cost'] ?></td>
+                <td><?php echo $row5['nhtsa_recall_compaign_number'] ?></td>
+								<!--dialog box-->
+								<td>
+                <!--
+                <script>$(document).ready(function(){$(function(){$("#my_dialog").dialog({autoOpen: false});});$("#b1").click(function(){$("#my_dialog").dialog("open");})})</script>
+                -->
+                <script>$(document).ready(function(){$(function(){$(<?php echo '"' . $dialog_id . '"'; ?>).dialog({autoOpen: false});});$(<?php echo '"' . $button_id . '"'; ?>).click(function(){$(<?php echo '"' . $dialog_id . '"'; ?>).dialog("open");})})</script>
+								
+                <button id=<?php echo '"' . "b" . "$button_num" . '"'; ?>>Repair Description</button>
+								<div id=<?php echo '"' . "my_dialog" . "$button_num" . '"'; ?> title="Repair Description">
+								<p>
+								<?php print $row5['repair_description']; ?>
+						    </p>
+								</div>
+								</td>
+								</tr>
+                <?php $button_num = $button_num + 1;
+                } ?>
 								</table>
-								<table>
+                </table>
 
+                <table>
                   <th class="subtitle">Purhcase Transaction</th>
                   <tr>
                   <td class="item_label">Clerk's First Name</td>
@@ -228,9 +262,9 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
                           <?php print $row2['purchase_condition'];?>
                       </td>
                   </tr>
+                  </table>
 
-
-
+                  <table>
 									<th class="subtitle">Seller Information</th>
                   <tr>
                       <td class="item_label">Customer ID</td>
@@ -274,8 +308,6 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
                           <?php print $row2['customer_zip'];?>
                       </td>
                   </tr>
-
-
 
 											<?php
 											$current_customer_id = $row2['seller_customer_id'];
@@ -426,9 +458,9 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 									}
 								}
                   ?>
-
               </table>
-                          </div>
+
+              </div>
 					 </div>
 				</div>
 
