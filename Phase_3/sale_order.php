@@ -8,12 +8,13 @@ if ($_SESSION['permission'] != 2) {
 }
 $enteredVIN = $_GET['vin'];
 $enteredcustomer_id = $_GET['customer_id'];
+$enteredsalesperson_permission = 'salesperson_permission_'. $_SESSION['username'];
 
 ?>
 
 <?php
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $enteredsalesperson_permission = mysqli_real_escape_string($db, $_POST['salesperson_permission']);
+
         $enteredsale_date = mysqli_real_escape_string($db, $_POST['sale_date']);
             $query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date)"
                     ."VALUES('$enteredVIN', '$enteredcustomer_id', '$enteredsalesperson_permission', '$enteredsale_date')";
@@ -43,12 +44,7 @@ $enteredcustomer_id = $_GET['customer_id'];
 
                             <form name = "sale_order" action = "sale_order.php?vin=<?php echo $enteredVIN;?>&customer_id=<?php echo $enteredcustomer_id;?>" method="post">
                                 <table>
-                                    <tr>
-                                        <td class ="item_label">Salesperson Permission</td>
-                                        <td>
-                                            <input type="text" name = "salesperson_permission" value="<?php if ($_POST['salesperson_permission']) { print $_POST['salesperson_permission']; } ?>" />
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td class ="item_label">VIN</td>
                                         <td>
@@ -64,10 +60,6 @@ $enteredcustomer_id = $_GET['customer_id'];
                                             <input name = "sale_date" type = "date" id = "sale_date" value="<?php if ($_POST['sale_date']) { print $_POST['sale_date']; } ?>" >
                                         </td>
                                     </tr>
-
-
-
-
                                     <tr>
                                         <input name = "add" type = "submit" id = "add" value = "Confirm Sale! ">
                                     </tr>

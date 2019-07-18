@@ -22,26 +22,54 @@ if (!isset($_SESSION['username'])) {
 }
 
 
-    $enteredVIN = $_GET['vin'];
-    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
-    manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price
-    FROM Vehicle
-    JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-    JOIN Repair ON Vehicle.vin = Repair.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
+    // $enteredVIN = '0OZ6776OUA0065975';//person
+		// $enteredVIN = '036JZFZ8I3K433701';//business
+		$enteredVIN = $_GET['vin'];
 
-    $query2 = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair .nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
+// query to get basic info
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
+    manufacturer_name, sale_price, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color
+		FROM Vehicle
+		JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
+		WHERE Vehicle.vin = '$enteredVIN'";
+		$result = mysqli_query($db, $query);
+		include('lib/show_queries.php');
+		$result1 = $result;
+
+		if (!is_bool($result1) && (mysqli_num_rows($result1) > 0) ) {
+        $row1 = mysqli_fetch_array($result1, MYSQLI_ASSOC);
+    } else {
+        array_push($error_msg,  "Query ERROR: Failed to fetch Basic Information... <br>".  __FILE__ ." line:". __LINE__ );
+    }
+
+
+// query to get repair
+$query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
+FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
+JOIN Repair on Vehicle.vin = Repair.vin
+WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+$result = mysqli_query($db, $query);
+include('lib/show_queries.php');
+$result5 = $result;
+
+
+// query to get purchase
+    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
     Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
     FROM Vehicle
     JOIN Buy ON Vehicle.vin = Buy.vin
-    JOIN Repair ON Vehicle.vin = Repair.vin
     JOIN Customer ON Buy.customer_id = Customer.customer_id
     JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission
     JOIN Users ON InventoryClerk.username = Users.username
     WHERE Vehicle.vin = '$enteredVIN'";
+		$result = mysqli_query($db, $query);
+		include('lib/show_queries.php');
+		$result2 = $result;
+		$row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
-    $query3 = "SELECT Vehicle.vin,
-    Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
+
+// query to get sell
+    $query = "SELECT Vehicle.vin, Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
     login_first_name AS login_first_name2, login_last_name AS login_last_name2
     FROM Vehicle
     JOIN Sell ON Vehicle.vin = Sell.vin
@@ -49,50 +77,19 @@ if (!isset($_SESSION['username'])) {
     JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission
     JOIN Users ON Salesperson.username = Users.username
     WHERE Vehicle.vin = '$enteredVIN'";
-
-// setup queries to get SELLERS name, ethier a person or business:
-    $query_seller_person = "SELECT customer_first_name, customer_last_name FROM Person
-    JOIN BUY ON Buy.customer_id = Person.customer_id
-    JOIN Vehicle ON Buy.vin = Vehicle.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
-    $result_seller_person = mysqli_query($db, $query_seller_person);
-    $array_seller_person = mysqli_fetch_array($result_seller_person, MYSQLI_ASSOC);
-
-    $query_seller_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
-    JOIN BUY ON Buy.customer_id = Business.customer_id
-    JOIN Vehicle ON Buy.vin = Vehicle.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
-    $result_seller_business = mysqli_query($db, $query_seller_business);
-    $array_seller_business = mysqli_fetch_array($result_seller_business, MYSQLI_ASSOC);
-
-// setup queries to get BUYERS name, ethier a person or business:
-    $query_buyer_person = "SELECT customer_first_name, customer_last_name FROM Person
-    JOIN Sell ON Sell.customer_id = Person.customer_id
-    JOIN Vehicle ON Sell.vin = Vehicle.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
-    $result_buyer_person = mysqli_query($db, $query_buyer_person);
-    $array_buyer_person = mysqli_fetch_array($result_buyer_person, MYSQLI_ASSOC);
-
-    $query_buyer_business = "SELECT business_name, primary_contact_name, primary_contact_title FROM Business
-    JOIN Sell ON Sell.customer_id = Business.customer_id
-    JOIN Vehicle ON Sell.vin = Vehicle.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
-    $result_buyer_business = mysqli_query($db, $query_buyer_business);
-    $array_buyer_business = mysqli_fetch_array($result_buyer_business, MYSQLI_ASSOC);
+		$result = mysqli_query($db, $query);
+		include('lib/show_queries.php');
+		$result3 = $result;
+    $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
 
 
-    $result = mysqli_query($db, $query);
-    $result2 = mysqli_query($db, $query2);
-    $result3 = mysqli_query($db, $query3);
-    include('lib/show_queries.php');
+// query to get total cost
+$query = "SELECT SUM(repair_cost) AS totalcost FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
+$result = mysqli_query($db, $query);
+include('lib/show_queries.php');
+$result4 = $result;
+$row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
-    if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
-        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-        $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
-    } else {
-        array_push($error_msg,  "Query ERROR: Failed to fetch Vehicle Detail Information... <br>".  __FILE__ ." line:". __LINE__ );
-    }
 ?>
 
 
@@ -116,104 +113,106 @@ if (!isset($_SESSION['username'])) {
                   <tr>
                       <td class="item_label">VIN</td>
                       <td>
-                          <?php print $row['vin']; ?>
+                          <?php print $row1['vin']; ?>
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Mileage</td>
                       <td>
-                          <?php print $row['vehicle_mileage'];?>
+                          <?php print $row1['vehicle_mileage'];?>
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Vehicle Description</td>
                       <td>
-                          <?php print $row['vehicle_description'];?>
+                          <?php
+													function popup($var){
+														alert($var); // this is the message in ""
+													}
+													print $row1['vehicle_description'];
+													// alert($row1['vehicle_description']);
+													?>
+
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Model Name</td>
                       <td>
-                          <?php print $row['model_name'];?>
+                          <?php print $row1['model_name'];?>
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Model Year</td>
                       <td>
-                          <?php print $row['model_year'];?>
+                          <?php print $row1['model_year'];?>
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Manufacturer Name</td>
                       <td>
-                          <?php print $row['manufacturer_name'];?>
+                          <?php print $row1['manufacturer_name'];?>
                       </td>
                   </tr>
                   <tr>
                       <td class="item_label">Vehicle Color</td>
                       <td>
-                          <?php print $row['color'];?>
+                          <?php print $row1['color'];?>
                       </td>
                   </tr>
-
-
                   <tr>
                       <td class="item_label">Sale Price</td>
                       <td>
-                          <?php print $row['sale_price'];?>
+                          <?php print $row1['sale_price'];?>
                       </td>
                   </tr>
+
                   <th class="subtitle">Repair Information</th>
                   <tr>
-                      <td class="item_label">Repair Start Date</td>
+                      <td class="item_label">Total Cost</td>
                       <td>
-                          <?php print $row2['start_date'];?>
+                          <?php
+													if (empty($row4['totalcost'])){
+														$row4['totalcost'] = '0';
+														print $row4['totalcost'];
+													} else {
+														print $row4['totalcost'];
+													}
+													?>
                       </td>
                   </tr>
-                  <tr>
-                      <td class="item_label">Repair End Date</td>
-                      <td>
-                          <?php print $row2['end_date'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Repair Status</td>
-                      <td>
-                          <?php print $row2['repair_status'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Repair Description</td>
-                      <td>
-                          <?php print $row2['repair_description'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Repair Cost</td>
-                      <td>
-                          <?php print $row2['repair_cost'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Vendor Name</td>
-                      <td>
-                          <?php print $row2['vendor_name'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Recall Number</td>
-                      <td>
-                          <?php print $row2['nhtsa_recall_compaign_number'];?>
-                      </td>
-                  </tr>
+								</table>
+								<table>
+									<?php
+									echo "<table border='1'>";
+									echo "<tr><td>Vendor</td><td>Start Date</td><td>End Date</td><td>Status</td><td>Cost</td><td>Recall Number</td><td>Repair Description</td></tr>";
 
+									if (is_bool($result5) && (mysqli_num_rows($result5) == 0) ) {
+											array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
+									}
+									while ($row5 = mysqli_fetch_array($result5, MYSQLI_ASSOC)) {
+											echo "<tr><td>{$row5['vendor_name']}</td><td>{$row5['start_date']}</td><td>{$row5['end_date']}</td><td>{$row5['repair_status']}</td><td>{$row5['repair_cost']}</td><td>{$row5['nhtsa_recall_compaign_number']}</td>";
+											echo "<td>";
+											echo "{$row5['repair_description']}";
+											echo "</td></tr>";
+											//
+									}
+									?>
+								</table>
+								<table>
 
-                  <th class="subtitle">Purhcase Information</th>
+                  <th class="subtitle">Purhcase Transaction</th>
                   <tr>
-                  <td class="item_label">Inventory Clerk's Name></td>
+                  <td class="item_label">Clerk's First Name</td>
                     <td>
                       <?php
-                      echo $row2['login_first_name1'] . " " . $row2['login_last_name1'];
+                      echo $row2['login_first_name1'];
+                      ?>
+                    </td>
+                  </tr>
+									<td class="item_label">Clerk's Last Name</td>
+                    <td>
+                      <?php
+                      echo $row2['login_last_name1'];
                       ?>
                     </td>
                   </tr>
@@ -229,153 +228,204 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row2['purchase_condition'];?>
                       </td>
                   </tr>
+
+
+
+									<th class="subtitle">Seller Information</th>
                   <tr>
-                      <td class="item_label">Seller's Customer ID</td>
+                      <td class="item_label">Customer ID</td>
                       <td>
                           <?php print $row2['seller_customer_id'];?>
                       </td>
                   </tr>
-
-                  <tr>
-                  <td class="item_label">Seller's Name</td>
-                  <td>
-                      <?php
-                      // echo var_dump($array_seller_person);
-                      // echo "next<br>";
-                      // echo var_dump($array_seller_business);
-                      if (!is_null($array_seller_person['customer_first_name'])) {
-                        echo ("Person Name: ". $array_seller_person['customer_first_name'] . " " . $array_seller_person['customer_last_name']);
-                      }
-                      else {
-                        echo ("Business Name: " . $array_seller_business['business_name']. ",<br> " . $array_seller_business['primary_contact_name'] . ",<br> " . $array_seller_business['primary_contact_title']);
-                      }
-                      ?>
-                  </tr>
-
-                  <tr>
-                      <td class="item_label">Seller's Phone Number</td>
+									<tr>
+                      <td class="item_label">Phone Number</td>
                       <td>
                           <?php print $row2['phone_number'];?>
                       </td>
                   </tr>
                   <tr>
-                      <td class="item_label">Seller's Email</td>
+                      <td class="item_label">Email</td>
                       <td>
                           <?php print $row2['email'];?>
                       </td>
                   </tr>
-                  <tr>
-                      <td class="item_label">Seller's Address</td>
+									<tr>
+                      <td class="item_label">Street Address</td>
                       <td>
-                          <?php
-                          echo ($row2['customer_street'] . "<br>" . $row2['customer_city'] . ", " . $row2['customer_state']. ", " . $row2['customer_zip']);
-                          ?>
+                          <?php print $row2['customer_street'];?>
+                      </td>
+                  </tr>
+									<tr>
+                      <td class="item_label">City</td>
+                      <td>
+                          <?php print $row2['customer_city'];?>
+                      </td>
+                  </tr>
+									<tr>
+                      <td class="item_label">State</td>
+                      <td>
+                          <?php print $row2['customer_state'];?>
+                      </td>
+                  </tr>
+									<tr>
+                      <td class="item_label">Zip Code</td>
+                      <td>
+                          <?php print $row2['customer_zip'];?>
                       </td>
                   </tr>
 
 
-                  <th class="subtitle">Sell Information</th>
-                  <tr>
-                      <td class="item_label">Buyer's Customer ID</td>
-                      <td>
-                          <?php print $row3['buyer_customer_id'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Salesperson's Name</td>
-                      <td>
-                          <?php
-                          echo $row3['login_first_name2'] . " " . $row3['login_last_name2'];
-                          ?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Sale Date</td>
-                      <td>
-                          <?php print $row3['sale_date'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Buyer's Phone Number</td>
-                      <td>
-                          <?php print $row3['phone_number'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Buyer's Street Address</td>
-                      <td>
-                          <?php print $row3['customer_street'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Buyer's City</td>
-                      <td>
-                          <?php print $row3['customer_city'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Buyer's State</td>
-                      <td>
-                          <?php print $row3['customer_state'];?>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="item_label">Buyer's Zip Code</td>
-                      <td>
-                          <?php print $row3['customer_zip'];?>
-                      </td>
-                  </tr>
-                  <!-- <tr>
-                      <td class="item_label">Buyer's Address</td>
-                      <td>
-                          <?php
-                          // echo ($row3['customer_street'] . "<br>" . $row3['customer_city'] . ", " . $row3['customer_state']. ", " . $row3['customer_zip']);
-                          ?>
-                      </td>
-                  </tr> -->
+
+											<?php
+											$current_customer_id = $row2['seller_customer_id'];
+											$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title FROM Customer LEFT JOIN Person ON Customer.customer_id = Person.customer_id LEFT JOIN business ON Customer.customer_id = Business.customer_id WHERE Customer.customer_id = '$current_customer_id'";
+
+											$result = mysqli_query($db, $query);
+											include('lib/show_queries.php');
+											$result_seller = $result;
+									    $row_seller= mysqli_fetch_array($result_seller, MYSQLI_ASSOC);
+											// var_dump($row10);
+											if (!is_null($row_seller['customer_first_name'])) {
+												echo "<tr>";
+												echo "<td class=\"item_label\"> First Name</td>";
+												echo "<td>";
+												echo $row_seller['customer_first_name'];
+												echo "</td>";
+												echo "</tr>";
+												echo "<tr>";
+												echo "<td class=\"item_label\"> Last Name</td>";
+												echo "<td>";
+												echo $row_seller['customer_last_name'];
+												echo "</td>";
+												echo "</tr>";
+                      } else {
+												echo "<tr>";
+												echo "<td class=\"item_label\"> Business Name</td>";
+												echo "<td>";
+												echo $row_seller['business_name'];
+												echo "</td>";
+												echo "</tr>";
+												echo "<tr>";
+												echo "<td class=\"item_label\"> Primary Contact Name</td>";
+												echo "<td>";
+												echo $row_seller['primary_contact_name'];
+												echo "</td>";
+												echo "</tr>";
+												echo "<td class=\"item_label\"> Primary Contact Title</td>";
+												echo "<td>";
+												echo $row_seller['primary_contact_title'];
+												echo "</td>";
+												echo "</tr>";
+											}
+
+                      ?>
 
 
-                  <?php
-                  // print "<tr>";
-                  if (!is_null($array_buyer_person['customer_first_name'])) {
-                    echo "<tr>";
-                    echo  "<td class=\"item_label\">Buyer's First Name</td>";
-                    echo "<td>";
-                    echo $array_buyer_person['customer_first_name'];
-                    print "</td>";
-                    echo "</tr>";
+									<?php
+									if (mysqli_num_rows($result3) > 0){
 
+									echo "<th class=\"subtitle\">Sale Transaction</th>";
+									echo "<tr>";
+                  echo "<td class=\"item_label\">Salesperson's First Name</td>";
+                	echo "<td>";
+                  echo $row3['login_first_name2'];
+                  echo "</td>";
+                  echo "</tr>";
+									echo "<tr>";
+									echo "<td class=\"item_label\">Salesperson's Last Name</td>";
+                  echo "<td>";
+                  echo $row3['login_last_name2'];
+                  echo "</td>";
+                  echo "</tr>";
+
+									echo "<tr>";
+									echo "<td class=\"item_label\"> Sale Date </td>";
+									echo "<td>";
+                  echo $row3['sale_date'];
+                  echo "</td>";
+                  echo "</tr>";
+
+                  echo "<th class=\"subtitle\">Buyer Information</th>";
+									echo "<tr>";
+									echo "<td class=\"item_label\"> Customer ID </td>";
+									echo "<td>";
+                  echo $row3['buyer_customer_id'];
+                  echo "</td>";
+                  echo "</tr>";
+
+									echo "<tr>";
+									echo "<td class=\"item_label\"> Phone Number </td>";
+									echo "<td>";
+                  print $row3['phone_number'];
+                  echo "</td>";
+                  echo "</tr>";
+									echo "<tr>";
+									echo "<td class=\"item_label\"> Street Address </td>";
+									echo "<td>";
+                  print $row3['customer_street'];
+                  echo "</td>";
+                  echo "</tr>";
+									echo "<tr>";
+									echo "<td class=\"item_label\"> City </td>";
+									echo "<td>";
+                  print $row3['customer_city'];
+									echo "</td>";
+                  echo "</tr>";
+									echo "<tr>";
+									echo "<td class=\"item_label\"> State</td>";
+									echo "<td>";
+                  print $row3['customer_state'];
+									echo "</td>";
+                  echo "</tr>";
+									echo "<tr>";
+									echo "<td class=\"item_label\"> Zip Code</td>";
+									echo "<td>";
+                  print $row3['customer_zip'];
+                  echo "</td>";
+                  echo "</tr>";
+
+									$current_customer_id = $row3['buyer_customer_id'];
+									$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title FROM Customer LEFT JOIN Person ON Customer.customer_id = Person.customer_id LEFT JOIN business ON Customer.customer_id = Business.customer_id WHERE Customer.customer_id = '$current_customer_id'";
+									$result = mysqli_query($db, $query);
+									include('lib/show_queries.php');
+									$result_buyer = $result;
+									$row_buyer = mysqli_fetch_array($result_buyer, MYSQLI_ASSOC);
+									// var_dump($row10);
+									if (!is_null($row_buyer['customer_first_name'])) {
 										echo "<tr>";
-                    echo  "<td class=\"item_label\">Buyer's Last Name</td>";
-                    echo "<td>";
-                    echo $array_buyer_person['customer_last_name'];
-                    print "</td>";
-                    echo "</tr>";
-                  } else if (!is_null($array_buyer_business['business_name'])) {
+										echo "<td class=\"item_label\"> First Name</td>";
+										echo "<td>";
+										echo $row_buyer['customer_first_name'];
+										echo "</td>";
+										echo "</tr>";
 										echo "<tr>";
-                    echo  "<td class=\"item_label\">Buyer's Business Name</td>";
-                    echo "<td>";
-                    echo $array_buyer_business['business_name'];
-                    print "</td>";
-                    echo "</tr>";
-
+										echo "<td class=\"item_label\"> Last Name</td>";
+										echo "<td>";
+										echo $row_buyer['customer_last_name'];
+										echo "</td>";
+										echo "</tr>";
+									} else {
 										echo "<tr>";
-                    echo  "<td class=\"item_label\">Buyer's Primary Contact Name</td>";
-                    echo "<td>";
-                    echo $array_buyer_business['primary_contact_name'];
-                    print "</td>";
-                    echo "</tr>";
+										echo "<td class=\"item_label\"> Business Name</td>";
+										echo "<td>";
+										echo $row_buyer['business_name'];
+										echo "</td>";
+										echo "</tr>";
 										echo "<tr>";
-
-                    echo  "<td class=\"item_label\">Buyer's Primary Contact Title</td>";
-                    echo "<td>";
-                    echo $array_buyer_business['primary_contact_title'];
-                    print "</td>";
-                    echo "</tr>";
+										echo "<td class=\"item_label\"> Primary Contact Name</td>";
+										echo "<td>";
+										echo $row_buyer['primary_contact_name'];
+										echo "</td>";
+										echo "</tr>";
+										echo "<td class=\"item_label\"> Primary Contact Title</td>";
+										echo "<td>";
+										echo $row_buyer['primary_contact_title'];
+										echo "</td>";
+										echo "</tr>";
 									}
-
+								}
                   ?>
-
 
               </table>
                           </div>
