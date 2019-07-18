@@ -44,9 +44,9 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
         }else if(empty($enteredPurchase_condition)){
             array_push($error_msg, "ADD ERROR: Please enter a validate Purchase Condition... <br>" . __FILE__ . " line: " . __LINE__);
         }else{
-	    if(empty($enteredKBB_value)){
-	    	$enteredKBB_value = 0;
-	    }
+            if(empty($enteredKBB_value)){
+                $enteredKBB_value = 0;
+            }
             $query = "INSERT INTO Buy (vin, customer_id, inventory_clerk_permission, purchase_date, purchase_price, purchase_condition, KBB_value) "
                     ." VALUES('$enteredVin', '$enteredCustomer_id', '$enteredInventory_clerk_permission', '$enteredPurchase_date', $enteredPurchase_price, ".
                 "' $enteredPurchase_condition', $enteredKBB_value ) ";
@@ -81,49 +81,49 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     <tr>
                                         <td class ="item_label">VIN Number</td>
                                         <td>
-                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" />
+                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) {print $_POST['vin'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label"> Customer ID </td>
                                         <td>
-                                            <input type="text" name = "customer_id" value="<?php if ($_GET['customer_id']) { print $_GET['customer_id']; } ?>" />
+                                            <input type="text" name = "customer_id" value="<?php if ($_GET['customer_id']) { print $_GET['customer_id']; } else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label"> Inventory Clerk Permission </td>
                                         <td>
-                                            <input type="text" name = "inventory_clerk_permission" value="<?php if ($_GET['inventory_clerk_permission']) { print $_GET['inventory_clerk_permission']; } ?>" />
+                                            <input type="text" name = "inventory_clerk_permission" value="<?php if ($_GET['inventory_clerk_permission']) { print $_GET['inventory_clerk_permission']; }else if($_POST['inventory_clerk_permission']) {print $_POST['inventory_clerk_permission'];}  ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class="item_label">Purchase Date</td>
                                         <td>
-                                            <input type="date" name= "purchase_date" value="<?php if ($_GET['purchase_date']) { print $_GET['purchase_date']; } ?>" />
+                                            <input type="date" name= "purchase_date" value="<?php if ($_GET['purchase_date']) { print $_GET['purchase_date']; } else if($_POST['purchase_date']) {print $_POST['purchase_date'];} ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class="item_label">Purchase Price</td>
                                         <td>
-                                            <input type="number" name= "purchase_price" value="<?php if ($_GET['sale_price']) { print $_GET['sale_price']; } ?>" />
+                                            <input type="number" name= "purchase_price" value="<?php if ($_GET['sale_price']) { print $_GET['sale_price']; }  else if($_POST['sale_price']) {print $_POST['sale_price'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class="item_label">Purchase Condition</td>
                                         <td>
-                                            <input type="text" name= "purchase_condition" value="<?php if ($_GET['purchase_condition']) { print $_GET['purchase_condition']; } ?>" />
+                                            <input type="text" name= "purchase_condition" value="<?php if ($_GET['purchase_condition']) { print $_GET['purchase_condition']; }  else if($_POST['purchase_condition']) {print $_POST['purchase_condition'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class="item_label">KBB Value</td>
                                         <td>
-                                            <input type="number" name= "KBB_value" value="<?php if ($_GET['KBB_value']) { print $_GET['KBB_value']; } ?>" />
+                                            <input type="number" name= "KBB_value" value="<?php if ($_GET['KBB_value']) { print $_GET['KBB_value']; } else if($_POST['KBB_value']) {print $_POST['KBB_value'];}?>" />
                                         </td>
                                     </tr>
 
