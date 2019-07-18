@@ -49,9 +49,11 @@ if (!isset($_SESSION['username'])) {
 
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+	<title>GTOnline Edit Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	</head>
-
 	<body>
     	<div id="main_container">
         <?php include("lib/menu.php"); ?>
@@ -155,7 +157,22 @@ if (!isset($_SESSION['username'])) {
                   <tr>
                       <td class="item_label">Repair Description</td>
                       <td>
-                          <?php print $row2['repair_description'];?>
+                      <button id="b1">Repair Description</button>
+                        <div id="my_dialog" title="Repair Description">
+                        <p><?php print $row2['repair_description'];?></p>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $(function() {
+                                $( "#my_dialog" ).dialog({
+                                autoOpen: false
+                                });
+                                });
+                                $("#b1").click(function(){
+                                    $( "#my_dialog" ).dialog( "open" );
+                                    })
+                                })
+                        </script>
                       </td>
                   </tr>
                   <tr>
