@@ -34,7 +34,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
         if(empty($enteredVin)){
             array_push($error_msg,  "INPUT ERROR: Please input validate Vin Number... <br>".  __FILE__ ." line:". __LINE__ );
         }else{
-            $query = "DELETE FROM Buy WHERE vin = '$enteredVin'";
+            $query = "DELETE FROM Buy WHERE vin = $enteredVin";
             $result = mysqli_query($db, $query);
             if(! $result){
                 array_push($error_msg,  "DELETE ERROR: Failed to delete the Buy history... <br>".  __FILE__ ." line:". __LINE__ );

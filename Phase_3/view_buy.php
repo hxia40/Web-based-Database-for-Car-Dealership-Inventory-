@@ -116,7 +116,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
             }else{
                 $query = "SELECT * ";
                 $from = " FROM Buy ";
-                $where = " WHERE vin = '$enteredVin' ";
+                $where = " WHERE vin = $enteredVin ";
                 if(!empty($enteredCustomer_id)){
                     $where .= " AND customer_id = '$enteredCustomer_id'";
                 }

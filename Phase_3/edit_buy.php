@@ -130,28 +130,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class ="item_label">VIN Number</td>
                                 <td>
-                                    <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" />
+                                    <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } else if ($_POST['vin']) { print $_POST['vin']; } ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label"> Customer ID </td>
                                 <td>
-                                    <input type="text" name = "customer_id" value="<?php if ($_GET['customer_id']) { print $_GET['customer_id']; } ?>" />
+                                    <input type="text" name = "customer_id" value="<?php if ($_GET['customer_id']) { print $_GET['customer_id']; }else if ($_POST['customer_id']) { print $_POST['customer_id']; } ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label"> Inventory Clerk Permission </td>
                                 <td>
-                                    <input type="text" name = "inventory_clerk_permission" value="<?php if ($_GET['inventory_clerk_permission']) { print $_GET['inventory_clerk_permission']; } ?>" />
+                                    <input type="text" name = "inventory_clerk_permission" value="<?php if ($_GET['inventory_clerk_permission']) { print $_GET['inventory_clerk_permission']; } else if ($_POST['inventory_clerk_permission']) { print $_POST['inventory_clerk_permission']; }?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="item_label">Purchase Date</td>
                                 <td>
-                                    <input type="date" name= "purchase_date" value="<?php if ($_GET['purchase_date']) { print $_GET['purchase_date']; } ?>" />
+                                    <input type="date" name= "purchase_date" value="<?php if ($_GET['purchase_date']) { print $_GET['purchase_date']; }else if ($_POST['purchase_date']) { print $_POST['purchase_date']; }  ?>" />
                                 </td>
                             </tr>
 
@@ -165,14 +165,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Purchase Condition</td>
                                 <td>
-                                    <input type="text" name= "purchase_condition" value="<?php if ($_GET['purchase_condition']) { print $_GET['purchase_condition']; } ?>" />
+                                    <input type="text" name= "purchase_condition" value="<?php if ($_GET['purchase_condition']) { print $_GET['purchase_condition']; } else if ($_POST['purchase_condition']) { print $_POST['purchase_condition']; } ?>" />
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="item_label">KKB Value</td>
+                                <td class="item_label">KBB Value</td>
                                 <td>
-                                    <input type="number" name= "KBB_value" value="<?php if ($_GET['KBB_value']) { print $_GET['KBB_value']; } ?>" />
+                                    <input type="number" name= "KBB_value" value="<?php if ($_GET['KBB_value']) { print $_GET['KBB_value']; }else if ($_POST['KBB_value']) { print $_POST['KBB_value']; }  ?>" />
                                 </td>
                             </tr>
 

@@ -22,8 +22,8 @@ if(!is_bool($result) && (mysqli_num_rows($result) > 0)){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
-    $enteredStart_date = mysqli_real_escape_string($db, $_POST['start_date']);
+    $enteredVin = mysqli_real_escape_string($db, $_GET['vin']);
+    $enteredStart_date = mysqli_real_escape_string($db, $_GET['start_date']);
 
     if(empty($enteredVin) || empty($enteredStart_date)){
         header('Location: view_repair.php');
@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
                 $new_sale_price = $previous_sale_price + $change_repair_cost;
 
-                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = '$enteredVin'" ;
+                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = $enteredVin" ;
                 $result = mysqli_query($db, $query);
                 include('lib/show_queries.php');
             }
@@ -192,48 +192,48 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Start Date</td>
                                 <td>
-                                    <input type="date" name= "start_date" value="<?php if ($_GET['start_date']) { print $_GET['start_date']; } ?>" />
+                                    <input type="date" name= "start_date" value="<?php if ($_GET['start_date']) { print $_GET['start_date']; } else if ($_POST['start_date']) { print $_POST['start_date']; } ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Repair Description</td>
                                 <td>
-                                    <input type="text" name = "repair_description" value ="<?php if($_GET['repair_description']) {print $_GET['repair_description'];}?>" />
+                                    <input type="text" name = "repair_description" value ="<?php if($_GET['repair_description']) {print $_GET['repair_description'];} else if($_POST['repair_description']) {print $_POST['repair_description'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Vendor Name</td>
                                 <td>
-                                    <input type="text" name = "vendor_name" value ="<?php if($_GET['vendor_name']) {print $_GET['vendor_name'];}?>" />
+                                    <input type="text" name = "vendor_name" value ="<?php if($_GET['vendor_name']) {print $_GET['vendor_name'];} else if($_POST['vendor_name']) {print $_POST['vendor_name'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Repair Cost</td>
                                 <td>
-                                    <input type="number" name = "repair_cost" value ="<?php if($_GET['repair_cost']) {print $_GET['repair_cost'];}?>" />
+                                    <input type="number" name = "repair_cost" value ="<?php if($_GET['repair_cost']) {print $_GET['repair_cost'];} else if($_POST['repair_cost']) {print $_POST['repair_cost'];} ?>" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class = "item_label">NHTSA Recall Campagin Number</td>
                                 <td>
-                                    <input type="text" name = "nhtsa_recall_compaign_number" value ="<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number'];}?>" />
+                                    <input type="text" name = "nhtsa_recall_compaign_number" value ="<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number'];} else if($_POST['nhtsa_recall_compaign_number']) {print $_POST['nhtsa_recall_compaign_number'];} ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Inventory Clerk Permission</td>
                                 <td>
-                                    <input type="text" name = "inventory_clerk_permission" value ="<?php if($_GET['inventory_clerk_permission']) {print $_GET['inventory_clerk_permission'];}?>" />
+                                    <input type="text" name = "inventory_clerk_permission" value ="<?php if($_GET['inventory_clerk_permission']) {print $_GET['inventory_clerk_permission'];} else if($_POST['inventory_clerk_permission']) {print $_POST['inventory_clerk_permission'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class ="item_label">End Date</td>
                                 <td>
-                                    <input type="date" name= "end_date" value="<?php if ($_GET['end_date']) { print $_GET['end_date']; } ?>" />
+                                    <input type="date" name= "end_date" value="<?php if ($_GET['end_date']) { print $_GET['end_date']; } else if ($_POST['end_date']) { print $_POST['end_date']; } ?>" />
                                 </td>
                             </tr>
                             <tr>

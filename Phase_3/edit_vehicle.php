@@ -144,41 +144,41 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Vehicle Description</td>
                                 <td>
-                                    <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } ?>" />
+                                    <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } else if ($_POST['vehicle_description']) { print $_POST['vehicle_description']; } ?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Model Name</td>
                                 <td>
-                                    <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];}?>" />
+                                    <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];} else if($_POST['model_name']) {print $_POST['model_name'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Model Year</td>
                                 <td>
-                                    <input type="number" name = "model_year" value ="<?php if($_GET['model_year']) {print $_GET['model_year'];}?>" />
+                                    <input type="number" name = "model_year" value ="<?php if($_GET['model_year']) {print $_GET['model_year'];} else if($_POST['model_year']) {print $_POST['model_year'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Type Name</td>
                                 <td>
-                                    <input type="text" name = "type_name" value ="<?php if($_GET['type_name']) {print $_GET['type_name'];}?>" />
+                                    <input type="text" name = "type_name" value ="<?php if($_GET['type_name']) {print $_GET['type_name'];} else if($_POST['type_name']) {print $_POST['type_name'];}?>" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class = "item_label">Manufacturer Name</td>
                                 <td>
-                                    <input type="text" name = "manufacturer_name" value ="<?php if($_GET['manufacturer_name']) {print $_GET['manufacturer_name'];}?>" />
+                                    <input type="text" name = "manufacturer_name" value ="<?php if($_GET['manufacturer_name']) {print $_GET['manufacturer_name'];} else if($_POST['manufacturer_name']) {print $_POST['manufacturer_name'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Purchase Price (Sale Price will be automatically calculated)</td>
                                 <td>
-                                    <input type="number" name = "sale_price" value ="<?php if($_GET['sale_price']) {print $_GET['sale_price'];}?>" />
+                                    <input type="number" name = "sale_price" value ="<?php if($_GET['sale_price']) {print $_GET['sale_price'];} else if($_POST['sale_price']) {print $_POST['sale_price'];}?>" />
                                 </td>
                             </tr>
 

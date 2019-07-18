@@ -101,7 +101,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                 <input name = "view" type = "submit" id = "view" value = "View">
                                 <input type="button" value="Cancel" onclick="history.go(-1)">
                             </tr>
-                                <td><a href='add_repair.php'>Add A New Repair Record!</a></td>
+                                <td><a href='add_repair.php?view=View'>Add A New Repair Record!</a></td>
                             <tr>
 
                             </tr>
@@ -123,73 +123,75 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
             $enteredNHTSA_recall_campagin_Number = mysqli_real_escape_string($db, $_GET['nhtsa_recall_compaign_number']);
             $enteredInventory_clerk_permssion = mysqli_real_escape_string($db, $_GET['inventory_clerk_permission']);
 
+            $query = "SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission ";
+            $from = " FROM Repair ";
+            $where = " WHERE vin = $enteredVin ";
+
             if(empty($enteredVin)){
-                array_push($error_msg,  "INPUT ERROR: Please input validate  Vin number ... <br>".  __FILE__ ." line:". __LINE__ );
-            }else{
-                $query = "SELECT vin, start_date, end_date, repair_status, repair_description, vendor_name, repair_cost, nhtsa_recall_compaign_number, inventory_clerk_permission ";
-                $from = " FROM Repair ";
-                $where = " WHERE vin = $enteredVin ";
-                if(!empty($enteredStart_date)){
+                $query = "SELECT * FROM Repair ORDER BY start_date DESC ";
+                //array_push($error_msg,  "INPUT ERROR: Please input validate  Vin number ... <br>".  __FILE__ ." line:". __LINE__ );
+            }else {
+                if (!empty($enteredStart_date)) {
                     $where .= " AND start_date = '$enteredStart_date'";
                 }
-                if(!empty($enteredEnd_date)){
+                if (!empty($enteredEnd_date)) {
                     $where .= " AND end_date = '$enteredEnd_date' ";
                 }
-                if(!empty($enteredRepair_status)){
+                if (!empty($enteredRepair_status)) {
                     $where .= " AND repair_status = '$enteredRepair_status' ";
                 }
-                if(!empty($enteredRepair_Description)){
+                if (!empty($enteredRepair_Description)) {
                     $where .= " AND repair_description = '$enteredRepair_Description' ";
                 }
-                if(!empty($enteredVendor_name)){
+                if (!empty($enteredVendor_name)) {
                     $where .= " AND vendor_name = '$enteredVendor_name' ";
                 }
-                if(!empty($enteredRepair_cost)){
+                if (!empty($enteredRepair_cost)) {
                     $where .= " AND repair_cost = '$enteredRepair_cost' ";
                 }
-                if(!empty($enteredNHTSA_recall_campagin_Number)){
+                if (!empty($enteredNHTSA_recall_campagin_Number)) {
                     $where .= " AND nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number' ";
                 }
-                if(!empty($enteredInventory_clerk_permssion)){
+                if (!empty($enteredInventory_clerk_permssion)) {
                     $where .= " AND inventory_clerk_permission = '$enteredInventory_clerk_permssion' ";
                 }
                 $query = $query . $from . $where . " ORDER BY start_date DESC";
-                $result = mysqli_query($db, $query);
-
-                include('lib/show_queries.php');
-
-                if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
-                    array_push($error_msg,  "Query ERROR: Failed to get Repair information..." . __FILE__ ." line:". __LINE__ );
-                }
-                echo "<div>";
-                echo "<table>";
-                echo "<tr>";
-                echo "<td class=\"heading\">Vin</td>";
-                echo "<td class=\"heading\">Start Date</td>";
-                echo "<td class=\"heading\">End Date</td>";
-                echo "<td class=\"heading\">Repair Status</td>";
-                echo "<td class=\"heading\">Repair Rescription</td>";
-                echo "<td class=\"heading\">Vendor Name</td>";
-                echo "<td class=\"heading\">Repair Cost</td>";
-                echo "<td class=\"heading\">NHTSA Recall Compaign Number</td>";
-                echo "</tr>";
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                    print "<tr>";
-                    print "<td>" . $row['vin'] . "</td>";
-                    print "<td>" . $row['start_date'] . "</td>";
-                    print "<td>" . $row['end_date'] . "</td>";
-                    print "<td>" . $row['repair_status'] . "</td>";
-                    print "<td>" . $row['repair_description'] . "</td>";
-                    print "<td>" . $row['vendor_name'] . "</td>";
-                    print "<td>" . $row['repair_cost'] . "</td>";
-                    print "<td>" . $row['nhtsa_recall_compaign_number'] . "</td>";
-                    echo "<td><a href='edit_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Edit</a></td>";
-                    echo "<td><a href='delete_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Delete</a></td>";
-                    print "</tr>";
-                }
-                echo "</table>";
-                echo "</div>";
             }
+            $result = mysqli_query($db, $query);
+
+            include('lib/show_queries.php');
+
+            if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+                array_push($error_msg,  "Query ERROR: Failed to get Repair information..." . __FILE__ ." line:". __LINE__ );
+            }
+            echo "<div>";
+            echo "<table>";
+            echo "<tr>";
+            echo "<td class=\"heading\">Vin</td>";
+            echo "<td class=\"heading\">Start Date</td>";
+            echo "<td class=\"heading\">End Date</td>";
+            echo "<td class=\"heading\">Repair Status</td>";
+            echo "<td class=\"heading\">Repair Rescription</td>";
+            echo "<td class=\"heading\">Vendor Name</td>";
+            echo "<td class=\"heading\">Repair Cost</td>";
+            echo "<td class=\"heading\">NHTSA Recall Compaign Number</td>";
+            echo "</tr>";
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                print "<tr>";
+                print "<td>" . $row['vin'] . "</td>";
+                print "<td>" . $row['start_date'] . "</td>";
+                print "<td>" . $row['end_date'] . "</td>";
+                print "<td>" . $row['repair_status'] . "</td>";
+                print "<td>" . $row['repair_description'] . "</td>";
+                print "<td>" . $row['vendor_name'] . "</td>";
+                print "<td>" . $row['repair_cost'] . "</td>";
+                print "<td>" . $row['nhtsa_recall_compaign_number'] . "</td>";
+                echo "<td><a href='edit_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Edit</a></td>";
+                echo "<td><a href='delete_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Delete</a></td>";
+                print "</tr>";
+            }
+            echo "</table>";
+            echo "</div>";
         }
         ?>
 

@@ -22,8 +22,9 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 ?>
 
 <?php
+/*
     if($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
+        $enteredVin = mysqli_real_escape_string($db, $_GET['vin']);
 
         if(empty($enteredVin)){
             header('Location: view_repair.php');
@@ -36,7 +37,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
             exit();
         }
     }
-
+*/
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);

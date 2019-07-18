@@ -73,7 +73,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class ="item_label">NHTSA Recall Compaign_number</td>
                                 <td>
-                                    <input type="text" id = "NHTSA_recall_compaign_number" name = "NHTSA_recall_compaign_number" value="<?php if ($_GET['NHTSA_recall_compaign_number']) { print $_GET['NHTSA_recall_compaign_number']; } ?>" />
+                                    <input type="text" id = "NHTSA_recall_compaign_number" name = "NHTSA_recall_compaign_number" value="<?php if ($_GET['NHTSA_recall_compaign_number']) { print $_GET['NHTSA_recall_compaign_number']; }else if ($_POST['NHTSA_recall_compaign_number']) { print $_POST['NHTSA_recall_compaign_number']; } ?>" />
                                 </td>
                             </tr>
 
@@ -81,14 +81,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class = "item_label">Recall Manufacturer</td>
                                 <td>
-                                    <input type="text" name = "recall_manufacturer" value ="<?php if($_GET['recall_manufacturer']) {print $_GET['recall_manufacturer'];}?>" />
+                                    <input type="text" name = "recall_manufacturer" value ="<?php if($_GET['recall_manufacturer']) {print $_GET['recall_manufacturer'];}else if($_POST['recall_manufacturer']) {print $_POST['recall_manufacturer'];}?>" />
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class = "item_label">Recall Description</td>
                                 <td>
-                                    <input type="text" name = "recall_description" value ="<?php if($_GET['recall_description']) {print $_GET['recall_description'];}?>" />
+                                    <input type="text" name = "recall_description" value ="<?php if($_GET['recall_description']) {print $_GET['recall_description'];}else if($_POST['recall_description']) {print $_POST['recall_description'];}?>" />
                                 </td>
                             </tr>
 
