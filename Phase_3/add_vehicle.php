@@ -2,11 +2,12 @@
 
 include('lib/common.php');
 
+
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();
 }
-    
+
     
     $query = "SELECT login_first_name, login_last_name " .
 		 " FROM Users " .
@@ -92,55 +93,62 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     <tr>
                                         <td class ="item_label">VIN Number</td>
                                         <td>
-                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" />
+                                            <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label"> Vehicle Mileage </td>
                                         <td>
-                                            <input type="number" name= "vehicle_mileage" value="<?php if ($_GET['vehicle_mileage']) { print $_GET['vehicle_mileage']; } ?>" />
+                                            <input type="number" name= "vehicle_mileage" value="<?php if ($_GET['vehicle_mileage']) { print $_GET['vehicle_mileage']; }else if($_POST['vehicle_mileage']) { print $_POST['vehicle_mileage'];} ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class="item_label">Vehicle Description</td>
                                         <td>
-                                            <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } ?>" />
+                                            <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } else if($_POST['vehicle_description']) { print $_POST['vehicle_description'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label">Model Name</td>
                                         <td>
-                                            <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];}?>" />
+                                            <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];} else if($_POST['model_name']) { print $_POST['model_name'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label">Model Year</td>
                                         <td>
-                                            <input type="number" name = "model_year" value ="<?php if($_GET['model_year']) {print $_GET['model_year'];}?>" />
+                                            <input type="number" name = "model_year" value ="<?php if($_GET['model_year']) {print $_GET['model_year'];}else if($_POST['model_year']) { print $_POST['model_year'];} ?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label">Type Name</td>
                                         <td>
-                                            <input type="text" name = "type_name" value ="<?php if($_GET['type_name']) {print $_GET['type_name'];}?>" />
+                                            <input type="text" name = "type_name" value ="<?php if($_GET['type_name']) {print $_GET['type_name'];}else if($_POST['type_name']) { print $_POST['type_name'];}?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class = "item_label">Manufacturer Name</td>
                                         <td>
-                                            <input type="text" name = "manufacturer_name" value ="<?php if($_GET['manufacturer_name']) {print $_GET['manufacturer_name'];}?>" />
+                                            <input type="text" name = "manufacturer_name" value ="<?php if($_GET['manufacturer_name']) {print $_GET['manufacturer_name'];}else if($_POST['manufacturer_name']) { print $_POST['manufacturer_name'];}?>" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td class = "item_label">Purchase Price (Sale price will automatically be calculated)</td>
                                         <td>
-                                            <input type="number" name = "sale_price" value ="<?php if($_GET['sale_price']) {print $_GET['sale_price'];}?>" />
+                                            <input type="number" name = "sale_price" value ="<?php if($_GET['sale_price']) {print $_GET['sale_price'];}else if($_POST['sale_price']) { print $_POST['sale_price'];}?>" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class = "item_label">Customer ID</td>
+                                        <td>
+                                            <input type="number" name = "sale_price" value ="<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>" />
                                         </td>
                                     </tr>
 
@@ -150,7 +158,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         <button type="reset" value="Reset">Reset</button>
                                     </tr>
                                     <tr>
-                                        <td><a href='add_buy.php?vin=<?php if($_POST['vin']) {print $_POST['vin'];}?>&sale_price=<?php if($_POST['sale_price']) {print $_POST['sale_price'];}?>'>Add Buy Information!</a></td>
+                                        <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>'>Add Buy Information!</a></td>
                                     </tr>
                                 </table>
                             </form>
