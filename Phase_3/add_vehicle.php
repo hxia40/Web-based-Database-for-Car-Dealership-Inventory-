@@ -153,12 +153,10 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     </tr>
 
                                     <tr>
-                                        <input name = "add" type = "submit" id = "add" value = "Add">
+                                        <input name = "add" type = "submit" id = "add" value = "Save Vehicle Info">
                                         <input type="button" value="Cancel" onclick="history.go(-1)">
                                         <button type="reset" value="Reset">Reset</button>
-                                    </tr>
-                                    <tr>
-                                        <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>'>Add Buy Information!</a></td>
+					<td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>'>Add Buy Information!</a></td>
                                     </tr>
                                 </table>
                             </form>
