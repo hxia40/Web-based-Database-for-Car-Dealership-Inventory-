@@ -68,6 +68,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         <option value="pending" <?php if ($_GET['repair_status'] == 'pending') { print 'selected="true"';} ?> >pending</option>
                                         <option value="in progress" <?php if ($_GET['repair_status'] == 'in progress') { print 'selected="true"';} ?> >in progress</option>
                                         <option value="completed" <?php if ($_GET['repair_status'] == 'completed') { print 'selected="true"';} ?> >completed</option>
+                                        <option value="All">All</option>
                                     </select>
                                 </td>
                             </tr>
@@ -148,7 +149,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                 if (!empty($enteredEnd_date)) {
                     $where .= " AND end_date = '$enteredEnd_date' ";
                 }
-                if (!empty($enteredRepair_status)) {
+                if (!empty($enteredRepair_status) && $enteredRepair_status != 'All' ) {
                     $where .= " AND repair_status = '$enteredRepair_status' ";
                 }
                 if (!empty($enteredRepair_Description)) {
