@@ -137,12 +137,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class = "item_label"> Customer ID </td>
-                                <td>
-                                    <input type="text" name = "customer_id" value="<?php if ($_GET['customer_id']) { print $_GET['customer_id']; }else if ($_POST['customer_id']) { print $_POST['customer_id']; } ?>" />
-                                </td>
-                            </tr>
+				<tr>
+					<td class="item_label">Customer ID</td>
+					<td>
+						<datalist id = 'customer_id'>
+							<?php
+								foreach($CUSTOMER_ID_LIST as $var) {
+							?>
+							<option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+							<?php
+								}
+							?>
+						</datalist>
+					</td>
+				</tr>
 
                             <tr>
                                 <td class = "item_label"> Inventory Clerk Permission </td>
