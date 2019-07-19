@@ -89,20 +89,22 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
 					
-				<tr>
-					<td class="item_label">Customer ID</td>
-					<td>
-						<datalist id = 'customer_id'>
-							<?php
-								foreach($CUSTOMER_ID_LIST as $var) {
-							?>
-							<option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
-							<?php
-								}
-							?>
-						</datalist>
-					</td>
-				</tr>
+			<tr>
+				<td class="item_label">Customer ID</td>
+				<td>
+					<input type="text" name="customer_id" list="customer_id_list">
+					<datalist id = 'customer_id_list'>
+						<?php
+							foreach($CUSTOMER_ID_LIST as $var) {
+						?>
+						<option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+						<?php
+							}
+						?>
+					</datalist>
+				</td>
+			</tr>
+
 
                                     <tr>
                                         <td class = "item_label"> Inventory Clerk Permission </td>
