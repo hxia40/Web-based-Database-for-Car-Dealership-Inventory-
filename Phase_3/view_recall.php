@@ -88,8 +88,8 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                 print "<td>" . $row['recall_manufacturer'] . "</td>";
                 print "<td>" . $row['recall_description'] . "</td>";
                 print "<td>" . $row['NHTSA_recall_compaign_number'] . "</td>";
-                echo "<td><a href='edit_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Edit Recall</a></td>";
-                echo "<td><a href='delete_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Delete Recall</a></td>";
+                echo "<td><a href='edit_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Edit</a></td>";
+                echo "<td><a href='delete_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Delete</a></td>";
             }
             echo "</table>";
             echo "</div>";
