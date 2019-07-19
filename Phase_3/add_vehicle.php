@@ -113,20 +113,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } else if($_POST['vehicle_description']) { print $_POST['vehicle_description'];}?>" />
                                 </td>
                             </tr>
+                            
                             <tr>
-                                <td class="item_label">Model Name</td>
+                                <td class="item_label">Model year</td>
                                 <td>
-                                    <datalist id = 'model_name'>
+                                    <input type="number" name="model_year" list="model_year_list" min = "1900" max = "2020">
+                                    <datalist id="model_year_list">
+                                        <option value=0 selected="true">Please select</option>
                                         <?php
-                                            foreach($MODEL_NAME_LIST as $var) {
+                                            for($n_year=2020; $n_year>=1900; $n_year--) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $n_year;?>'><?php echo $n_year;?></option>
                                         <?php
                                             }
                                         ?>
                                     </datalist>
                                 </td>
-                            </tr>
+                             </tr>
 
                             <tr>
                                 <td class="item_label">Model year</td>
