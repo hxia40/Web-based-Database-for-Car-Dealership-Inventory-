@@ -1,7 +1,7 @@
 <?php
 
 include('lib/common.php');
-// written by GTusername4
+// written by zxie86
 
 
 
