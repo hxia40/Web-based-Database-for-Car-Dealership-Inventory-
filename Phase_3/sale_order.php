@@ -1,11 +1,17 @@
 <?php
 include('lib/common.php');
 // written by czhang613
-// setup permission and login info
-if ($_SESSION['permission'] != 2) {
+// setup permissino
+if (!isset($_SESSION['username'])) {
 	header('Location: public_search.php');
 	exit();
+}else {
+    if($_SESSION['permission'] == 3){
+        header("Location: employee_search_manager.php");
+        exit();
+    }
 }
+
 $enteredVIN = $_GET['vin'];
 $enteredcustomer_id = $_GET['customer_id'];
 $enteredsalesperson_permission = 'salesperson_permission_'. $_SESSION['username'];

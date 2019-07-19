@@ -7,10 +7,6 @@ if (!isset($_SESSION['username'])) {
 	header('Location: public_search.php');
 	exit();
 }else {
-    if($_SESSION['permission'] == 1){
-        header("Location: employee_search_clerk.php");
-        exit();
-    }
     if($_SESSION['permission'] == 3){
         header("Location: employee_search_manager.php");
         exit();
@@ -110,22 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    <div class='profile_section'>
 					    <div class='subtitle'>Search Results</div>
                         <?php
-                        // var_dump($idlist);
-                        // echo $enteredVIN;
-                        // var_dump($row_b);
-                        // echo "<br>";
-                        // var_dump($row_p);
-                        // echo "<br>";
+
                             if(!empty($row_p)) {
                                 echo "Existing Customer!<br>";
                                 print "<tr>";
                                 $get_url1="sale_order.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
                                 // $get_url1="edit_customer.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
-                                print "<td><a href={$get_url1}>Next</a></td>";
+                                print "<td><a href={$get_url1}>Sell This Car</a></td>";
                                 // print "<td><a href={$get_url4}>Edit Customer</a></td>";
                                 print "</tr>";
-
-                            } else if(!empty($row_b)) {
+                            }
+														else if(!empty($row_b)) {
                                 echo "Existing Customer!<br>";
                                 print "<tr>";
                                 $get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$row_b['customer_id']}";
