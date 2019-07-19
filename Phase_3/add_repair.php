@@ -1,12 +1,6 @@
 <?php
-
 include('lib/common.php');
 // written by zxie86
-
-
-
-
-
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();
@@ -15,7 +9,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
     $query = "SELECT login_first_name, login_last_name " .
 		 " FROM Users " .
 		 " WHERE Users.username = '{$_SESSION['username']}'";
-
     $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
     
@@ -27,22 +20,17 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 ?>
 
 <?php
-
-
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
-
         if(empty($enteredVin)){
             header('Location: view_repair.php');
             exit();
         }
-
         $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND repair_status != 'completed' ");
         if(mysqli_num_rows($t) > 0){//current repair has pening or in program repair
             header('Location: view_repair.php');
             exit();
         }
-
         $enteredStart_date = mysqli_real_escape_string($db, $_POST['start_date']);
         $enteredEnd_date = mysqli_real_escape_string($db, $_POST['end_date']);
         $enteredRepair_status = mysqli_real_escape_string($db, $_POST['repair_status']);
@@ -51,7 +39,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
         $enteredRepair_cost = $_POST['repair_cost'];
         $enteredNHTSA_recall_campagin_Number = mysqli_real_escape_string($db, $_POST['nhtsa_recall_compaign_number']);
         $enteredInventory_clerk_permssion = mysqli_real_escape_string($db, $_POST['inventory_clerk_permission']);
-
         if (empty($enteredVin)) {
             array_push($error_msg, "ADD ERROR: Please enter a validate VIN number... <br>" . __FILE__ . " line: " . __LINE__);
         }else if (empty($enteredStart_date)) {
@@ -86,7 +73,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                 $temp_row = mysqli_fetch_array($temp_result, MYSQLI_ASSOC);
                 $previous_sale_price = $temp_row['sale_price'];
                 $new_sale_price = $previous_sale_price + $repair_cost;
-
                 $update_query = "UPDATE Vehicle SET sale_price = $new_sale_price WHERE vin = '$enteredVin' ";
                 $result = mysqli_query($db, $update_query);
                 include('lib/show_queries.php');
@@ -110,7 +96,71 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 			<div class="center_content">	
 				<div class="center_left">
 					<div class="title_name"><?php print $_row['first_name'] . ' ' . $_row['last_name']; ?></div>
-					<div class="features">   
+					<div class="features">
+
+					    <button onclick="myFunction()">Check NHTSA Recall Number</button>
+						<div class ="Check NHTSA Recall Campagin Number" id = "check_recall">
+							<div class="subtitle">Please Check NHTSA Recall Campagin Number First!</div>
+							<form name = "add_repair_check_NHTSA" action = "add_repair.php" method="get">
+								<table>
+									<tr>
+										<td class ="item_label">NHTSA Recall Campagin Number</td>
+										<td>
+											<input type="text" name = "nhtsa_recall_compaign_number"  value ="<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number'];}?>" />
+										</td>
+									</tr>
+									<tr>
+                                        <td>
+                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Check NHTSA Number!">
+                                        <button type="reset" value="Reset">Reset</button>
+                                        </td>
+                                    </tr>
+								</table>
+							</form>
+							
+							<?php
+								if($_SERVER['REQUEST_METHOD'] == 'GET'){
+									$enteredNHTSA_recall_compaign_number = mysqli_real_escape_string($db, $_GET['nhtsa_recall_compaign_number']);
+									$query  = "SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number ";
+									$from = " FROM Recall ";
+									$where = "";
+									if(empty($enteredNHTSA_recall_compaign_number)){
+										$where = "";
+										//array_push($error_msg,  "INPUT ERROR: Please input validate NHTSA Recall Compaign Number... <br>".  __FILE__ ." line:". __LINE__ );
+									}else{
+										$where = " WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'";
+									}
+									$query = $query . $from . $where;
+									$result = mysqli_query($db, $query);
+									include('lib/show_queries.php');
+									if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+										//array_push($error_msg,  "Query ERROR: Failed to get Recall information..." . __FILE__ ." line:". __LINE__ );
+										echo "Sorry, there is no NHTSA Information, Please Add This Recall Information First.";
+										echo "<td><a href='add_recall.php?NHTSA_recall_compaign_number=".$enteredNHTSA_recall_compaign_number."'>Add Recall</a></td>";
+									}else{
+										echo "We have the NHTSA Information: ";
+										echo "<div>";
+										echo "<table>";
+										echo "<tr>";
+										echo "<td class=\"heading\">Recall Manufacturer</td>";
+										echo "<td class=\"heading\">Recall Description</td>";
+										echo "<td class=\"heading\">NHTSA Recall Compaign Number</td>";
+										echo "</tr>";
+										while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+											print "<tr>";
+											print "<td>" . $row['recall_manufacturer'] . "</td>";
+											print "<td>" . $row['recall_description'] . "</td>";
+											print "<td>" . $row['NHTSA_recall_compaign_number'] . "</td>";
+											echo "<td><a href='edit_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Edit</a></td>";
+											echo "<td><a href='delete_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Delete</a></td>";
+											echo "<td><a href='add_repair.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Add Repair</a></td>";
+										}
+										echo "</table>";
+										echo "</div>";
+									}
+								}
+								?>
+						</div>
 						
                         <div class="Add Repair section">
 							<div class="subtitle">Add Repair Info</div>
@@ -149,21 +199,21 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
 
-				<tr>
-					<td class="item_label">Vendor Name</td>
-					<td>
-						<input type="text" name="vendor_name" list="vendor_name_list">
-						<datalist id = 'vendor_name_list'>
-							<?php
-								foreach($VENDOR_LIST as $var) {
-							?>
-							<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
-							<?php
-								}
-							?>
-						</datalist>
-					</td>
-				</tr>
+									<tr>
+										<td class="item_label">Vendor Name</td>
+										<td>
+											<input type="text" name="vendor_name" list="vendor_name_list">
+											<datalist id = 'vendor_name_list'>
+												<?php
+													foreach($VENDOR_LIST as $var) {
+												?>
+												<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+												<?php
+													}
+												?>
+											</datalist>
+										</td>
+									</tr>
 
 
                                     <tr>
@@ -213,5 +263,18 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                <?php include("lib/footer.php"); ?>
 				 
 		</div>
-	</body>
+		
+<script>
+function myFunction() {
+  var x = document.getElementById("check_recall");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+		
+		
+</body>
 </html>
