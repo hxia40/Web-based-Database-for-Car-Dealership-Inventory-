@@ -113,11 +113,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     <input type="text" name= "vehicle_description" value="<?php if ($_GET['vehicle_description']) { print $_GET['vehicle_description']; } else if($_POST['vehicle_description']) { print $_POST['vehicle_description'];}?>" />
                                 </td>
                             </tr>
-
                             <tr>
-                                <td class = "item_label">Model Name</td>
+                                <td class="item_label">Model Name</td>
                                 <td>
-                                    <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];} else if($_POST['model_name']) { print $_POST['model_name'];}?>" />
+                                    <datalist id = 'model_name'>
+                                        <?php
+                                            foreach($MODEL_NAME_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </datalist>
                                 </td>
                             </tr>
 
