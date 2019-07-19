@@ -121,5 +121,11 @@ while($CUSTOMER_ID_LIST = mysqli_fetch_assoc(pull_customer_id_results)){
 	$CUSTOMER_ID_LIST[] = $CUSTOMER_ID_LIST;
 }
 
+$pull_model_name_query = "SELECT model_name FROM Vehicle "
+$pull_model_name_results = mysqli_query($db, $pull_model_name_query);
+$MODEL_NAME_LIST = [];
+while($MODEL_NAME_LIST = mysqli_fetch_assoc(pull_model_name_results)){
+	$MODEL_NAME_LIST[] = $MODEL_NAME_LIST;
+}
 
 ?>
