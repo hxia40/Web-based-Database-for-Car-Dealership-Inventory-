@@ -169,7 +169,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td class="item_label">Vehicle Type</td>
                                 <td>
                                     <select name="type_name">
-                                        <option value='select' selected="true">Please select</option>
                                         <?php
                                             foreach($VEHICLE_TYPES_LIST as $var) {
                                         ?>
@@ -185,7 +184,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td class="item_label">Manufacturer Name</td>
                                 <td>
                                     <select name="manufacturer_name">
-                                        <option value='select' selected="true">Please select</option>
                                         <?php
                                             foreach($MANUFACTURER_LIST as $var) {
                                         ?>
