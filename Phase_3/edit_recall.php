@@ -77,11 +77,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </td>
                             </tr>
 
-
                             <tr>
-                                <td class = "item_label">Recall Manufacturer</td>
+                                <td class="item_label">Recall Manufacturer</td>
                                 <td>
-                                    <input type="text" name = "recall_manufacturer" value ="<?php if($_GET['recall_manufacturer']) {print $_GET['recall_manufacturer'];}else if($_POST['recall_manufacturer']) {print $_POST['recall_manufacturer'];}?>" />
+                                    <select name="recall_manufacturer">
+                                        <option value='select' selected="true">Please select</option>
+                                        <?php
+                                            foreach($MANUFACTURER_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>'><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                 </td>
                             </tr>
 
@@ -93,9 +101,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
 
                             <tr>
+                                <td>
                                 <input name = "edit" type = "submit" id = "edit" value = "Confirmed and Edit">
                                 <input type="button" value="Cancel" onclick="history.go(-1)">
                                 <button type="reset" value="Reset">Reset</button>
+                                </td>
                             </tr>
                         </table>
                     </form>
