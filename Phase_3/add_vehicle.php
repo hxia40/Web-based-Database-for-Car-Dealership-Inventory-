@@ -157,7 +157,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 <input type="button" value=" Cancel " onclick="history.go(-1)">
                                 <button type="reset" value=" Reset ">Reset</button></td>
                             <tr>
-                                <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>'>Add Buy Information!</a></td>
+                                <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['sale_price']) {print $_GET['sale_price'];} else if($_POST['sale_price']) {print $_POST['sale_price'];} ?>'>Add Buy Information!</a></td>
                             </tr>
                         </table>
                     </form>
