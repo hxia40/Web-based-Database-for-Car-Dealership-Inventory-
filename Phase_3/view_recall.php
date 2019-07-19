@@ -93,6 +93,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                 print "<td>" . $row['NHTSA_recall_compaign_number'] . "</td>";
                 echo "<td><a href='edit_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Edit</a></td>";
                 echo "<td><a href='delete_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Delete</a></td>";
+                echo "<td><a href='add_repair.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Add Repair</a></td>";
             }
             echo "</table>";
             echo "</div>";
