@@ -149,20 +149,22 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
 
-					<tr>
-						<td class="item_label">Vendor Name</td>
-						<td>
-							<datalist id = 'vendor_name'>
-								<?php
-									foreach($VENDOR_LIST as $var) {
-								?>
-								<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
-								<?php
-									}
-								?>
-							</datalist>
-						</td>
-					</tr>
+				<tr>
+					<td class="item_label">Vendor Name</td>
+					<td>
+						<input type="text" name="vendor_name" list="vendor_name_list">
+						<datalist id = 'vendor_name_list'>
+							<?php
+								foreach($VENDOR_LIST as $var) {
+							?>
+							<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+							<?php
+								}
+							?>
+						</datalist>
+					</td>
+				</tr>
+
 
                                     <tr>
                                         <td class = "item_label">Repair Cost</td>
