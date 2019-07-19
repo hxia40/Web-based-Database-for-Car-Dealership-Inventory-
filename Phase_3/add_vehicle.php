@@ -172,6 +172,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             </tr>
 
                             <tr>
+                               
                                 <td><input name = "add" type = "submit" id = "add" value = " Submit Vehicle Info ">
                                 <input type="button" value=" Cancel " onclick="history.go(-1)">
                                 <button type="reset" value=" Reset ">Reset</button></td>
