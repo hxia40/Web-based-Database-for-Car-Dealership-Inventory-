@@ -116,7 +116,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 					<tr>
 						<td class="item_label">Purchase Condition</td>
 						<td>
-							<select name="type_name">
+							<select name="purchase_condition">
 								<option value='select' selected="true">Please select</option>
 								<?php
 									foreach($PURCHASE_CONDITION_LIST as $var) {
