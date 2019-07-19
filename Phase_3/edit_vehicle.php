@@ -163,15 +163,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
 
                             <tr>
-                                <td class = "item_label">Type Name</td>
+                                <td class="item_label">Vehicle Type</td>
                                 <td>
-                                    <input type="text" name = "type_name" value ="<?php if($_GET['type_name']) {print $_GET['type_name'];} else if($_POST['type_name']) {print $_POST['type_name'];}?>" />
+                                    <select name="type_name">
+                                        <option value='select' selected="true">Please select</option>
+                                        <?php
+                                            foreach($VEHICLE_TYPES_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['type_name'] == $var) { print 'selected="true"';}else if($_POST['type_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                 </td>
                             </tr>
+                            
                             <tr>
-                                <td class = "item_label">Manufacturer Name</td>
+                                <td class="item_label">Manufacturer Name</td>
                                 <td>
-                                    <input type="text" name = "manufacturer_name" value ="<?php if($_GET['manufacturer_name']) {print $_GET['manufacturer_name'];} else if($_POST['manufacturer_name']) {print $_POST['manufacturer_name'];}?>" />
+                                    <select name="manufacturer_name">
+                                        <option value='select' selected="true">Please select</option>
+                                        <?php
+                                            foreach($MANUFACTURER_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['manufacturer_name'] == $var) { print 'selected="true"';}else if($_POST['manufacturer_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                 </td>
                             </tr>
 
