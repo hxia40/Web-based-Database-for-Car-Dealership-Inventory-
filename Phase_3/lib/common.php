@@ -90,6 +90,13 @@ $VEHICLE_TYPES_LIST=array(
     "SUV"
 );
 
+$PURCHASE_CONDITION_LIST=array(
+    "Excellent",
+    "Very Good",
+    "Good",
+    "Fair",
+);
+
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
 
 if (mysqli_connect_errno())
