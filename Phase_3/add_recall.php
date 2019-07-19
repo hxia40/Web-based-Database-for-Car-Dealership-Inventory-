@@ -106,6 +106,9 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         <button type="reset" value="Reset">Reset</button>
 					 </td>
                                     </tr>
+				    <tr>
+					 <td><a href='add_repair.php?NHTSA_recall_compaign_number=".$POST['NHTSA_recall_compaign_number']."&recall_description=".$POST['recall_description']. "&recall_manufacturer=" .$POST['recall_manufacturer']."'>Add A New Repair of This Recall</a></td>;
+				    </tr>
                                 </table>
                             </form>
                         </div>
