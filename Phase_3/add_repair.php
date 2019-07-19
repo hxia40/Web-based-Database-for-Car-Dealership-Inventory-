@@ -22,22 +22,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 ?>
 
 <?php
-/*
-    if($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $enteredVin = mysqli_real_escape_string($db, $_GET['vin']);
 
-        if(empty($enteredVin)){
-            header('Location: view_repair.php');
-            exit();
-        }
-
-        $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND repair_status != 'completed' ");
-        if(mysqli_num_rows($t) > 0){//current repair has pening or in program repair
-            header('Location: view_repair.php');
-            exit();
-        }
-    }
-*/
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
@@ -138,9 +123,9 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         <td class = "item_label"> Repair Status </td>
                                         <td>
                                             <select name = "repair_status">
-                                                <option value="Pending" <?php if ($_GET['repair_status'] == 'Pending') { print 'selected="true"';} ?> >Pending</option>
-                                                <option value="In_Progress" <?php if ($_GET['repair_status'] == 'In_Progress') { print 'selected="true"';} ?> >In Progress</option>
-                                                <option value="Completed" <?php if ($_GET['repair_status'] == 'Completed') { print 'selected="true"';} ?> >Completed</option>
+                                                <option value="pending" <?php if ($_GET['repair_status'] == 'pending') { print 'selected="true"';} ?> >pending</option>
+                                                <option value="in progress" <?php if ($_GET['repair_status'] == 'in progress') { print 'selected="true"';} ?> >in progress</option>
+                                                <option value="completed" <?php if ($_GET['repair_status'] == 'completed') { print 'selected="true"';} ?> >completed</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -193,9 +178,11 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
                                     <tr>
-                                        <input name = "add" type = "submit" id = "add" value = "Add">
+                                        <td>
+                                        <input name = "add" type = "submit" id = "add" value = "Confirmed and Add!">
                                         <input type="button" value="Cancel" onclick="history.go(-1)">
                                         <button type="reset" value="Reset">Reset</button>
+                                        </td>
                                     </tr>
                                 </table>
                             </form>

@@ -22,6 +22,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 ?>
 
 <?php
+
     if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $enteredVin = mysqli_real_escape_string($db, $_GET['vin']);
         $enteredStart_date = mysqli_real_escape_string($db, $_GET['start_date']);
@@ -31,14 +32,12 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
             exit();
         }
 
-        $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ");
+        $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status = 'completed' ");
         if(mysqli_num_rows($t) > 0){//current repair is completed
             header('Location: view_repair.php');
             exit();
         }
-    }
-
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $vin = mysqli_real_escape_string($db, $_POST['vin']);
         $start_date = mysqli_real_escape_string($db, $_POST['start_date']);
 
@@ -47,7 +46,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
             exit();
         }
 
-        $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$vin' AND start_date = '$start_date' AND repair_status == 'completed' ");
+        $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$vin' AND start_date = '$start_date' AND repair_status = 'completed' ");
         if(mysqli_num_rows($t) > 0){//current repair is completed
             header('Location: view_repair.php');
             exit();

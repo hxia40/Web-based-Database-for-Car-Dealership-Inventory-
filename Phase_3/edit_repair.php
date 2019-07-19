@@ -2,6 +2,7 @@
 
 include('lib/common.php');
 
+
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();
@@ -30,12 +31,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit();
     }
 
-    $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ");
+    $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status = 'completed' ");
     if(mysqli_num_rows($t) > 0){//current repair is completed
         header('Location: view_repair.php');
         exit();
     }
 }
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
@@ -46,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status == 'completed' ");
+    $t = mysqli_query($db, "SELECT repair_status from Repair WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date' AND repair_status = 'completed'");
     if(mysqli_num_rows($t) > 0){//current repair is completed
         header('Location: view_repair.php');
         exit();
@@ -126,7 +128,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
                 $new_sale_price = $previous_sale_price + $change_repair_cost;
 
-                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = $enteredVin" ;
+                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = '$enteredVin'" ;
                 $result = mysqli_query($db, $query);
                 include('lib/show_queries.php');
             }
@@ -237,9 +239,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </td>
                             </tr>
                             <tr>
+                                <td>
                                 <input name = "edit" type = "submit" id = "edit" value = "Confirmed and Edit">
                                 <input type="button" value="Cancel" onclick="history.go(-1)">
                                 <button type="reset" value="Reset">Reset</button>
+                                </td>
                             </tr>
                         </table>
                     </form>
