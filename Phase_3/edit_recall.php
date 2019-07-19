@@ -84,11 +84,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td class="item_label">Recall Manufacturer</td>
                                 <td>
                                     <select name="recall_manufacturer">
-                                        <option value='select' selected="true">Please select</option>
                                         <?php
                                             foreach($MANUFACTURER_LIST as $var) {
                                         ?>
-			                                <option value= '<?php echo $var;?>' <?php if ($_GET['recall_manufacturer'] == $var) { print 'selected="true"';}else if($_POST['recall_manufacturer'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+			                      <option value= '<?php echo $var;?>' <?php if ($_GET['recall_manufacturer'] == $var) { print 'selected="true"';}else if($_POST['recall_manufacturer'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
