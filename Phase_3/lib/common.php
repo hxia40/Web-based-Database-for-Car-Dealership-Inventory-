@@ -114,4 +114,12 @@ while($VENDOR_LIST = mysqli_fetch_assoc(pull_venodr_results)){
 	$VENDOR_LIST[] = $VENDOR_LIST;
 }
 
+$pull_customer_id_query = "SELECT customer_id FROM Customer "
+$pull_customer_id_results = mysqli_query($db, $pull_customer_id_query);
+$CUSTOMER_ID_LIST = [];
+while($CUSTOMER_ID_LIST = mysqli_fetch_assoc(pull_customer_id_results)){
+	$CUSTOMER_ID_LIST[] = $CUSTOMER_ID_LIST;
+}
+
+
 ?>
