@@ -169,7 +169,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td class="item_label">Purchase Condition</td>
                                 <td>
                                     <select name="purchase_condition">
-                                        //<option value='select' selected="true">Please select</option>
                                         <?php
                                             foreach($PURCHASE_CONDITION_LIST as $var) {
                                         ?>
