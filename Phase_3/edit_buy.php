@@ -165,12 +165,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Purchase Condition</td>
                                 <td>
-                                    <select name="type_name">
+                                    <select name="purchase_condition">
                                         <option value='select' selected="true">Please select</option>
                                         <?php
                                             foreach($PURCHASE_CONDITION_LIST as $var) {
                                         ?>
-                                        <option value='<?php echo $var;?>'><?php echo $var;?></option>
+			                                <option value= '<?php echo $var;?>' <?php if ($_GET['purchase_condition'] == $var) { print 'selected="true"';}else if($_POST['purchase_condition'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
