@@ -107,7 +107,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 					 </td>
                                     </tr>
 				    <tr>
-					 <td><a href='add_repair.php?NHTSA_recall_compaign_number=".$POST['NHTSA_recall_compaign_number']."&recall_description=".$POST['recall_description']. "&recall_manufacturer=" .$POST['recall_manufacturer']."'>Add A New Repair of This Recall</a></td>;
+					 <td><a href='add_repair.php?nhtsa_recall_compaign_number=<?php if($_GET['NHTSA_recall_compaign_number']) {print $_GET['NHTSA_recall_compaign_number'];} else if($_POST['NHTSA_recall_compaign_number']) {print $_POST['NHTSA_recall_compaign_number'];} ?>' >Add A New Repair of This Recall!</a></td>
 				    </tr>
                                 </table>
                             </form>
