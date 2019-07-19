@@ -1,6 +1,9 @@
 <?php
 
 include('lib/common.php');
+// written by zxie86
+
+
 
 if (!isset($_SESSION['username'])) {
     header('Location: index.php');
