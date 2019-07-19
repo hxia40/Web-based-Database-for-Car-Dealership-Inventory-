@@ -148,7 +148,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <tr>
                                 <td class = "item_label">Customer ID</td>
                                 <td>
-                                    <input type="number" name = "sale_price" value ="<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>" />
+                                    <input type="number" name = "customer_id" value ="<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>" />
                                 </td>
                             </tr>
 
