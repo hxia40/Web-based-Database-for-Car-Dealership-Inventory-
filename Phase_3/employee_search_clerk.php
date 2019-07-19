@@ -47,8 +47,10 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
     $car3 = 0;
 }
 
+$if_search = 0;
 /* if form was submitted, then execute query to search for vehicles */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $if_search = 1;
 	$entered_type_name = mysqli_real_escape_string($db, $_POST['type_name']);
 	$entered_manufacturer_name = mysqli_real_escape_string($db, $_POST['manufacturer_name']);
     $entered_model_year = mysqli_real_escape_string($db, $_POST['model_year']);
@@ -103,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
         $count = mysqli_num_rows($result);
     } else {
-        array_push($error_msg,  "SELECT ERROR: User profile <br>" . __FILE__ ." line:". __LINE__ );
+        array_push($error_msg,  "SELECT ERROR: employee search <br>" . __FILE__ ." line:". __LINE__ );
     }
 
     if (mysqli_affected_rows($db) == -1) {
@@ -220,12 +222,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    <div class='profile_section'>
 					    <div class='subtitle'>Search Results</div>
                         <?php
-                            if(isset($count)) {
+                            if($if_search && $count>0) {
                                 echo "<tr> {$count} car(s) are found. </tr>";
-                            } else {
-                                echo "Sorry, it looks like we don't have that in stock!";
+                            } elseif($if_search && $count==0) {
+                                echo "<tr> Sorry, it looks like we don't have that in stock! </tr>";
                             }
-                            
                         ?>
 					    <table>
 						    <tr>
