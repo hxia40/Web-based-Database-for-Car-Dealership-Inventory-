@@ -53,7 +53,8 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
 			<tr>
 				<td class="item_label">Customer ID</td>
 				<td>
-					<datalist id = 'customer_id'>
+					<input type="text" name="customer_id" list="customer_id_list">
+					<datalist id = 'customer_id_list'>
 						<?php
 							foreach($CUSTOMER_ID_LIST as $var) {
 						?>
@@ -64,6 +65,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
 					</datalist>
 				</td>
 			</tr>
+
 
                             <tr>
                                 <td class = "item_label"> Inventory Clerk Permission </td>
