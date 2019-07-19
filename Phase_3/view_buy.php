@@ -78,7 +78,17 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                             <tr>
                                 <td class="item_label">Purchase Condition</td>
                                 <td>
-                                    <input type="text" name= "purchase_condition" value="<?php if ($_GET['purchase_condition']) { print $_GET['purchase_condition']; } ?>" />
+                                    <select name="type_name">
+                                        <option value='All'>All</option>
+                                        <option value='select' selected="true">Please select</option>
+                                        <?php
+                                            foreach($PURCHASE_CONDITION_LIST as $var) {
+                                        ?>
+                                        <option value='<?php echo $var;?>'><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                 </td>
                             </tr>
 
@@ -129,7 +139,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                 if(!empty($enteredPurchase_price)){
                     $where .= " AND purchase_price = $enteredPurchase_price ";
                 }
-                if(!empty($enteredPurchase_condition)){
+                if(!empty($enteredPurchase_condition) && $enteredPurchase_condition != 'All'){
                     $where .= " AND purchase_condition = '$enteredPurchase_condition' ";
                 }
                 if(!empty($enteredKBB_value)){
