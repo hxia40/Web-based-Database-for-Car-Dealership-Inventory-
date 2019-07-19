@@ -110,22 +110,22 @@ if (mysqli_connect_errno())
 $pull_vendor_query = "SELECT vendor_name FROM Vendor "
 $pull_venodr_results = mysqli_query($db, $pull_vendor_query);
 $VENDOR_LIST = [];
-while($VENDOR_LIST = mysqli_fetch_assoc(pull_venodr_results)){
-	$VENDOR_LIST[] = $VENDOR_LIST;
+while($VENDOR = mysqli_fetch_assoc(pull_venodr_results)){
+	$VENDOR_LIST[] = $VENDOR;
 }
 
 $pull_customer_id_query = "SELECT customer_id FROM Customer "
 $pull_customer_id_results = mysqli_query($db, $pull_customer_id_query);
 $CUSTOMER_ID_LIST = [];
-while($CUSTOMER_ID_LIST = mysqli_fetch_assoc(pull_customer_id_results)){
-	$CUSTOMER_ID_LIST[] = $CUSTOMER_ID_LIST;
+while($CUSTOMER_ID = mysqli_fetch_assoc(pull_customer_id_results)){
+	$CUSTOMER_ID_LIST[] = $CUSTOMER_ID;
 }
 
 $pull_model_name_query = "SELECT model_name FROM Vehicle "
 $pull_model_name_results = mysqli_query($db, $pull_model_name_query);
 $MODEL_NAME_LIST = [];
-while($MODEL_NAME_LIST = mysqli_fetch_assoc(pull_model_name_results)){
-	$MODEL_NAME_LIST[] = $MODEL_NAME_LIST;
+while($MODEL_NAME = mysqli_fetch_assoc(pull_model_name_results)){
+	$MODEL_NAME_LIST[] = $MODEL_NAME;
 }
 
 ?>
