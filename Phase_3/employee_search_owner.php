@@ -24,7 +24,7 @@ if($showQueries){
   array_push($query_msg, "showQueries currently turned ON, to disable change to 'false' in lib/common.php");
 }
 
-$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
+$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " .
          "ON Vehicle.vin=Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) AND repair_status='pending'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
@@ -35,7 +35,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
     $car1 = 0;
 }
 
-$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
+$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " .
          "ON Vehicle.vin = Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) AND repair_status = 'in progress'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
@@ -46,9 +46,9 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
     $car2 = 0;
 }
 
-$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total " . 
-         "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
-         "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total " .
+         "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " .
+         "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " .
          "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
@@ -73,34 +73,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vehicle_filter = mysqli_real_escape_string($db, $_POST['filter']);
 
     if($vehicle_filter=='all vehicles'){
-        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
-        "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
-        "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+        $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " .
+        "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " .
+        "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " .
         "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin WHERE (1=1) ";
     } else{
         if($vehicle_filter=='sold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
-            "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
-            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
-            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " .
+            "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " .
+            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " .
+            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " .
             "WHERE Vehicle.vin IN (SELECT vin FROM Sell) ";
         }
         if($vehicle_filter=='unsold vehicles'){
-            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
-            "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
-            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
-            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " .
+            "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " .
+            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " .
+            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " .
             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
         }
     }
 
-    if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
-        or $entered_vehicle_color != "select" or $entered_model_year != 0 
+    if ($entered_type_name != "select" or $entered_manufacturer_name != "select"
+        or $entered_vehicle_color != "select" or $entered_model_year != 0
         or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')
         or (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '')) {
-        
+
 		$query = $query . " AND (1=1";
-		
+
 		if ($entered_type_name != "select") {
 			$query = $query . " AND `type_name`='$entered_type_name' ";
         }
@@ -114,11 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$query = $query . " AND model_year=$entered_model_year ";
         }
         if (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '') {
-            $query = $query . " AND (" . 
-            "manufacturer_name LIKE '%$keyword%' " . 
-            "OR model_year LIKE '%$keyword%' " . 
-            "OR model_name LIKE '%$keyword%' " . 
-            "OR vehicle_description LIKE '%$keyword%' " . 
+            $query = $query . " AND (" .
+            "manufacturer_name LIKE '%$keyword%' " .
+            "OR model_year LIKE '%$keyword%' " .
+            "OR model_name LIKE '%$keyword%' " .
+            "OR vehicle_description LIKE '%$keyword%' " .
             ") ";
         }
         if (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '') {
@@ -126,11 +126,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 		$query = $query . ") ";
 	}
-	
+
     $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
 	$result = mysqli_query($db, $query);
     include('lib/show_queries.php');
-    
+
     if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
         //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
         $count = mysqli_num_rows($result);
@@ -162,12 +162,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         echo "<br>Number of vehicles with repair pending: {$car1}</br>";
 
                         echo "<br>Number of vehicles with repair in progress: {$car2}</br>";
-                        
+
                         echo "<br>Number of vehicles available for purchase: {$car3}</br>";
                         ?>
 				    </div>
 					<div class="profile_section">
-						<div class="subtitle">Search for Vehicles</div> 	
+						<div class="subtitle">Search for Vehicles</div>
 						<form name="searchform" action="employee_search_owner.php" method="POST">
                             <table>
                                 <tr>
@@ -232,13 +232,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </tr>
                                 <tr>
 									<td class="item_label">VIN</td>
-									<td><input type="text" name="vin" value="(input VIN)" 
+									<td><input type="text" name="vin" value="(input VIN)"
 										onclick="if(this.value=='(input VIN)'){this.value=''}"
 										onblur="if(this.value==''){this.value='(input VIN)'}"/></td>
 								</tr>
 								<tr>
 									<td class="item_label">keyword</td>
-									<td><input type="text" name="keyword" value="(input search keyword)" 
+									<td><input type="text" name="keyword" value="(input search keyword)"
 										onclick="if(this.value=='(input search keyword)'){this.value=''}"
 										onblur="if(this.value==''){this.value='(input search keyword)'}"/></td>
 								</tr>
@@ -253,10 +253,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </td>
 								</tr>
 							</table>
-							<a href="javascript:searchform.submit();" class="fancy_button">Search</a> 					
+							<a href="javascript:searchform.submit();" class="fancy_button">Search</a>
 						</form>
 					</div>
-				
+
 				    <div class='profile_section'>
 					    <div class='subtitle'>Search Results</div>
                         <?php
@@ -299,7 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					    </table>
 				    </div>
                     <div class='profile_section'>
-					    <div class='subtitle'><a href='add_vehicle.php'>Add Vehicle</a></div>
+					    <div class='subtitle'><a href='search_customer.php'>Add Vehicle</a></div>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>View Reports</a></div>
@@ -327,10 +327,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
                 </div>
             </div>
-        <?php include("lib/error.php"); ?>            
-		<div class="clear"></div> 
+        <?php include("lib/error.php"); ?>
+		<div class="clear"></div>
 	</div>
-        
+
 	<?php include("lib/footer.php"); ?>
 </body>
 </html>
