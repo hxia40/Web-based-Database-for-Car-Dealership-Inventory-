@@ -211,7 +211,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Vendor Name</td>
                                 <td>
-                                    <datalist id = 'vendor_name'>
+                                    <input type="text" name="vendor_name" list="vendor_name_list">
+                                    <datalist id = 'vendor_name_list'>
                                         <?php
                                             foreach($VENDOR_LIST as $var) {
                                         ?>
@@ -222,6 +223,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </datalist>
                                 </td>
                             </tr>
+
 
                             <tr>
                                 <td class = "item_label">Repair Cost</td>
