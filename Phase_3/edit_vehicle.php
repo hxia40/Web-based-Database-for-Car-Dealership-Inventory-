@@ -154,7 +154,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Model Name</td>
                                 <td>
-                                    <datalist id = 'model_name'>
+                                    <input type="text" name="model_name" list="model_name_list">
+                                    <datalist id = "model_name_list">
                                         <?php
                                             foreach($MODEL_NAME_LIST as $var) {
                                         ?>
@@ -169,7 +170,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class="item_label">Model year</td>
                                 <td>
-                                    <datalist id="model_year">
+                                    <input type="number" name="model_year" list="model_year_list" min = "1900" max = "2020">
+                                    <datalist id="model_year_list">
+                                        <option value=0 selected="true">Please select</option>
                                         <?php
                                             for($n_year=2020; $n_year>=1900; $n_year--) {
                                         ?>
