@@ -107,4 +107,11 @@ if (mysqli_connect_errno())
     exit();
 }
 
+$pull_vendor_query = "SELECT vendor_name FROM Vendor "
+$pull_venodr_results = mysqli_query($db, $pull_vendor_query);
+$VENDOR_LIST = [];
+while($VENDOR_LIST = mysqli_fetch_assoc(pull_venodr_results)){
+	$VENDOR_LIST[] = $VENDOR_LIST;
+}
+
 ?>
