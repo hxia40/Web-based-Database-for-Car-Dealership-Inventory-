@@ -1,4 +1,3 @@
-<option value="pending" <?php if ($_GET['repair_status'] == 'pending' ) { print 'selected="true"';} ?> >pending</option>
 
 
 <tr>
@@ -98,7 +97,8 @@ while($CUSTOMER_ID = mysqli_fetch_assoc(pull_customer_id_results)){
 <tr>
 	<td class="item_label">Customer ID</td>
 	<td>
-		<datalist id = 'customer_id'>
+		<input type="text" name="customer_id" list="customer_id_list">
+		<datalist id = 'customer_id_list'>
 			<?php
 				foreach($CUSTOMER_ID_LIST as $var) {
 			?>
@@ -120,7 +120,8 @@ while($VENDOR = mysqli_fetch_assoc(pull_venodr_results)){
 <tr>
 	<td class="item_label">Vendor Name</td>
 	<td>
-		<datalist id = 'vendor_name'>
+		<input type="text" name="vendor_name" list="vendor_name_list">
+		<datalist id = 'vendor_name_list'>
 			<?php
 				foreach($VENDOR_LIST as $var) {
 			?>
@@ -143,7 +144,8 @@ while($MODEL_NAME = mysqli_fetch_assoc(pull_model_name_results)){
 <tr>
 	<td class="item_label">Model Name</td>
 	<td>
-		<datalist id = 'model_name'>
+		<input type="text" name="model_name" list="model_name_list">
+		<datalist id = "model_name_list">
 			<?php
 				foreach($MODEL_NAME_LIST as $var) {
 			?>
@@ -159,7 +161,8 @@ while($MODEL_NAME = mysqli_fetch_assoc(pull_model_name_results)){
 <tr>
 	<td class="item_label">Model year</td>
 	<td>
-		<datalist id="model_year">
+		<input type="number" name="model_year" list="model_year_list" min = "1900" max = "2020">
+		<datalist id="model_year_list">
 			<option value=0 selected="true">Please select</option>
 			<?php
 				for($n_year=2020; $n_year>=1900; $n_year--) {
