@@ -66,12 +66,21 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 
                             <form name = "add" action = "add_recall.php" method="post">
                                 <table>
-                                    <tr>
-                                        <td class ="item_label">Recall Manufacturer</td>
-                                        <td>
-                                            <input type="text" name = "recall_manufacturer" value="<?php if ($_GET['recall_manufacturer']) { print $_GET['recall_manufacturer']; } ?>" />
-                                        </td>
-                                    </tr>
+					<tr>
+						<td class="item_label">Recall Manufacturer</td>
+						<td>
+							<select name="recall_manufacturer">
+								<option value='select' selected="true">Please select</option>
+								<?php
+									foreach($MANUFACTURER_LIST as $var) {
+								?>
+								<option value= '<?php echo $var;?>'><?php echo $var;?></option>
+								<?php
+									}
+								?>
+							</select>
+						</td>
+					</tr>
 
                                     <tr>
                                         <td class = "item_label">Recall Description </td>
@@ -87,9 +96,11 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
                                     <tr>
-                                        <input name = "add" type = "submit" id = "add" value = "Add">
+					<td>
+                                        <input name = "add" type = "submit" id = "add" value = "Confirmed and Add">
                                         <input type="button" value="Cancel" onclick="history.go(-1)">
                                         <button type="reset" value="Reset">Reset</button>
+					 </td>
                                     </tr>
                                 </table>
                             </form>
