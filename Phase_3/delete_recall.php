@@ -1,7 +1,10 @@
 <?php
 
 include('lib/common.php');
-// written by GTusername4
+// written by zxie86
+
+
+
 
 
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
