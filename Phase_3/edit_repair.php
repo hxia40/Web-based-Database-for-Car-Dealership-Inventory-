@@ -209,9 +209,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
 
                             <tr>
-                                <td class = "item_label">Vendor Name</td>
+                                <td class="item_label">Vendor Name</td>
                                 <td>
-                                    <input type="text" name = "vendor_name" value ="<?php if($_GET['vendor_name']) {print $_GET['vendor_name'];} else if($_POST['vendor_name']) {print $_POST['vendor_name'];}?>" />
+                                    <datalist id = 'vendor_name'>
+                                        <?php
+                                            foreach($VENDOR_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </datalist>
                                 </td>
                             </tr>
 
