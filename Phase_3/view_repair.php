@@ -80,9 +80,17 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                             </tr>
 
                             <tr>
-                                <td>Vendor Name</td>
+                                <td class="item_label">Vendor Name</td>
                                 <td>
-                                    <input name = "vendor_name" type = "text" id = "vendor_name" value="<?php if ($_GET['vendor_name']) { print $_GET['vendor_name']; } ?>">
+                                    <datalist id = 'vendor_name'>
+                                        <?php
+                                            foreach($VENDOR_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </datalist>
                                 </td>
                             </tr>
 
