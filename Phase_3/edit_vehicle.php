@@ -152,18 +152,35 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
 
                             <tr>
-                                <td class = "item_label">Model Name</td>
+                                <td class="item_label">Model Name</td>
                                 <td>
-                                    <input type="text" name = "model_name" value ="<?php if($_GET['model_name']) {print $_GET['model_name'];} else if($_POST['model_name']) {print $_POST['model_name'];}?>" />
+                                    <datalist id = 'model_name'>
+                                        <?php
+                                            foreach($MODEL_NAME_LIST as $var) {
+                                        ?>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </datalist>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class = "item_label">Model Year</td>
+                                <td class="item_label">Model year</td>
                                 <td>
-                                    <input type="number" name = "model_year" value ="<?php if($_GET['model_year']) {print $_GET['model_year'];} else if($_POST['model_year']) {print $_POST['model_year'];}?>" />
+                                    <datalist id="model_year">
+                                        <?php
+                                            for($n_year=2020; $n_year>=1900; $n_year--) {
+                                        ?>
+                                        <option value= '<?php echo $n_year;?>'><?php echo $n_year;?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </datalist>
                                 </td>
-                            </tr>
+                             </tr>
+
 
                             <tr>
                                 <td class="item_label">Vehicle Type</td>
