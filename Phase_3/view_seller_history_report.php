@@ -42,7 +42,8 @@ $query = "SELECT sellernames.name, ".
     "SELECT customer_id, business_name AS name ".
     "FROM Business)sellernames ".
     "ON Buy.customer_id = sellernames.customer_id ".
-    "GROUP BY sellernames.name";
+    "GROUP BY sellernames.name ".
+    "ORDER BY total_vehicle_number_sold_to_us DESC, avg_purchase_price ASC";
 
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
