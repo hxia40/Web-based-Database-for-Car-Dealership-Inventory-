@@ -236,10 +236,19 @@ $enteredVIN = $_GET['vin'];
                                         <input name = "add" type = "submit" id = "add" value = "Add">
                                     </tr>
                                     <?php
-                                    print "<tr>";
-                                    $get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$enteredcustomer_id}";
-                                    print "<td><a href={$get_url2}>Next</a></td>";
-                                    print "</tr>";
+																		if (!empty($enteredVIN)){
+																			print "<tr>";
+	                                    $get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$enteredcustomer_id}";
+	                                    print "<td><a href={$get_url2}>Sell This Car</a></td>";
+	                                    print "</tr>";
+																		}
+																		if (empty($enteredVIN)){
+																			print "<tr>";
+	                                    $get_url2="add_vehicle.php?vin={$enteredVIN}&customer_id={$enteredcustomer_id}";
+	                                    print "<td><a href={$get_url2}>Add Vehicle</a></td>";
+	                                    print "</tr>";
+																		}
+
                                     ?>
                                 </table>
                             </form>

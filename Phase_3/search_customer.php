@@ -106,34 +106,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    <div class='profile_section'>
 					    <div class='subtitle'>Search Results</div>
                         <?php
+												// when sell vehicle: vin was entered
+												if (!empty($enteredVIN)) {
+													if(!empty($row_p)) {
+															echo "Existing Customer!<br>";
+															print "<tr>";
+															$get_url1="sale_order.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
+															// $get_url1="edit_customer.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
+															print "<td><a href={$get_url1}>Sell This Car</a></td>";
+															// print "<td><a href={$get_url4}>Edit Customer</a></td>";
+															print "</tr>";
+													}
+													else if(!empty($row_b)) {
+															echo "Existing Customer!<br>";
+															print "<tr>";
+															$get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$row_b['customer_id']}";
+															print "<td><a href={$get_url2}>Sell This Car</a></td>";
+															print "</tr>";
 
-                            if(!empty($row_p)) {
-                                echo "Existing Customer!<br>";
-                                print "<tr>";
-                                $get_url1="sale_order.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
-                                // $get_url1="edit_customer.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
-                                print "<td><a href={$get_url1}>Sell This Car</a></td>";
-                                // print "<td><a href={$get_url4}>Edit Customer</a></td>";
-                                print "</tr>";
-                            }
-														else if(!empty($row_b)) {
-                                echo "Existing Customer!<br>";
-                                print "<tr>";
-                                $get_url2="sale_order.php?vin={$enteredVIN}&customer_id={$row_b['customer_id']}";
-                                print "<td><a href={$get_url2}>Next</a></td>";
-                                print "</tr>";
+													}else if (!empty($entered_id)) {
+														// echo $entered_id;
+														// var_dump($idlist);
+															echo "New Customer!<br>";
+															print "<tr>";
+															$get_url3="add_customer.php?vin={$enteredVIN}";
+															print "<td><a href={$get_url3}>Add New Customer</a></td>";
+															print "</tr>";
+													}
+												}
+												// when add vehicle: no vin was entered
+												if (empty($enteredVIN)) {
+													if(!empty($row_p)) {
+															echo "Existing Customer!<br>";
+															print "<tr>";
+															$get_url1="add_vehicle.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
+															// $get_url1="edit_customer.php?vin={$enteredVIN}&customer_id={$row_p['customer_id']}";
+															print "<td><a href={$get_url1}>Add Vehicle</a></td>";
+															// print "<td><a href={$get_url4}>Edit Customer</a></td>";
+															print "</tr>";
+													}
+													else if(!empty($row_b)) {
+															echo "Existing Customer!<br>";
+															print "<tr>";
+															$get_url2="add_vehicle.php?vin={$enteredVIN}&customer_id={$row_b['customer_id']}";
+															print "<td><a href={$get_url2}>Add Vehicle</a></td>";
+															print "</tr>";
 
-                            }else if (!empty($entered_id)) {
-                              // echo $entered_id;
-                              // var_dump($idlist);
-                                echo "New Customer!<br>";
-                                print "<tr>";
-                                $get_url3="add_customer.php?vin={$enteredVIN}";
-                                print "<td><a href={$get_url3}>Next</a></td>";
-                                print "</tr>";
+													}else if (!empty($entered_id)) {
+														// echo $entered_id;
+														// var_dump($idlist);
+															echo "New Customer!<br>";
+															print "<tr>";
+															$get_url3="add_customer.php?vin={$enteredVIN}";
+															print "<td><a href={$get_url3}>Add Customer</a></td>";
+															print "</tr>";
+													}
+												}
 
-
-                            }
 
 
                         ?>
