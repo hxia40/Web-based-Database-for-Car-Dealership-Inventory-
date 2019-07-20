@@ -98,7 +98,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+		<title>View Vehicle Detail for Owner</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -181,8 +181,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
                   <th class="subtitle">Repair Information</th>
                   <tr>
-                      <td class="item_label">Total Cost</td>
-                      <td>
+                      <td class="item_label">Total Repair Cost:
                           <?php
 													if (empty($row4['totalcost'])){
 														$row4['totalcost'] = '0';

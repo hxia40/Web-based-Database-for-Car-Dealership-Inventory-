@@ -24,7 +24,7 @@ if($showQueries){
   array_push($query_msg, "showQueries currently turned ON, to disable change to 'false' in lib/common.php");
 }
 
-$query = "SELECT COUNT(Vehicle.vin) as total " . 
+$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total " . 
 		 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
          "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
          "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
