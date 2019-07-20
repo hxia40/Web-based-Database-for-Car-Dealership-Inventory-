@@ -100,7 +100,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 					<div class="title_name"><?php print $_row['first_name'] . ' ' . $_row['last_name']; ?></div>
 					<div class="features">
 
-					    <button onclick="myFunction()">Check NHTSA Recall Number</button>
+					    <button onclick="myFunction()">Open/Close NHTSA Recall Number List</button>
 						<div class ="Check NHTSA Recall Campagin Number" id = "check_recall">
 							<div class="subtitle">Please Check NHTSA Recall Campagin Number First!</div>
 							<form name = "add_repair_check_NHTSA" action = "add_repair.php" method="get">
@@ -137,7 +137,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 									include('lib/show_queries.php');
 									if (mysqli_num_rows($result) == 0) {
 										//array_push($error_msg,  "Query ERROR: Failed to get Recall information..." . __FILE__ ." line:". __LINE__ );
-										echo "Sorry, there is no NHTSA Information, please add this Recall information first.";
+										echo "Sorry, there is no such NHTSA Information, please add this Recall information to the list first.";
 										echo "<td><a href='add_recall.php?NHTSA_recall_compaign_number=".$enteredNHTSA_recall_compaign_number."'> Add Recall</a></td>";
 									}else{
 										echo "We have the NHTSA Information: ";
@@ -166,6 +166,24 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 
                             <form name = "add_repair" action = "add_repair.php" method="post">
                                 <table>
+
+                                    <tr>
+                                        <td class="item_label">Vendor Name</td>
+                                        <td>
+                                            <input type="text" name="vendor_name" list="vendor_name_list">
+                                            <datalist id = 'vendor_name_list'>
+                                                <?php
+                                                foreach($VENDOR_LIST as $var) {
+                                                    ?>s
+                                                    <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </datalist>
+                                            <a href='add_vendor.php' target='_blank'>Add A New Vendor</a>
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <td class ="item_label">VIN Number</td>
                                         <td>
@@ -190,6 +208,12 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                             <input type="date" name= "start_date" value="<?php if ($_GET['start_date']) { print $_GET['start_date']; } ?>" />
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class ="item_label">End Date</td>
+                                        <td>
+                                            <input type="date" name= "end_date" value="<?php if($_GET['end_date']) {print $_GET['end_date'];} ?>";
+                                        </td>
+                                    </tr>
 
                                     <tr>
                                         <td class = "item_label">Repair Description</td>
@@ -197,23 +221,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                             <input type="text" name = "repair_description" value ="<?php if($_GET['repair_description']) {print $_GET['repair_description'];}?>" />
                                         </td>
                                     </tr>
-
-									<tr>
-										<td class="item_label">Vendor Name</td>
-										<td>
-											<input type="text" name="vendor_name" list="vendor_name_list">
-											<datalist id = 'vendor_name_list'>
-												<?php
-													foreach($VENDOR_LIST as $var) {
-												?>s
-												<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
-												<?php
-													}
-												?>
-											</datalist>
-                                            <a href='add_vendor.php' target='_blank'>Add A New Vendor</a>
-										</td>
-									</tr>
 
 
                                     <tr>
@@ -236,12 +243,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class ="item_label">End Date</td>
-                                        <td>
-                                            <input type="date" name= "end_date" value="<?php if($_GET['end_date']) {print $_GET['end_date'];} ?>";
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td>
                                         <input name = "add" type = "submit" id = "add" value = "Confirmed and Add!">

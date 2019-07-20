@@ -56,7 +56,8 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         ?>
                                     </datalist>
 
-                                    <a href='add_vendor.php' target='_blank'>Add A New Vendor</a></td>
+<!--                                    <a href='add_vendor.php' target='_blank'>Add A New Vendor</a>-->
+                                </td>
                             </tr>
 
 
