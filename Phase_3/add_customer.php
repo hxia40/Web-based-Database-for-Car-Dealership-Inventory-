@@ -233,7 +233,7 @@ $enteredVIN = $_GET['vin'];
 
 
                                     <tr>
-                                        <input name = "add" type = "submit" id = "add" value = "Add">
+                                        <td><input name = "add" type = "submit" id = "add" value = "Add"></td>
                                     </tr>
                                     <?php
 																		if (!empty($enteredVIN)){
