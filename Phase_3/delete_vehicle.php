@@ -3,13 +3,6 @@
 include('lib/common.php');
 // written by zxie86
 
-
-
-if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
-    header('Location: index.php');
-    exit();
-}
-
  
     
     
@@ -124,6 +117,29 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                         <td>
                                             <input type="number" name = "sale_price" value ="<?php $vin = $_GET['vin'];
                                             $sale_price = floatval(mysqli_query($db, "SELECT sale_price FROM Vehicle WHERE vin = $vin")); print $sale_price;?>" readonly/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="item_label">Vehicle Color</td>
+                                        <td>
+                                            <ul>
+                                                <?php
+                                                $vin = "";
+                                                if ($_GET['vin']) { $vin = $_GET['vin']; } else if($_POST['vin']){$vin = $_POST['vin'];}
+                                                $query = "SELECT vehicle_color FROM VehicleColor WHERE vin= '$vin'";
+                                                $result = mysqli_query($db, $query);
+                                                include('lib/show_queries.php');
+
+                                                if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+                                                    array_push($error_msg,  "Query ERROR: Failed to get Vehicle Color... <br>" . __FILE__ ." line:". __LINE__ );
+                                                }
+
+                                                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                                                    print $row['vehicle_color'];
+                                                }
+                                                ?>
+                                            </ul>
                                         </td>
                                     </tr>
 

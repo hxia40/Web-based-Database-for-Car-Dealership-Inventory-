@@ -4,11 +4,6 @@ include('lib/common.php');
 // written by zxie86
 
 
-if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
-    header('Location: index.php');
-    exit();
-}
-
 
 $query = "SELECT login_first_name, login_last_name " .
     " FROM Users " .
@@ -91,23 +86,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                     <form name = "add" action = "add_vehicle.php" method="post">
                         <table>
-
-                            <tr>
-                                <td class="item_label">Customer ID</td>
-                                <td>
-                                    <input type="text" name="customer_id" list="customer_id_list">
-                                    <datalist id = 'customer_id_list'>
-                                        <?php
-                                        foreach($CUSTOMER_ID_LIST as $var) {
-                                            ?>
-                                            <option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </datalist>
-                                    <a href='add_customer.php' target='_blank'> Add A Customer </a>
-                                </td>
-                            </tr>
                             <tr>
                                 <td class ="item_label">VIN Number</td>
                                 <td>
@@ -132,9 +110,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <tr>
                                 <td class="item_label">Model year</td>
                                 <td>
-                                    <input type="number" name="model_year" list="model_year_list" min = "1900" max = "2020">
+                                    <input type="number" name="model_year" list="model_year_list" min = "1900" max = "2020" value = "<?php if ($_GET['model_year']) { print $_GET['model_year'];}else if($_POST['model_year']){print $_POST['model_year'];} ?>">
                                     <datalist id="model_year_list">
-                                        <option value=0 selected="true">Please select</option>
+                                        <option value=0 >Please select</option>
                                         <?php
                                             for($n_year=2020; $n_year>=1900; $n_year--) {
                                         ?>
@@ -149,12 +127,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <tr>
                                 <td class="item_label">Model Name</td>
                                 <td>
-                                    <input type="text" name="model_name" list="model_name_list">
+                                    <input type="text" name="model_name" value = "<?php if ($_GET['model_name']) { print $_GET['model_name'];}else if($_POST['model_name']){print $_POST['model_name'];} ?>" list="model_name_list">
                                     <datalist id = 'model_name_list'>
                                         <?php
                                         foreach($MODEL_NAME_LIST as $var) {
                                             ?>
-                                            <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <option value= '<?php echo $var;?>' ><?php echo $var;?></option>
                                             <?php
                                         }
                                         ?>
@@ -201,7 +179,49 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td class="item_label">Customer ID</td>
+                                <td>
+                                    <input type="text" name="customer_id" list="customer_id_list">
+                                    <datalist id = 'customer_id_list'>
+                                        <?php
+                                        foreach($CUSTOMER_ID_LIST as $var) {
+                                            ?>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </datalist>
+                                    <a href='add_customer.php' target='_blank'> Add A Customer </a>
+                                </td>
+                            </tr>
 
+                            <tr>
+                                <td class="item_label">Vehicle Color</td>
+                                <td>
+                                    If you want to add Vehicle Color, please first click 'Submit Vehicle Info' and then Click the following link:
+                                    <?php
+                                        $vin = "";
+                                        if ($_GET['vin']) { $vin = $_GET['vin']; } else if($_POST['vin']){$vin = $_POST['vin'];}
+                                        $vehicle_mileage = "";
+                                        if ($_GET['vehicle_mileage']) { $vehicle_mileage = $_GET['vehicle_mileage']; } else if($_POST['vehicle_mileage']){$vehicle_mileage = $_POST['vehicle_mileage'];}
+                                        $model_name = "";
+                                        if ($_GET['model_name']) { $model_name = $_GET['model_name']; } else if($_POST['model_name']){$model_name = $_POST['model_name'];}
+                                        $model_year = "";
+                                        if ($_GET['model_year']) { $model_year = $_GET['model_year']; } else if($_POST['model_year']){$model_year = $_POST['model_year'];}
+                                        $type_name = "";
+                                        if ($_GET['type_name']) { $type_name = $_GET['type_name']; } else if($_POST['type_name']){$type_name = $_POST['type_name'];}
+                                        $manufacturer_name = "";
+                                        if ($_GET['manufacturer_name']) { $manufacturer_name = $_GET['manufacturer_name']; } else if($_POST['manufacturer_name']){$manufacturer_name = $_POST['manufacturer_name'];}
+                                        $sale_price = 0;
+                                        if ($_GET['sale_price']) { $sale_price = $_GET['sale_price']; } else if($_POST['sale_price']){$sale_price = $_POST['sale_price'];}
+                                        $vehicle_description = "";
+                                        if ($_GET['vehicle_description']) { $vehicle_description = $_GET['vehicle_description']; } else if($_POST['vehicle_description']){$vehicle_description = $_POST['vehicle_description'];}
+                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."'>Add Color(s) for this Vehicle</a>";
+
+                                    ?>
+                                </td>
+                            </tr>
 
                             <tr>
                                

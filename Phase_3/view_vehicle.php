@@ -5,11 +5,6 @@ include('lib/common.php');
 
 
 
-if (!isset($_SESSION['username'])) {
-    header('Location: index.php');
-    exit();
-}
-
     
 $query = "SELECT login_first_name, login_last_name " .
     "FROM Users " .
