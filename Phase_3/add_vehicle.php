@@ -183,23 +183,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             </tr>
 
                             <tr>
-                                <td class="item_label">Customer ID</td>
-                                <td>
-                                    <input type="text" name="customer_id" list="customer_id_list">
-                                    <datalist id = 'customer_id_list'>
-                                        <?php
-                                        foreach($CUSTOMER_ID_LIST as $var) {
-                                            ?>
-                                            <option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </datalist>
-                                    <a href='add_customer.php' target='_blank'> Add A Customer </a>
-                                </td>
-                            </tr>
-
-                            <tr>
                                 <td class="item_label">Vehicle Color</td>
                                 <td>
                                     If you want to add Vehicle Color, please first click 'Submit Vehicle Info' and then Click the following link:
