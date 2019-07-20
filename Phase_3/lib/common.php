@@ -87,14 +87,15 @@ $VEHICLE_TYPES_LIST=array(
     "Truck",
     "Van",
     "Minivan",
-    "SUV"
+    "SUV",
+    "Other"
 );
 
 $PURCHASE_CONDITION_LIST=array(
     "Excellent",
     "Very Good",
     "Good",
-    "Fair",
+    "Fair"
 );
 
 $db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_SCHEMA, DB_PORT);
@@ -107,28 +108,28 @@ if (mysqli_connect_errno())
     exit();
 }
 
-$pull_vendor_query = "SELECT vendor_name FROM Vendor ";
+$pull_vendor_query = "SELECT DISTINCT vendor_name FROM Vendor ";
 $pull_vendor_results = mysqli_query($db, $pull_vendor_query);
 $VENDOR_LIST = array();
 while($VENDOR =  mysqli_fetch_array($pull_vendor_results)){
     array_push($VENDOR_LIST, $VENDOR['vendor_name']);
 }
 
-$pull_customer_id_query = "SELECT customer_id FROM Customer ";
+$pull_customer_id_query = "SELECT DISTINCT customer_id FROM Customer ";
 $pull_customer_id_results = mysqli_query($db, $pull_customer_id_query);
 $CUSTOMER_ID_LIST = array();
 while($CUSTOMER_ID = mysqli_fetch_array($pull_customer_id_results)){
 	array_push($CUSTOMER_ID_LIST, $CUSTOMER_ID['customer_id']);
 }
 
-$pull_model_name_query = "SELECT model_name FROM Vehicle ";
+$pull_model_name_query = "SELECT DISTINCT model_name FROM Vehicle ";
 $pull_model_name_results = mysqli_query($db, $pull_model_name_query);
 $MODEL_NAME_LIST = array();
 while($MODEL_NAME = mysqli_fetch_array($pull_model_name_results)){
     array_push($MODEL_NAME_LIST, $MODEL_NAME['model_name']);
 }
 
-$pull_nhtsa_query = "SELECT NHTSA_recall_compaign_number FROM Recall ";
+$pull_nhtsa_query = "SELECT DISTINCT NHTSA_recall_compaign_number FROM Recall ";
 $pull_nhtsa_results = mysqli_query($db, $pull_nhtsa_query);
 $NHTSA_LIST = array();
 while($NHTSA = mysqli_fetch_array($pull_nhtsa_results)){
