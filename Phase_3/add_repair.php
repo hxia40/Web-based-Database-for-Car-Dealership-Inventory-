@@ -24,7 +24,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 <?php
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $enteredVin = mysqli_real_escape_string($db, $_POST['vin']);
-        if(empty($enteredVin)){
+        /*if(empty($enteredVin)){
             header('Location: view_repair.php');
             exit();
         }
@@ -32,7 +32,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
         if(mysqli_num_rows($t) > 0){//current repair has pening or in program repair
             header('Location: view_repair.php');
             exit();
-        }
+        }*/
         $enteredStart_date = mysqli_real_escape_string($db, $_POST['start_date']);
         $enteredEnd_date = mysqli_real_escape_string($db, $_POST['end_date']);
         $enteredRepair_status = mysqli_real_escape_string($db, $_POST['repair_status']);
