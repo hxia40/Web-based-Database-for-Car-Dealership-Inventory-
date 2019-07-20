@@ -257,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <option value='all vehicles' selected="true">all vehicles</option>
                                             <option value='sold vehicles'>sold vehicles</option>
                                             <option value='unsold vehicles'>unsold vehicles</option>
-                                            <option value='vehicles available for sale'>unsold vehicles</option>
+                                            <option value='vehicles available for sale'>vehicles available for sale</option>
                                         </select>
                                     </td>
 								</tr>
