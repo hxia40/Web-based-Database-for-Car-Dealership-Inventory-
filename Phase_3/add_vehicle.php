@@ -137,7 +137,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         <?php
                                         foreach($$MODEL_NAME_LIST as $var) {
                                             ?>
-                                            <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                             <?php
                                         }
                                         ?>

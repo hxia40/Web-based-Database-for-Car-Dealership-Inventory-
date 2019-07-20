@@ -1,6 +1,6 @@
 <?php
 
-    
+
 include('lib/common.php');
 // written by zxie86
 
@@ -85,15 +85,15 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                     <input type="text" name="vendor_name" list="vendor_name_list">
                                     <datalist id = 'vendor_name_list'>
                                         <?php
-                                            foreach($VENDOR_LIST as $var) {
-                                        ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
-                                        <?php
-                                            }
+                                        foreach($VENDOR_LIST as $var) {
+                                            ?>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';} else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <?php
+                                        }
                                         ?>
                                     </datalist>
-                                </td>
-                                <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a>;</td>
+
+                                <a href='add_vendor.php' target='_blank'>Add A New Vendor</a></td>
                             </tr>
 
 
@@ -112,12 +112,14 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                             </tr>
 
                             <tr>
-                                <input name = "view" type = "submit" id = "view" value = "View">
-                                <input type="button" value="Cancel" onclick="history.go(-1)">
-                            </tr>
-                                <td><a href='add_repair.php?inventory_clerk_permission=<?php if($_GET['inventory_clerk_permission']) {print $_GET['inventory_clerk_permission']; ?>&nhtsa_recall_compaign_number=<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number']; ?>&repair_cost=<?php if($_GET['repair_cost']) {print $_GET['repair_cost']; ?>&vendor_name=<?php if($_GET['vendor_name']) {print $_GET['vendor_name']; ?>&repair_description=<?php if($_GET['repair_description']) {print $_GET['repair_description']; ?>&repair_status=<?php if($_GET['repair_status']) {print $_GET['repair_status']; ?>&end_date=<?php if($_GET['end_date']) {print $_GET['end_date']; ?>&start_date=<?php if($_GET['start_date']) {print $_GET['start_date'];} ?>&vin=<?php if($_GET['vin']) {print $_GET['vin'];} else if($_POST['vin']) {print $_POST['vin'];}?>&nhtsa_recall_compaign_number=<?php if($_GET['NHTSA_recall_compaign_number']) {print $_GET['NHTSA_recall_compaign_number'];} else if($_POST['NHTSA_recall_compaign_number']) {print $_POST['NHTSA_recall_compaign_number'];} ?>' >Add A New Repair Record!</a></td>
-                            <tr>
+                                <td>
+                                    <input name = "view" type = "submit" id = "view" value = "View">
+                                    <input type="button" value="Cancel" onclick="history.go(-1)">
+                                </td>
+                                <td>
+                                    <a href='add_repair.php?inventory_clerk_permission=<?php if($_GET['inventory_clerk_permission']) {print $_GET['inventory_clerk_permission'];} ?>&nhtsa_recall_compaign_number=<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number'];} ?>&repair_cost=<?php if($_GET['repair_cost']) {print $_GET['repair_cost'];} ?>&vendor_name=<?php if($_GET['vendor_name']) {print $_GET['vendor_name'];} ?>&repair_description=<?php if($_GET['repair_description']) {print $_GET['repair_description'];} ?>&repair_status=<?php if($_GET['repair_status']) {print $_GET['repair_status'];} ?>&end_date=<?php if($_GET['end_date']) {print $_GET['end_date'];} ?>&start_date=<?php if($_GET['start_date']) {print $_GET['start_date'];} ?>&vin=<?php if($_GET['vin']) {print $_GET['vin'];} else if($_POST['vin']) {print $_POST['vin'];}?>&nhtsa_recall_compaign_number=<?php if($_GET['NHTSA_recall_compaign_number']) {print $_GET['NHTSA_recall_compaign_number'];} else if($_POST['NHTSA_recall_compaign_number']) {print $_POST['NHTSA_recall_compaign_number'];} ?>' target="_blank">Add A New Repair Record!</a>
 
+                                </td>
                             </tr>
                         </table>
                     </form>

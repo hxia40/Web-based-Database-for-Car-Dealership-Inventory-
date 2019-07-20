@@ -284,7 +284,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         ?>
                                     </datalist>
                                 </td>
-                                <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a>;</td>
+                                <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a></td>
                             </tr>
 
 

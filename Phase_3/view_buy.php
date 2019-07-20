@@ -61,8 +61,8 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         }
                                     ?>
                                 </datalist>
+                                <a href='add_customer.php' target='_blank'> Add A Customer </a>
                             </td>
-                            <td><a href='add_customer.php' target='_blank'> Add A Customer </a>;</td>
                         </tr>
 
 

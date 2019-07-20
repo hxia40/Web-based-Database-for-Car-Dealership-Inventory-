@@ -8,7 +8,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
     exit();
 }
 
-
 $query = "SELECT login_first_name, login_last_name " .
     " FROM Users WHERE Users.username = '{$_SESSION['username']}'";
 
@@ -148,8 +147,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             }
                                         ?>
                                     </datalist>
+                                    <a href='add_customer.php' target='_blank'> Add A Customer </a>
                                 </td>
-                                <td><a href='add_customer.php' target='_blank'> Add A Customer </a>;</td>
                             </tr>
 
 
