@@ -203,7 +203,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         if ($_GET['sale_price']) { $sale_price = $_GET['sale_price']; } else if($_POST['sale_price']){$sale_price = $_POST['sale_price'];}
                                         $vehicle_description = "";
                                         if ($_GET['vehicle_description']) { $vehicle_description = $_GET['vehicle_description']; } else if($_POST['vehicle_description']){$vehicle_description = $_POST['vehicle_description'];}
-                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price_tmp."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."' target=\"_blank\">Add Color(s) for this Vehicle</a>";
+                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."' target=\"_blank\">Add Color(s) for this Vehicle</a>";
 
                                     ?>
                                 </td>
