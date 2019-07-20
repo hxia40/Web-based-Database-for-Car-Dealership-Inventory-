@@ -277,12 +277,12 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
 
 									<th class="subtitle">Seller Information</th>
-                  <tr>
+<!--                   <tr>
                       <td class="item_label">Customer ID</td>
                       <td>
                           <?php print $row2['seller_customer_id'];?>
                       </td>
-                  </tr>
+                  </tr> -->
 									<tr>
                       <td class="item_label">Phone Number</td>
                       <td>
@@ -392,11 +392,11 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
                   echo "</tr>";
 
                   echo "<th class=\"subtitle\">Buyer Information</th>";
-									echo "<tr>";
-									echo "<td class=\"item_label\"> Customer ID </td>";
-									echo "<td>";
-                  echo $row3['buyer_customer_id'];
-                  echo "</td>";
+// 									echo "<tr>";
+// 									echo "<td class=\"item_label\"> Customer ID </td>";
+// 									echo "<td>";
+//                   echo $row3['buyer_customer_id'];
+//                   echo "</td>";
                   echo "</tr>";
 
 									echo "<tr>";
