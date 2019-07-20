@@ -5,7 +5,6 @@ include('lib/common.php');
 
 
 
-
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 3 &&$_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();
@@ -46,12 +45,23 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                             <tr>
                                 <td>NHTSA Recall Compaign Number</td>
                                 <td>
-                                    <input name = "NHTSA_recall_compaign_number" type = "text" id = "NHTSA_recall_compaign_number"
-                                           value="<?php if ($_GET['NHTSA_recall_compaign_number']) { print $_GET['NHTSA_recall_compaign_number']; } ?>">                                </td>
+                                    <input name = "NHTSA_recall_compaign_number" type = "text" list = "NHTSA_list" value="<?php if ($_GET['NHTSA_recall_compaign_number']) { print $_GET['NHTSA_recall_compaign_number']; } ?>">
+                                    <datalist id = 'NHTSA_list'>
+                                        <?php
+                                        foreach($NHTSA_LIST as $var) {
+                                            ?>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['NHTSA_recall_compaign_number'] == $var) { print 'selected="true"';}else if($_POST['NHTSA_recall_compaign_number'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </datalist>
+                                </td>
                             </tr>
 
                             <tr>
+                                <td>
                                 <input name = "view" type = "submit" id = "view" value = "View">
+                                </td>
                             </tr>
                         </table>
                     </form>

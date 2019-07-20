@@ -88,7 +88,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         <?php
                                             foreach($VENDOR_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>

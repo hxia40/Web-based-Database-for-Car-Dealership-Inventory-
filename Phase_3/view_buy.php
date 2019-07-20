@@ -58,7 +58,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
 						<?php
 							foreach($CUSTOMER_ID_LIST as $var) {
 						?>
-						<option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+						<option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
 						<?php
 							}
 						?>
@@ -97,7 +97,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         <?php
                                             foreach($PURCHASE_CONDITION_LIST as $var) {
                                         ?>
-			                                <option value= '<?php echo $var;?>' <?php if ($_GET['purchase_condition'] == $var) { print 'selected="true"';}else if($_POST['purchase_condition'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+			                                <option value= '<?php echo $var;?>' <?php if ($_GET['purchase_condition'] == $var) { print 'selected="true"';}else if($_POST['purchase_condition'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>

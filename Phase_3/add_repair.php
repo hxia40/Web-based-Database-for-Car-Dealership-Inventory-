@@ -1,6 +1,7 @@
 <?php
 include('lib/common.php');
 // written by zxie86
+
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();
@@ -133,10 +134,10 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 									$query = $query . $from . $where;
 									$result = mysqli_query($db, $query);
 									include('lib/show_queries.php');
-									if (is_bool($result) && (mysqli_num_rows($result) == 0) ) {
+									if (mysqli_num_rows($result) == 0) {
 										//array_push($error_msg,  "Query ERROR: Failed to get Recall information..." . __FILE__ ." line:". __LINE__ );
-										echo "Sorry, there is no NHTSA Information, Please Add This Recall Information First.";
-										echo "<td><a href='add_recall.php?NHTSA_recall_compaign_number=".$enteredNHTSA_recall_compaign_number."'>Add Recall</a></td>";
+										echo "Sorry, there is no NHTSA Information, please add this Recall information first.";
+										echo "<td><a href='add_recall.php?NHTSA_recall_compaign_number=".$enteredNHTSA_recall_compaign_number."'> Add Recall</a></td>";
 									}else{
 										echo "We have the NHTSA Information: ";
 										echo "<div>";
@@ -151,9 +152,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 											print "<td>" . $row['recall_manufacturer'] . "</td>";
 											print "<td>" . $row['recall_description'] . "</td>";
 											print "<td>" . $row['NHTSA_recall_compaign_number'] . "</td>";
-											echo "<td><a href='edit_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Edit</a></td>";
-											echo "<td><a href='delete_recall.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Delete</a></td>";
-											echo "<td><a href='add_repair.php?NHTSA_recall_compaign_number=".$row['NHTSA_recall_compaign_number']."&recall_description=".$row['recall_description']. "&recall_manufacturer=" .$row['recall_manufacturer']."'>Add Repair</a></td>";
 										}
 										echo "</table>";
 										echo "</div>";
@@ -206,8 +204,8 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 											<datalist id = 'vendor_name_list'>
 												<?php
 													foreach($VENDOR_LIST as $var) {
-												?>
-												<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+												?>s
+												<option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
 												<?php
 													}
 												?>

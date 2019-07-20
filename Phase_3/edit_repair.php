@@ -173,6 +173,70 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="title_name"><?php print $row['login_first_name'] . ' ' . $row['login_last_name']; ?></div>
             <div class="features">
                 <div class = "profile_section">
+
+                    <button onclick="myFunction()">Check NHTSA Recall Number</button>
+                    <div class ="Check NHTSA Recall Campagin Number" id = "check_recall">
+                        <div class="subtitle">Please Check NHTSA Recall Campagin Number If You Update Recall Information!</div>
+                        <form name = "add_repair_check_NHTSA" action = "add_repair.php" method="get">
+                            <table>
+                                <tr>
+                                    <td class ="item_label">NHTSA Recall Campagin Number</td>
+                                    <td>
+                                        <input type="text" name = "nhtsa_recall_compaign_number"  value ="<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number'];}?>" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Check NHTSA Number!">
+                                        <button type="reset" value="Reset">Reset</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+
+                        <?php
+                        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                            $enteredNHTSA_recall_compaign_number = mysqli_real_escape_string($db, $_GET['nhtsa_recall_compaign_number']);
+                            $query  = "SELECT recall_manufacturer, recall_description, NHTSA_recall_compaign_number ";
+                            $from = " FROM Recall ";
+                            $where = "";
+                            if(empty($enteredNHTSA_recall_compaign_number)){
+                                $where = "";
+                                //array_push($error_msg,  "INPUT ERROR: Please input validate NHTSA Recall Compaign Number... <br>".  __FILE__ ." line:". __LINE__ );
+                            }else{
+                                $where = " WHERE NHTSA_recall_compaign_number = '$enteredNHTSA_recall_compaign_number'";
+                            }
+                            $query = $query . $from . $where;
+                            $result = mysqli_query($db, $query);
+                            include('lib/show_queries.php');
+                            if (mysqli_num_rows($result) == 0) {
+                                //array_push($error_msg,  "Query ERROR: Failed to get Recall information..." . __FILE__ ." line:". __LINE__ );
+                                echo "Sorry, there is no NHTSA Information, please add this Recall information first.";
+                                echo "<td><a href='add_recall.php?NHTSA_recall_compaign_number=".$enteredNHTSA_recall_compaign_number."'> Add Recall</a></td>";
+                            }else{
+                                echo "We have the NHTSA Information: ";
+                                echo "<div>";
+                                echo "<table>";
+                                echo "<tr>";
+                                echo "<td class=\"heading\">Recall Manufacturer</td>";
+                                echo "<td class=\"heading\">Recall Description</td>";
+                                echo "<td class=\"heading\">NHTSA Recall Compaign Number</td>";
+                                echo "</tr>";
+                                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                                    print "<tr>";
+                                    print "<td>" . $row['recall_manufacturer'] . "</td>";
+                                    print "<td>" . $row['recall_description'] . "</td>";
+                                    print "<td>" . $row['NHTSA_recall_compaign_number'] . "</td>";
+                                }
+                                echo "</table>";
+                                echo "</div>";
+                            }
+                        }
+                        ?>
+                    </div>
+
+
+
                     <div class = "subtitle">Edit Repair Info</div>
                     <form name = "confirm_edit_repair" action = "edit_repair.php" method="post">
                         <table>
@@ -216,7 +280,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <?php
                                             foreach($VENDOR_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';}else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -269,6 +333,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <?php include("lib/footer.php"); ?>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("check_recall");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 </body>
 
 </html>

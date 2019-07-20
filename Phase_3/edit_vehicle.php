@@ -159,7 +159,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <?php
                                             foreach($MODEL_NAME_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -192,7 +192,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <?php
                                             foreach($VEHICLE_TYPES_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['type_name'] == $var) { print 'selected="true"';}else if($_POST['type_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['type_name'] == $var) { print 'selected="true"';}else if($_POST['type_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -207,7 +207,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <?php
                                             foreach($MANUFACTURER_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['manufacturer_name'] == $var) { print 'selected="true"';}else if($_POST['manufacturer_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['manufacturer_name'] == $var) { print 'selected="true"';}else if($_POST['manufacturer_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -223,9 +223,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
 
                             <tr>
+                                <td>
                                 <input name = "edit" type = "submit" id = "edit" value = "Confirmed and Edit">
                                 <input type="button" value="Cancel" onclick="history.go(-1)">
                                 <button type="reset" value="Reset">Reset</button>
+                                </td>
                             </tr>
                         </table>
                     </form>

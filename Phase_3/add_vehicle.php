@@ -155,7 +155,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         <?php
                                             foreach($VEHICLE_TYPES_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['type_name'] == $var) { print 'selected="true"';}else if($_POST['type_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['type_name'] == $var) { print 'selected="true"';}else if($_POST['type_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -171,7 +171,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         <?php
                                             foreach($MANUFACTURER_LIST as $var) {
                                         ?>
-                                        <option value= '<?php echo $var;?>' <?php if ($_GET['manufacturer_name'] == $var) { print 'selected="true"';}else if($_POST['manufacturer_name'] == $var){print 'selected="true"'} ?> ><?php echo $var;?></option>
+                                        <option value= '<?php echo $var;?>' <?php if ($_GET['manufacturer_name'] == $var) { print 'selected="true"';}else if($_POST['manufacturer_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                         <?php
                                             }
                                         ?>
@@ -187,9 +187,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             </tr>
 
                             <tr>
-                                <td class = "item_label">Customer ID</td>
+                                <td class="item_label">Customer ID</td>
                                 <td>
-                                    <input type="text" name = "customer_id" value ="<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>" />
+                                    <input type="text" name="customer_id" list="customer_id_list">
+                                    <datalist id = 'customer_id_list'>
+                                        <?php
+                                        foreach($CUSTOMER_ID_LIST as $var) {
+                                            ?>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['customer_id'] == $var) { print 'selected="true"';}else if($_POST['customer_id'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </datalist>
                                 </td>
                             </tr>
 
