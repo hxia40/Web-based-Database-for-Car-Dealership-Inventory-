@@ -43,6 +43,24 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                     <form name="view_repair_info" action="view_repair.php" method="get">
                         <table>
                             <tr>
+                                <td class="item_label">Vendor Name</td>
+                                <td>
+                                    <input type="text" name="vendor_name" list="vendor_name_list">
+                                    <datalist id = 'vendor_name_list'>
+                                        <?php
+                                        foreach($VENDOR_LIST as $var) {
+                                            ?>
+                                            <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';} else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </datalist>
+
+                                    <a href='add_vendor.php' target='_blank'>Add A New Vendor</a></td>
+                            </tr>
+
+
+                            <tr>
                                 <td>Vin Number</td>
                                 <td>
                                     <input type="text" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" >
@@ -79,22 +97,6 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="item_label">Vendor Name</td>
-                                <td>
-                                    <input type="text" name="vendor_name" list="vendor_name_list">
-                                    <datalist id = 'vendor_name_list'>
-                                        <?php
-                                        foreach($VENDOR_LIST as $var) {
-                                            ?>
-                                            <option value= '<?php echo $var;?>' <?php if ($_GET['vendor_name'] == $var) { print 'selected="true"';} else if($_POST['vendor_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </datalist>
-
-                                <a href='add_vendor.php' target='_blank'>Add A New Vendor</a></td>
-                            </tr>
 
 
                             <tr>
