@@ -135,7 +135,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     <input type="text" name="model_name" list="model_name_list">
                                     <datalist id = 'model_name_list'>
                                         <?php
-                                        foreach($$MODEL_NAME_LIST as $var) {
+                                        foreach($MODEL_NAME_LIST as $var) {
                                             ?>
                                             <option value= '<?php echo $var;?>' <?php if ($_GET['model_name'] == $var) { print 'selected="true"';}else if($_POST['model_name'] == $var){print 'selected="true"';} ?> ><?php echo $var;?></option>
                                             <?php
