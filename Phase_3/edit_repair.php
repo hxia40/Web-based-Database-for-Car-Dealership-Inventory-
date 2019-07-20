@@ -65,7 +65,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($enteredVin) || empty($enteredStart_date)) {
         array_push($error_msg, "Please enter a validate VIN number and start date.");
+    }else if((empty($enteredEnd_date) || $enteredEnd_date >= "2029-08-25T17:00:00") && $enteredRepair_status == 'completed'){
+        array_push($error_msg, "Update ERROR: The end date cannot be empty for a completed repair. <br>" . __FILE__ . " line: " . __LINE__);
+    }else if(!empty($enteredEnd_date) && $enteredEnd_date >= "2029-08-25T17:00:00" && $enteredRepair_status != 'completed'){
+        array_push($error_msg, "Update ERROR: The end date cannot be entered for a pending/in progress repair. <br>" . __FILE__ . " line: " . __LINE__);
     }else{
+        
         if (!empty($enteredEnd_date)) {
             $query = "UPDATE Repair " . "SET end_date = '$enteredEnd_date' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'";
             $result = mysqli_query($db, $query);
