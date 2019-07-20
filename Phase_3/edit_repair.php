@@ -187,7 +187,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Check NHTSA Number!">
+                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Submit">
                                         <button type="reset" value="Reset">Reset</button>
                                     </td>
                                 </tr>
@@ -286,6 +286,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         ?>
                                     </datalist>
                                 </td>
+                                <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a>;</td>
                             </tr>
 
 
