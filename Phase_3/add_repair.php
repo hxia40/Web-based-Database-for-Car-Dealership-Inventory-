@@ -196,24 +196,12 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
                                     </tr>
 					
 				
-				<tr>
-                                <td class = "item_label">Repair Status </td>
-                                <td>
-                                    <input name = "repair_status" value="pending" readonly>
-                                </td>
-                            </tr>
-                            <!--
-                            <tr>
-                                <td class = "item_label">Repair Status </td>
-                                <td>
-                                    <select name = "repair_status">
-                                        <option value="pending" <--?php if ($_GET['repair_status'] == 'pending' ) { print 'selected="true"';} ?> >pending</option>
-                                        <option value="in progress" <--?php if ($_GET['repair_status'] == 'in progress') { print 'selected="true"';} ?> >in progress</option>
-                                        <option value="completed" <--?php if ($_GET['repair_status'] == 'completed') { print 'selected="true"';} ?> >completed</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            -->
+                                    <tr>
+                                        <td class = "item_label"> Repair Status </td>
+                                        <td>
+                                            <input name = "repair_status" value="pending" readonly>
+                                        </td>
+                                    </tr>
 
                                     <tr>
                                         <td class="item_label">Start Date</td>
