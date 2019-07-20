@@ -117,21 +117,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             include('lib/show_queries.php');
             if (mysqli_affected_rows($db) == -1) {
                 array_push($error_msg, "Failed to get Previous Repair Price <br>" . __FILE__ . " line:" . __LINE__);
-            }
-
-            $query = "UPDATE Repair" . " SET repair_cost = $enteredRepair_cost WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'";
-            $result = mysqli_query($db, $query);
-            include('lib/show_queries.php');
-
-            if (mysqli_affected_rows($db) == -1) {
-                array_push($error_msg, "UPDATE ERROR: Repair_cost Error... <br>" . __FILE__ . " line:" . __LINE__);
-            }else if($enteredRepair_cost != $previous_repair_cost){
-                $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
-                $new_sale_price = $previous_sale_price + $change_repair_cost;
-
-                $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = '$enteredVin'" ;
+            }else{
+                $query = "UPDATE Repair" . " SET repair_cost = $enteredRepair_cost WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'";
                 $result = mysqli_query($db, $query);
                 include('lib/show_queries.php');
+
+                if (mysqli_affected_rows($db) == -1) {
+                    array_push($error_msg, "UPDATE ERROR: Repair_cost Error... <br>" . __FILE__ . " line:" . __LINE__);
+                }else if($enteredRepair_cost != $previous_repair_cost){
+                    $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
+                    $new_sale_price = $previous_sale_price + $change_repair_cost;
+
+                    $query = "UPDATE Vehicle " . " SET sale_price = $new_sale_price WHERE vin = '$enteredVin'" ;
+                    $result = mysqli_query($db, $query);
+                    include('lib/show_queries.php');
+                }
             }
         }
 
