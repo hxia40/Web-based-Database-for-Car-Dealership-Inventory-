@@ -57,7 +57,11 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
             array_push($error_msg, "ADD ERROR: Please enter a validate Repair Cost... <br>" . __FILE__ . " line: " . __LINE__);
         }else if (!empty($enteredinventory_clerk_permssion)) {
             array_push($error_msg, "ADD ERROR: Please enter a validate Inventory Clerk Permssion <br>" . __FILE__ . " line: " . __LINE__);
-        }else{
+        }else if(empty($enteredEnd_date) && $enteredRepair_status == 'completed'){
+	    array_push($error_msg, "ADD ERROR: The end date cannot be empty for a completed repair. <br>" . __FILE__ . " line: " . __LINE__);
+	}else if(!empty($enteredEnd_date) && $enteredRepair_status != 'completed'){
+	    array_push($error_msg, "ADD ERROR: The end date cannot be entered for a pending/in progress repair. <br>" . __FILE__ . " line: " . __LINE__);
+	}else{
             if(empty($enteredEnd_date)){
                 $enteredEnd_date = "2029-08-25T17:00:00";
             }
