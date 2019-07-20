@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<div class="center_left">
                 <div class="features">
                 <div class='profile_section'>
-					    <div class='subtitle'>Your are the Owner (Mr. Burdell)</div>
+					    <div class='subtitle'>You are the Owner (Mr. Burdell)</div>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Number of vehicles (for Mr. Burdell view)</div>

@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<div class="center_left">
                 <div class="features">
                 <div class='profile_section'>
-					    <div class='subtitle'>Your are a manager</div>
+					    <div class='subtitle'>You are a manager</div>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Number of vehicles (for manager view)</div>
