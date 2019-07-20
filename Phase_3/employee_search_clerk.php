@@ -261,7 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					    </table>
 				    </div>
                     <div class='profile_section'>
-					    <div class='subtitle'><a href='search_customer.php'>Add Vehicle</a></div>
+					    <div class='subtitle'><a href='add_vehicle.php'>Add Vehicle</a></div>
 				    </div>
                 </div>
             </div>
