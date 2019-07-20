@@ -95,12 +95,7 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row['vehicle_mileage'];?>
                       </td>
                   </tr>
-                  <tr>
-                      <td class="item_label">Vehicle Description</td>
-                      <td>
-                          <?php print $row['vehicle_description'];?>
-                      </td>
-                  </tr>
+                  
                   <tr>
                       <td class="item_label">Model Name</td>
                       <td>
@@ -125,7 +120,12 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row['color'];?>
                       </td>
                   </tr>
-
+                  <tr>
+                      <td class="item_label">Vehicle Description</td>
+                      <td>
+                          <?php print $row['vehicle_description'];?>
+                      </td>
+                  </tr>
 
                   <tr>
                       <td class="item_label">Sale Price</td>
@@ -140,19 +140,6 @@ if (!isset($_SESSION['username'])) {
                           <?php print $row['purchase_price'];?>
                       </td>
                   </tr>
-									<tr>
-                      <td class="item_label">Total Repair Cost</td>
-                      <td>
-                          <?php
-													if (empty($row3['totalcost'])){
-														$row3['totalcost'] = '0';
-														print $row3['totalcost'];
-													} else {
-														print $row3['totalcost'];
-													}
-													?>
-                      </td>
-                  </tr>
 									<?php
 									print "<tr>";
 									$get_url3="view_vehicle.php?view=View&vin={$enteredVIN}";
@@ -161,6 +148,18 @@ if (!isset($_SESSION['username'])) {
 									?>
 
                   <th class="subtitle">Repair</th>
+                  <tr>
+                      <td class="item_label">Total Repair Cost: 
+                          <?php
+								if (empty($row3['totalcost'])){
+								$row3['totalcost'] = '0';
+								print $row3['totalcost'];
+								} else {
+								print $row3['totalcost'];
+								}
+							?>
+                        </td>
+                  </tr>
 								</table>
 
 

@@ -45,12 +45,7 @@ include('lib/common.php');
                           <?php print $row['vehicle_mileage'];?>
                       </td>
                   </tr>
-                  <tr>
-                      <td class="item_label">Vehicle Description</td>
-                      <td>
-                          <?php print $row['vehicle_description'];?>
-                      </td>
-                  </tr>
+                  
                   <tr>
                       <td class="item_label">Model name</td>
                       <td>
@@ -81,7 +76,12 @@ include('lib/common.php');
                           <?php print $row['color'];?>
                       </td>
                   </tr>
-
+                  <tr>
+                      <td class="item_label">Vehicle Description</td>
+                      <td>
+                          <?php print $row['vehicle_description'];?>
+                      </td>
+                  </tr>
 
                   <tr>
                       <td class="item_label">Sale Price</td>

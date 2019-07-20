@@ -46,7 +46,7 @@ if (!isset($_SESSION['username'])) {
 
 // query to get repair
 $query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price "
-. "FROM Vehicle LEFT JOIN Buy on Vehicle.vin = Buy.vin"
+. "FROM Vehicle LEFT JOIN Buy on Vehicle.vin = Buy.vin "
 . "LEFT JOIN Repair on Vehicle.vin = Repair.vin "
 . " WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
 
@@ -200,7 +200,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
                 </tr>
                 <?php
 									if (is_bool($result5) && (mysqli_num_rows($result5) == 0) ) {
-											array_push($error_msg,  "Query ERROR: Failed to get User interests...<br>" . __FILE__ ." line:". __LINE__ );
+											array_push($error_msg,  "Query ERROR: Failed to get Repair info...<br>" . __FILE__ ." line:". __LINE__ );
                   }
                   $button_num = 1;
 									while ($row5 = mysqli_fetch_array($result5, MYSQLI_ASSOC)) {
