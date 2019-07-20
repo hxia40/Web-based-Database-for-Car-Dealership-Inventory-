@@ -3,10 +3,10 @@ include('lib/common.php');
 // written by czhang613
 
     $enteredVIN = $_GET['vin'];
-    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price
-    FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-    JOIN Repair ON Vehicle.vin = Repair.vin
-    WHERE repair_status = 'completed' AND Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price "
+    . "FROM Vehicle LEFT JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin "
+    . "LEFT JOIN Repair ON Vehicle.vin = Repair.vin "
+    . "WHERE repair_status = 'completed' AND Vehicle.vin = '$enteredVIN'";
     $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
 
@@ -17,10 +17,8 @@ include('lib/common.php');
     }
 ?>
 
-
-
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+		<title>View Vehicle Detail for Public</title>
 	</head>
 
 	<body>

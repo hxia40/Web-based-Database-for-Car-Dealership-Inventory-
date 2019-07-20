@@ -4,52 +4,49 @@ include('lib/common.php');
 
 // setup permission and login info
 if (!isset($_SESSION['username'])) {
-	header('Location: public_search.php');
+	header('Location: view_vehicle_detail_public.php');
 	exit();
 } else {
     if($_SESSION['permission'] == 2){
-        header("Location: employee_search_salesperson.php");
+        header("Location: view_vehicle_detail_salesperson.php");
         exit();
     }
     if($_SESSION['permission'] == 3){
-        header("Location: employee_search_manager.php");
+        header("Location: view_vehicle_detail_manager.php");
         exit();
     }
 		if($_SESSION['permission'] == 4){
-        header("Location: employee_search_owner.php");
+        header("Location: view_vehicle_detail_owner.php");
         exit();
     }
 }
 
-
     $enteredVIN = $_GET['vin'];
 
-    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
-    manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price, purchase_price
-    FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-		JOIN Buy on Vehicle.vin = Buy.vin
-    WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, "
+    . "manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price, purchase_price "
+    . "FROM Vehicle LEFT JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin "
+	. "LEFT JOIN Buy on Vehicle.vin = Buy.vin "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
+
 		$result = mysqli_query($db, $query);
 		include('lib/show_queries.php');
 		$result1 = $result;
 
-    $query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
-    FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
-    JOIN Repair on Vehicle.vin = Repair.vin
-    WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+    $query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price "
+    . "FROM Vehicle LEFT JOIN Buy on Vehicle.vin = Buy.vin "
+    . "LEFT JOIN Repair on Vehicle.vin = Repair.vin "
+    . "WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+    
     $result = mysqli_query($db, $query);
-		include('lib/show_queries.php');
-		$result5 = $result;
+	include('lib/show_queries.php');
+	$result5 = $result;
 
-
-		$query = "SELECT SUM(repair_cost) AS totalcost FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
+	$query = "SELECT SUM(repair_cost) AS totalcost FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
     $result = mysqli_query($db, $query);
-		include('lib/show_queries.php');
-		$result3 = $result;
-		// $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
-
-
-
+	include('lib/show_queries.php');
+	$result3 = $result;
+	// $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
 
     if (!is_bool($result1) && (mysqli_num_rows($result1) > 0) ) {
         $row = mysqli_fetch_array($result1, MYSQLI_ASSOC);
@@ -68,12 +65,10 @@ if (!isset($_SESSION['username'])) {
 
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+		<title>View Vehicle Detail for Clerk</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-
-
 	</head>
 
 	<body>

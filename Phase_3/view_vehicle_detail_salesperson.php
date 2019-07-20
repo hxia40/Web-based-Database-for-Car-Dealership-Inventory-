@@ -3,28 +3,30 @@ include('lib/common.php');
 // written by czhang613
 // setup permission and login info
 if (!isset($_SESSION['username'])) {
-	header('Location: public_search.php');
+	header('Location: view_vehicle_detail_public.php');
 	exit();
 } else {
     if($_SESSION['permission'] == 1){
-        header("Location: employee_search_clerk.php");
+        header("Location: view_vehicle_detail_clerk.php");
         exit();
     }
     if($_SESSION['permission'] == 3){
-        header("Location: employee_search_manager.php");
+        header("Location: view_vehicle_detail_manager.php");
         exit();
     }
     if($_SESSION['permission'] == 4){
-        header("Location: employee_search_owner.php");
+        header("Location: view_vehicle_detail_owner.php");
         exit();
     }
 }
 
     $enteredVIN = $_GET['vin'];
-    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price
-    FROM Vehicle JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-    JOIN Repair ON Vehicle.vin = Repair.vin
-    WHERE repair_status = 'completed' AND Vehicle.vin = '$enteredVIN'";
+    
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price "
+    . "FROM Vehicle LEFT JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin "
+    . "LEFT JOIN Repair ON Vehicle.vin = Repair.vin "
+    . "WHERE repair_status = 'completed' AND Vehicle.vin = '$enteredVIN'";
+    
     $result = mysqli_query($db, $query);
     include('lib/show_queries.php');
     if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
@@ -34,9 +36,8 @@ if (!isset($_SESSION['username'])) {
     }
 ?>
 
-
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+		<title>View Vehicle Detail for Salesperson</title>
 	</head>
 
 	<body>

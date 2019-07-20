@@ -4,19 +4,19 @@ include('lib/common.php');
 
 // setup permission and login info
 if (!isset($_SESSION['username'])) {
-	header('Location: public_search.php');
+	header('Location: view_vehicle_detail_public.php');
 	exit();
 } else {
     if($_SESSION['permission'] == 1){
-        header("Location: employee_search_clerk.php");
+        header("Location: view_vehicle_detail_clerk.php");
         exit();
     }
     if($_SESSION['permission'] == 2){
-        header("Location: employee_search_salesperson.php");
+        header("Location: view_vehicle_detail_salesperson.php");
         exit();
     }
     if($_SESSION['permission'] == 4){
-        header("Location: employee_search_owner.php");
+        header("Location: view_vehicle_detail_owner.php");
         exit();
     }
 }
@@ -27,11 +27,12 @@ if (!isset($_SESSION['username'])) {
 		$enteredVIN = $_GET['vin'];
 
 // query to get basic info
-    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,
-    manufacturer_name, sale_price, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color
-		FROM Vehicle
-		JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin
-		WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, "
+    . "manufacturer_name, sale_price, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color "
+		. "FROM Vehicle "
+		. "LEFT JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
+    
 		$result = mysqli_query($db, $query);
 		include('lib/show_queries.php');
 		$result1 = $result;
@@ -44,24 +45,26 @@ if (!isset($_SESSION['username'])) {
 
 
 // query to get repair
-$query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price
-FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin
-JOIN Repair on Vehicle.vin = Repair.vin
-WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+$query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price "
+. "FROM Vehicle LEFT JOIN Buy on Vehicle.vin = Buy.vin"
+. "LEFT JOIN Repair on Vehicle.vin = Repair.vin "
+. " WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
+
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
 $result5 = $result;
 
 
 // query to get purchase
-    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
-    Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
-    FROM Vehicle
-    JOIN Buy ON Vehicle.vin = Buy.vin
-    JOIN Customer ON Buy.customer_id = Customer.customer_id
-    JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission
-    JOIN Users ON InventoryClerk.username = Users.username
-    WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
+    . "Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1 "
+    . "FROM Vehicle "
+    . "LEFT JOIN Buy ON Vehicle.vin = Buy.vin "
+    . "LEFT JOIN Customer ON Buy.customer_id = Customer.customer_id "
+    . "LEFT JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission "
+    . "LEFT JOIN Users ON InventoryClerk.username = Users.username "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
+
 		$result = mysqli_query($db, $query);
 		include('lib/show_queries.php');
 		$result2 = $result;
@@ -69,14 +72,15 @@ $result5 = $result;
 
 
 // query to get sell
-    $query = "SELECT Vehicle.vin, Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
-    login_first_name AS login_first_name2, login_last_name AS login_last_name2
-    FROM Vehicle
-    JOIN Sell ON Vehicle.vin = Sell.vin
-    JOIN Customer ON Sell.customer_id = Customer.customer_id
-    JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission
-    JOIN Users ON Salesperson.username = Users.username
-    WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Vehicle.vin, Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
+    . "login_first_name AS login_first_name2, login_last_name AS login_last_name2 "
+    . "FROM Vehicle "
+    . "LEFT JOIN Sell ON Vehicle.vin = Sell.vin "
+    . "LEFT JOIN Customer ON Sell.customer_id = Customer.customer_id "
+    . "LEFT JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission "
+    . "LEFT JOIN Users ON Salesperson.username = Users.username "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
+
 		$result = mysqli_query($db, $query);
 		include('lib/show_queries.php');
 		$result3 = $result;
@@ -94,7 +98,7 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
 
 <?php include("lib/header.php"); ?>
-		<title>GTOnline Edit Profile</title>
+		<title>View Vehicle Detail for Manager</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
