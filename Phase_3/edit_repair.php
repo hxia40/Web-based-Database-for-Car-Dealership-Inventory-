@@ -247,7 +247,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <tr>
                                 <td class ="item_label">VIN Number</td>
                                 <td>
-                                    <input type="text" id = "vin" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } ?>" />
+                                    <input type="text" id = "vin" name = "vin" value="<?php if ($_GET['vin']) { print $_GET['vin']; } else if ($_POST['vin']) { print $_POST['vin']; } ?>" />
                                 </td>
                             </tr>
 
