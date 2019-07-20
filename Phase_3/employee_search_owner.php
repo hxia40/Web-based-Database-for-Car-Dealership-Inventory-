@@ -92,6 +92,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " .
             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
         }
+        if($vehicle_filter=='vehicles available for sale'){
+            $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " .
+            "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " .
+            "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " .
+            "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " .
+            "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+            "AND repair_status <> 'pending' AND repair_status <> 'in progress'";
+        }
     }
 
     if ($entered_type_name != "select" or $entered_manufacturer_name != "select"
@@ -249,6 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <option value='all vehicles' selected="true">all vehicles</option>
                                             <option value='sold vehicles'>sold vehicles</option>
                                             <option value='unsold vehicles'>unsold vehicles</option>
+                                            <option value='vehicles available for sale'>unsold vehicles</option>
                                         </select>
                                     </td>
 								</tr>
