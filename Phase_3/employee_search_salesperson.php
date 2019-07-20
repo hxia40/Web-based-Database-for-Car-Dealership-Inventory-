@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<div class="center_left">
                 <div class="features">
                 <div class='profile_section'>
-					    <div class='subtitle'>Your are a salesperson</div>
+					    <div class='subtitle'>You are a salesperson</div>
 				    </div>
                     <div class='profile_section'>
 					    <div class='subtitle'>Total number of available vehicles</div>
