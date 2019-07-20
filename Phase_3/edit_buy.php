@@ -3,8 +3,6 @@
 include('lib/common.php');
 // written by zxie86
 
-
-
 if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION['permission'] != 4)) {
     header('Location: index.php');
     exit();

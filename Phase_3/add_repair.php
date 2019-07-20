@@ -6,6 +6,8 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
     header('Location: index.php');
     exit();
 }
+    
+    
  
     $query = "SELECT login_first_name, login_last_name " .
 		 " FROM Users " .
