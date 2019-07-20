@@ -203,7 +203,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         if ($_GET['sale_price']) { $sale_price = $_GET['sale_price']; } else if($_POST['sale_price']){$sale_price = $_POST['sale_price'];}
                                         $vehicle_description = "";
                                         if ($_GET['vehicle_description']) { $vehicle_description = $_GET['vehicle_description']; } else if($_POST['vehicle_description']){$vehicle_description = $_POST['vehicle_description'];}
-                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."'>Add Color(s) for this Vehicle</a>";
+                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."' target="_blank">Add Color(s) for this Vehicle</a>";
 
                                     ?>
                                 </td>
@@ -215,7 +215,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 <input type="button" value=" Cancel " onclick="history.go(-1)">
                                 <button type="reset" value=" Reset ">Reset</button></td>
                             <tr>
-                                <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['sale_price']) {print $_GET['sale_price'];} else if($_POST['sale_price']) {print $_POST['sale_price'];} ?>'>Add Buy Information!</a></td>
+                                <td><a href='add_buy.php?customer_id=<?php if($_GET['customer_id']) {print $_GET['customer_id'];} else if($_POST['customer_id']) {print $_POST['customer_id'];} ?>&vin=<?php if ($_GET['vin']) { print $_GET['vin']; } else if($_POST['vin']) { print $_POST['vin'];} ?>&sale_price=<?php if($_GET['sale_price']) {print $_GET['sale_price'];} else if($_POST['sale_price']) {print $_POST['sale_price'];} ?>' target="_blank">Add Buy Information!</a></td>
                             </tr>
                         </table>
                     </form>
