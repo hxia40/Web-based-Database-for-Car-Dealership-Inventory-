@@ -21,7 +21,7 @@ if (!isset($_SESSION['permission']) OR $_SESSION['permission'] < 3) {
 
 
 
-$query_y = "SELECT ".
+$query = "SELECT ".
             "YEAR(Sell.sale_date) AS sale_year, ".
             "COUNT( Sell .vin) AS num_of_vehicle_sold, ".
             "SUM( Vehicle .sale_price) AS total_sale_income, ".
@@ -40,7 +40,12 @@ $query_y = "SELECT ".
             "GROUP BY Sale_year ".
             "ORDER BY Sale_year DESC";
 
-$query_m = "SELECT ".
+$result = mysqli_query($db, $query);
+            include('lib/show_queries.php');
+$result_y = $result;
+            
+
+$query = "SELECT ".
         "CONCAT(YEAR(Sell.sale_date), '-', MONTH(Sell.sale_date)) AS sale_month, ".
         "COUNT( Sell .vin) AS num_of_vehicle_sold, ".
         "SUM( Vehicle .sale_price) AS total_sale_income, ".
@@ -58,10 +63,9 @@ $query_m = "SELECT ".
         "GROUP BY Sale_month ".
         "ORDER BY Sale_month DESC";
 
-
-$result_y = mysqli_query($db, $query_y);
-$result_m = mysqli_query($db, $query_m);
+$result = mysqli_query($db, $query);
 include('lib/show_queries.php');
+$result_m = $result;
 
 
 ?>
