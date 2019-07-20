@@ -94,6 +94,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                         ?>
                                     </datalist>
                                 </td>
+                                <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a>;</td>
                             </tr>
 
 
@@ -115,7 +116,7 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                                 <input name = "view" type = "submit" id = "view" value = "View">
                                 <input type="button" value="Cancel" onclick="history.go(-1)">
                             </tr>
-                                <td><a href='add_repair.php?view=View'>Add A New Repair Record!</a></td>
+                                <td><a href='add_repair.php?inventory_clerk_permission=<?php if($_GET['inventory_clerk_permission']) {print $_GET['inventory_clerk_permission']; ?>&nhtsa_recall_compaign_number=<?php if($_GET['nhtsa_recall_compaign_number']) {print $_GET['nhtsa_recall_compaign_number']; ?>&repair_cost=<?php if($_GET['repair_cost']) {print $_GET['repair_cost']; ?>&vendor_name=<?php if($_GET['vendor_name']) {print $_GET['vendor_name']; ?>&repair_description=<?php if($_GET['repair_description']) {print $_GET['repair_description']; ?>&repair_status=<?php if($_GET['repair_status']) {print $_GET['repair_status']; ?>&end_date=<?php if($_GET['end_date']) {print $_GET['end_date']; ?>&start_date=<?php if($_GET['start_date']) {print $_GET['start_date'];} ?>&vin=<?php if($_GET['vin']) {print $_GET['vin'];} else if($_POST['vin']) {print $_POST['vin'];}?>&nhtsa_recall_compaign_number=<?php if($_GET['NHTSA_recall_compaign_number']) {print $_GET['NHTSA_recall_compaign_number'];} else if($_POST['NHTSA_recall_compaign_number']) {print $_POST['NHTSA_recall_compaign_number'];} ?>' >Add A New Repair Record!</a></td>
                             <tr>
 
                             </tr>
@@ -200,8 +201,8 @@ if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
                 print "<td>" . $row['vendor_name'] . "</td>";
                 print "<td>" . $row['repair_cost'] . "</td>";
                 print "<td>" . $row['nhtsa_recall_compaign_number'] . "</td>";
-                echo "<td><a href='edit_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Edit</a></td>";
-                echo "<td><a href='delete_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."'>Delete</a></td>";
+                echo "<td><a href='edit_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."' target='_blank'>Edit</a></td>";
+                echo "<td><a href='delete_repair.php?vin=".$row['vin']."&start_date=".strftime("%Y-%m-%d", strtotime($row['start_date']))."&end_date=".strftime("%Y-%m-%d", strtotime($row['end_date'])). "&repair_status=" .$row['repair_status']. "&repair_description=" .$row['repair_description']. "&repair_cost=" .$row['repair_cost']. "&vendor_name=" .$row['vendor_name']. "&nhtsa_recall_compaign_number=" .$row['nhtsa_recall_compaign_number']."' target='_blank'>Delete</a></td>";
                 print "</tr>";
             }
             echo "</table>";

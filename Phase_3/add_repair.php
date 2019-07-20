@@ -112,7 +112,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 									</tr>
 									<tr>
                                         <td>
-                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Check NHTSA Number!">
+                                        <input name = "check_nhtsa" type = "submit" id = "check_nhtsa" value = "Submit">
                                         <button type="reset" value="Reset">Reset</button>
                                         </td>
                                     </tr>
@@ -211,6 +211,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['permission'] != 1 && $_SESSION[
 												?>
 											</datalist>
 										</td>
+                                        <td><a href='add_vendor.php' target='_blank'>Add A New Vendor</a>;</td>
 									</tr>
 
 
