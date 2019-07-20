@@ -114,7 +114,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $temp_row2 = mysqli_fetch_array($temp_result2, MYSQLI_ASSOC);
             $previous_sale_price = $temp_row2['sale_price'];
 
-                include('lib/show_queries.php');
+            include('lib/show_queries.php');
             if (mysqli_affected_rows($db) == -1) {
                 array_push($error_msg, "Failed to get Previous Repair Price <br>" . __FILE__ . " line:" . __LINE__);
             }
@@ -125,7 +125,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (mysqli_affected_rows($db) == -1) {
                 array_push($error_msg, "UPDATE ERROR: Repair_cost Error... <br>" . __FILE__ . " line:" . __LINE__);
-            }else{
+            }else if($enteredRepair_cost != $previous_repair_cost){
                 $change_repair_cost = ($enteredRepair_cost - $previous_repair_cost)*1.1;
                 $new_sale_price = $previous_sale_price + $change_repair_cost;
 
@@ -134,6 +134,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 include('lib/show_queries.php');
             }
         }
+
 
         if (!empty($enteredNHTSA_recall_campagin_Number)) {
             $query = "UPDATE Repair" . " SET nhtsa_recall_compaign_number = '$enteredNHTSA_recall_campagin_Number' WHERE vin = '$enteredVin' AND start_date = '$enteredStart_date'";
