@@ -199,11 +199,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         if ($_GET['type_name']) { $type_name = $_GET['type_name']; } else if($_POST['type_name']){$type_name = $_POST['type_name'];}
                                         $manufacturer_name = "";
                                         if ($_GET['manufacturer_name']) { $manufacturer_name = $_GET['manufacturer_name']; } else if($_POST['manufacturer_name']){$manufacturer_name = $_POST['manufacturer_name'];}
-                                        $sale_price = 0;
+                                        $sale_price_tmp = $_POST['sale_price'];
                                         if ($_GET['sale_price']) { $sale_price = $_GET['sale_price']; } else if($_POST['sale_price']){$sale_price = $_POST['sale_price'];}
                                         $vehicle_description = "";
                                         if ($_GET['vehicle_description']) { $vehicle_description = $_GET['vehicle_description']; } else if($_POST['vehicle_description']){$vehicle_description = $_POST['vehicle_description'];}
-                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."' target=\"_blank\">Add Color(s) for this Vehicle</a>";
+                                        echo "<a href='edit_vehicle.php?vin=".$vin."&vehicle_description=".$vehicle_description."&sale_price=".$sale_price_tmp."&manufacturer_name=".$manufacturer_name."&type_name=".$type_name."&model_year=".$model_year."&model_name=".$model_name."&vehicle_mileage=".$vehicle_mileage."' target=\"_blank\">Add Color(s) for this Vehicle</a>";
 
                                     ?>
                                 </td>
