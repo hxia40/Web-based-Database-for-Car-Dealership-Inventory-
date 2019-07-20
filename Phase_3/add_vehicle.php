@@ -197,6 +197,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         }
                                         ?>
                                     </datalist>
+                                    <a href='add_customer.php' target='_blank'> Add A Customer </a>
                                 </td>
                             </tr>
 
