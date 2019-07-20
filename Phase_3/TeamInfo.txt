@@ -566,3 +566,15 @@ WHERE Customer.customer_id = '$current_customer_id'";
         "ORDER BY  ".
         "num_vehicle_sold DESC, ".
         "total_sales DESC ";
+	
+30. query to pull all vendor name:
+	$pull_vendor_query = "SELECT DISTINCT vendor_name FROM Vendor ";
+
+31. query to pull all customer_id:
+	$pull_customer_id_query = "SELECT DISTINCT customer_id FROM Customer ";
+	
+32. query to pull all model name:
+	$pull_model_name_query = "SELECT DISTINCT model_name FROM Vehicle ";
+
+33. query to pull all NHTSA_recall_compaign_number:
+	$pull_nhtsa_query = "SELECT DISTINCT NHTSA_recall_compaign_number FROM Recall ";
