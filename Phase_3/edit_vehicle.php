@@ -265,7 +265,7 @@ if (!empty($_GET['delete_color'])) {
                                         if ($_GET['type_name']) { $type_name = $_GET['type_name']; } else if($_POST['type_name']){$type_name = $_POST['type_name'];}
                                         $manufacturer_name = "";
                                         if ($_GET['manufacturer_name']) { $manufacturer_name = $_GET['manufacturer_name']; } else if($_POST['manufacturer_name']){$manufacturer_name = $_POST['manufacturer_name'];}
-                                        $temp_sale_price = 0;
+                                        $temp_sale_price = $_GET['sale_price'];
                                         if ($_GET['sale_price']) { $temp_sale_price = $_GET['sale_price']; } else if($_POST['sale_price']){$temp_sale_price = $_POST['sale_price'];}
                                         $vehicle_description = "";
                                         if ($_GET['vehicle_description']) { $vehicle_description = $_GET['vehicle_description']; } else if($_POST['vehicle_description']){$vehicle_description = $_POST['vehicle_description'];}
