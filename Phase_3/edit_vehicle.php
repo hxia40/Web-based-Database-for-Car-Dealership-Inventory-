@@ -283,8 +283,7 @@ if (!empty($_GET['delete_color'])) {
                                                 urlencode($row['vehicle_color']) . "'>delete</a></li>";
                                         }
                                         ?>
-                                        <li><input type="text" name="vehicle_color" value="(add color)"
-                                                   onclick="if(this.value=='(add color)'){this.value=''}"
+                                        <li><input type="text" name="vehicle_color" onclick="if(this.value=='(add color)'){this.value=''}"
                                                    onblur="if(this.value==''){this.value='(add color)'}" list="color_list"/>
                                             <datalist id = 'color_list'>
                                                 <?php
