@@ -56,7 +56,7 @@ $result5 = $result;
 
 
 // query to get purchase
-    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
+    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, purchase_date, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
     . "Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1 "
     . "FROM Vehicle "
     . "LEFT JOIN Buy ON Vehicle.vin = Buy.vin "
@@ -264,6 +264,12 @@ $row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC);
                       <td class="item_label">Purchased Condition</td>
                       <td>
                           <?php print $row2['purchase_condition'];?>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="item_label">Purchased Date</td>
+                      <td>
+                          <?php print $row2['purchase_date'];?>
                       </td>
                   </tr>
                   </table>

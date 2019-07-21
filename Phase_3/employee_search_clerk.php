@@ -12,18 +12,8 @@ if($showQueries){
 }
 
 $query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " .
-         "ON Vehicle.vin=Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) AND repair_status='pending'";
-$result = mysqli_query($db, $query);
-include('lib/show_queries.php');
-if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
-    $car_num1 = mysqli_fetch_assoc($result);
-    $car1 = $car_num1['total'];
-} else {
-    $car1 = 0;
-}
-
-$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " .
-         "ON Vehicle.vin = Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) AND repair_status = 'in progress'";
+         "ON Vehicle.vin = Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+         "AND (repair_status = 'in progress' OR repair_status = 'pending')";
 $result = mysqli_query($db, $query);
 include('lib/show_queries.php');
 if (!is_bool($result) && (mysqli_num_rows($result) > 0) ) {
@@ -129,9 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class='profile_section'>
 					    <div class='subtitle'>Number of vehicles (for inventory clerk view)</div>
 					    <?php
-                        echo "<br>Number of vehicles with repair pending: {$car1}</br>";
 
-                        echo "<br>Number of vehicles with repair in progress: {$car2}</br>";
+                        echo "<br>Number of vehicles with repair pending or in progress: {$car2}</br>";
 
                         echo "<br>Number of vehicles available for purchase: {$car3}</br>";
 
