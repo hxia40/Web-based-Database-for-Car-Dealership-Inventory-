@@ -11,9 +11,12 @@ Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 
 1. query number of available vehicles for purchase:
 	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total " . 
-			 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
-			 "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-			 "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+		 "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
+         "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+         "AND ( " . 
+         "(Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair)) " . 
+         "OR (Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair WHERE repair_status = 'pending' OR repair_status = 'in progress')) " . 
+         ")";
 		 
 2. search vehicles for public:
 	$query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
@@ -21,7 +24,10 @@ Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-             "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+             "AND ( " . 
+			 "(Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair)) " . 
+			 "OR (Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair WHERE repair_status = 'pending' OR repair_status = 'in progress')) " . 
+			 ")";
 
     if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
         or $entered_vehicle_color != "select" or $entered_model_year != 0 
@@ -57,21 +63,61 @@ Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 3. query password for login:
 	$query = "SELECT password FROM Users WHERE username='$entered_username'";
 	
-4. query number of vehicles with repair pending:
-	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
-			 "ON Vehicle.vin=Repair.vin WHERE repair_status='pending'";
+4. query number of vehicles with repair pending or in progress:
+	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " .
+         "ON Vehicle.vin = Repair.vin WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
+         "AND (repair_status = 'in progress' OR repair_status = 'pending')";
+		 
+5. Search vehicles for clerk:
+	$query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " .
+             "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " .
+             "FROM Vehicle " .
+             "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " .
+             "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) ";
 
-5. query number of vehicles with repair in progress:
-	$query = "SELECT COUNT(DISTINCT(Vehicle.vin)) as total FROM Vehicle LEFT JOIN Repair " . 
-			 "ON Vehicle.vin = Repair.vin WHERE repair_status = 'In progress'";
+    if ($entered_type_name != "select" or $entered_manufacturer_name != "select"
+        or $entered_vehicle_color != "select" or $entered_model_year != 0
+        or (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '')
+        or (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '')) {
+
+		$query = $query . " AND (1=1";
+
+		if ($entered_type_name != "select") {
+			$query = $query . " AND `type_name`='$entered_type_name' ";
+        }
+        if ($entered_manufacturer_name != "select") {
+			$query = $query . " AND manufacturer_name='$entered_manufacturer_name' ";
+        }
+        if ($entered_vehicle_color != "select") {
+			$query = $query . " AND vehicle_color='$entered_vehicle_color' ";
+        }
+        if ($entered_model_year != 0) {
+			$query = $query . " AND model_year=$entered_model_year ";
+        }
+        if (!empty($keyword) and $keyword != '(input search keyword)' and trim($keyword) != '') {
+            $query = $query . " AND (" .
+            "manufacturer_name LIKE '%$keyword%' " .
+            "OR model_year LIKE '%$keyword%' " .
+            "OR model_name LIKE '%$keyword%' " .
+            "OR vehicle_description LIKE '%$keyword%' " .
+            ") ";
+        }
+        if (!empty($entered_vin) and $entered_vin != '(input VIN)' and trim($entered_vin) != '') {
+            $query = $query . " AND Vehicle.vin='$entered_vin' ";
+        }
+		$query = $query . ") ";
+	}
 			 
 6. search vehicles for salesperson
-	$query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
+	    $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
              "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
              "FROM Vehicle LEFT JOIN Repair ON Vehicle.vin=Repair.vin " . 
              "LEFT JOIN VehicleColor ON VehicleColor.vin=Vehicle.vin " . 
              "WHERE Vehicle.vin NOT IN (SELECT vin FROM Sell) " . 
-             "AND repair_status <> 'pending' AND repair_status <> 'In progress'";
+             "AND ( " . 
+			"(Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair)) " . 
+			"OR (Vehicle.vin NOT IN (SELECT DISTINCT vin FROM Repair WHERE repair_status = 'pending' OR repair_status = 'in progress')) " . 
+			")";
 
     if ($entered_type_name != "select" or $entered_manufacturer_name != "select" 
         or $entered_vehicle_color != "select" or $entered_model_year != 0 
@@ -109,7 +155,7 @@ Website icon made by Freepik from www.flaticon.com is licensed by CC 3.0 BY.
 	
     $query = $query . " GROUP BY Vehicle.vin ORDER BY Vehicle.vin ASC";
 	
-7. search vehicles for manager and Mr. Burdell
+7. search vehicles for manager
 	if($vehicle_filter=='all vehicles'){
         $query = "SELECT Vehicle.vin, `type_name`, model_name, model_year, manufacturer_name, " . 
         "GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, vehicle_mileage, sale_price " . 
@@ -196,58 +242,57 @@ $query = "INSERT INTO Sell (vin, customer_id, salesperson_permission, sale_date)
 
 View Vehicle Detail Form, for all permissions:
 14. the following query extract basic vehicle information
-$query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year,manufacturer_name, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color, sale_price, purchase_price 
-FROM Vehicle 
-JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin 
-JOIN Buy on Vehicle.vin = Buy.vin WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Vehicle.vin, vehicle_mileage, vehicle_description, model_name, model_year, "
+    . "manufacturer_name, sale_price, GROUP_CONCAT(DISTINCT vehicle_color SEPARATOR ', ') AS color "
+		. "FROM Vehicle "
+		. "LEFT JOIN VehicleColor ON Vehicle.vin = VehicleColor.vin "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
 
 View Vehicle Detail Form, for Clerk, Manager & Owner permissions:
 15. the following query extract repair information
-$query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price 
-FROM Vehicle 
-JOIN Buy on Vehicle.vin = Buy.vin 
-JOIN Repair on Vehicle.vin = Repair.vin 
-WHERE Vehicle.vin = '$enteredVIN' 
-ORDER BY start_date DESC";
+	$query = "SELECT start_date, end_date, repair_status, repair_description, repair_cost, vendor_name, Repair.nhtsa_recall_compaign_number, Buy.inventory_clerk_permission, purchase_price "
+	. "FROM Vehicle JOIN Buy on Vehicle.vin = Buy.vin "
+	. "LEFT JOIN Repair on Vehicle.vin = Repair.vin "
+	. "WHERE Vehicle.vin = '$enteredVIN' ORDER BY start_date DESC";
 
 16. The following query extract total repair cost
-$query = "SELECT SUM(repair_cost) AS totalcost 
-FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
+	$query = "SELECT SUM(repair_cost) AS totalcost " . 
+	"FROM Repair WHERE vin = '$enteredVIN' GROUP BY vin";
 
 View Vehicle Detail Form, for Manager & Owner Permission:
 16. the following query extract purchase information
-$query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
-    Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1
-    FROM Vehicle
-    JOIN Buy ON Vehicle.vin = Buy.vin
-    JOIN Customer ON Buy.customer_id = Customer.customer_id
-    JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission
-    JOIN Users ON InventoryClerk.username = Users.username
-    WHERE Vehicle.vin = '$enteredVIN'";
+    $query = "SELECT Buy.inventory_clerk_permission, purchase_price, purchase_condition, purchase_date, Buy.customer_id AS seller_customer_id, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
+    . "Users.login_first_name AS login_first_name1, Users.login_last_name AS login_last_name1 "
+    . "FROM Vehicle "
+    . "LEFT JOIN Buy ON Vehicle.vin = Buy.vin "
+    . "LEFT JOIN Customer ON Buy.customer_id = Customer.customer_id "
+    . "LEFT JOIN InventoryClerk ON InventoryClerk.inventory_clerk_permission= Buy.inventory_clerk_permission "
+    . "LEFT JOIN Users ON InventoryClerk.username = Users.username "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
 
 17. the following query extract sale information
-$query = "SELECT Vehicle.vin, Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip,
-    login_first_name AS login_first_name2, login_last_name AS login_last_name2
-    FROM Vehicle
-    JOIN Sell ON Vehicle.vin = Sell.vin
-    JOIN Customer ON Sell.customer_id = Customer.customer_id
-    JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission
-    JOIN Users ON Salesperson.username = Users.username
-    WHERE Vehicle.vin = '$enteredVIN'";
-
+    $query = "SELECT Vehicle.vin, Sell.salesperson_permission, Sell.customer_id AS buyer_customer_id, sale_date, phone_number, email, customer_street, customer_city, customer_state, customer_zip, "
+    . "login_first_name AS login_first_name2, login_last_name AS login_last_name2 "
+    . "FROM Vehicle "
+    . "LEFT JOIN Sell ON Vehicle.vin = Sell.vin "
+    . "LEFT JOIN Customer ON Sell.customer_id = Customer.customer_id "
+    . "LEFT JOIN Salesperson ON Salesperson.salesperson_permission = Sell.salesperson_permission "
+    . "LEFT JOIN Users ON Salesperson.username = Users.username "
+    . "WHERE Vehicle.vin = '$enteredVIN'";
+	
 18. the following query extract seller information
-$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title 
-FROM Customer 
-LEFT JOIN Person ON Customer.customer_id = Person.customer_id 
-LEFT JOIN business ON Customer.customer_id = Business.customer_id 
-WHERE Customer.customer_id = '$current_customer_id'";
+	$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title " . 
+	"FROM Customer " . 
+	"LEFT JOIN Person ON Customer.customer_id = Person.customer_id " .
+	"LEFT JOIN business ON Customer.customer_id = Business.customer_id " . 
+	"WHERE Customer.customer_id = '$current_customer_id'";
 
 19. the following query to get buyer's information
-$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title 
-FROM Customer 
-LEFT JOIN Person ON Customer.customer_id = Person.customer_id 
-LEFT JOIN business ON Customer.customer_id = Business.customer_id 
-WHERE Customer.customer_id = '$current_customer_id'";
+	$query = "SELECT Customer.customer_id, customer_first_name, customer_last_name, business_name, primary_contact_name, primary_contact_title " . 
+	"FROM Customer " . 
+	"LEFT JOIN Person ON Customer.customer_id = Person.customer_id " . 
+	"LEFT JOIN business ON Customer.customer_id = Business.customer_id " . 
+	"WHERE Customer.customer_id = '$current_customer_id'";
 
 
 20. query for Vehicle Table
